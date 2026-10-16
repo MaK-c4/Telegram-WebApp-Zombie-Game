@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zombie Grinder WebApp</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-grad-top: #1c1917;
+            --bg-grad-bot: #0c0a09;
+            --card-bg: #292524;
+            --tab-bg: #44403c;
+            --text-main: #ffffff;
+            --text-sub: #a8a29e;
+            --canvas-bg: #0c0a09;
+            --energy-bg: #1c1917;
+        }
+
+        body.light-theme {
+            --bg-grad-top: #f5f5f4;
+            --bg-grad-bot: #d6d3d1;
+            --card-bg: #ffffff;
+            --tab-bg: #e7e5e4;
+            --text-main: #1c1917;
+            --text-sub: #57534e;
+            --canvas-bg: #e7e5e4;
+            --energy-bg: #d6d3d1;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, var(--bg-grad-top), var(--bg-grad-bot) 70%);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 14px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .header {
+            background: var(--card-bg);
+            border: 4px solid #000000;
+            border-radius: 16px;
+            padding: 10px 16px;
+            box-shadow: 0 4px 0 #000000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .balance-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .balance-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-sub);
+            font-weight: 800;
+        }
+
+        .balance-val {
+            font-size: 22px;
+            font-weight: 900;
+            color: #fb923c;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .byn-badge {
+            background: #10b981;
+            color: #000;
+            font-weight: 900;
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: 3px solid #000;
+            box-shadow: 0 3px 0 #000;
+            font-size: 12px;
+        }
+
+        .settings-btn {
+            background: var(--tab-bg);
+            color: var(--text-main);
+            border: 3px solid #000;
+            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 3px 0 #000;
+            cursor: pointer;
+        }
+
+        .settings-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #000;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: var(--tab-bg);
+            color: var(--text-main);
+            border: 3px solid #000;
+            border-radius: 12px;
+            padding: 10px 6px;
+            font-weight: 900;
+            font-size: 12px;
+            box-shadow: 0 3px 0 #000;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: #f97316;
+            color: #000;
+        }
+
+        .tab-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #000;
+        }
+
+        .screen {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Полоска ХП Зомби */
+        .zombie-status-box {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .zombie-info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 900;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .hp-bar-wrap {
+            background: var(--energy-bg);
+            border: 3px solid #000;
+            border-radius: 12px;
+            height: 26px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 3px 0 #000;
+        }
+
+        .hp-fill {
+            background: linear-gradient(90deg, #dc2626, #ef4444);
+            height: 100%;
+            width: 100%;
+            border-right: 2px solid #000;
+            transition: width 0.12s ease-out;
+        }
+
+        .hp-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 12px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+        }
+
+        /* Голова зомби */
+        .zombie-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.05s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .zombie-wrapper.pressed {
+            transform: scale(0.9) rotate(-4deg);
+        }
+
+        .zombie-wrapper.dead-anim {
+            animation: zombieDie 0.25s ease-out;
+        }
+
+        @keyframes zombieDie {
+            0% { transform: scale(1.15) rotate(8deg); filter: brightness(1.8); }
+            100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+        }
+
+        .zombie-svg {
+            width: 210px;
+            height: 210px;
+            filter: drop-shadow(0 8px 0 #000000);
+        }
+
+        /* Блок Схрона */
+        .storage-widget {
+            background: var(--card-bg);
+            border: 3px solid #000;
+            border-radius: 14px;
+            padding: 12px 14px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 0 #000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .storage-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .storage-header-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 900;
+            color: var(--text-sub);
+        }
+
+        .storage-bar-wrap {
+            background: var(--energy-bg);
+            border: 2.5px solid #000;
+            border-radius: 8px;
+            height: 22px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .storage-fill {
+            background: linear-gradient(90deg, #f97316, #facc15);
+            height: 100%;
+            width: 0%;
+            border-right: 2px solid #000;
+            transition: width 0.2s, background 0.2s;
+        }
+
+        .storage-fill.full {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .storage-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 11px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+        }
+
+        .collect-storage-btn {
+            background: #f97316;
+            color: #000;
+            border: 2.5px solid #000;
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-weight: 900;
+            font-size: 12px;
+            box-shadow: 0 3px 0 #000;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .collect-storage-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #000;
+        }
+
+        .collect-storage-btn.disabled {
+            background: var(--tab-bg);
+            color: var(--text-sub);
+            opacity: 0.7;
+        }
+
+        .collect-storage-btn.pulse {
+            background: #22c55e;
+            animation: pulseBtn 1s infinite alternate;
+        }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* Экран Персонажа и Гардероба */
+        .hero-container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-stage {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: var(--card-bg);
+            border: 3.5px solid #000;
+            border-radius: 18px;
+            padding: 12px;
+            box-shadow: 0 4px 0 #000;
+        }
+
+        .equip-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .equip-slot {
+            width: 52px;
+            height: 52px;
+            background: var(--tab-bg);
+            border: 3px solid #000;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 3px 0 #000;
+            position: relative;
+        }
+
+        .equip-slot.equipped {
+            background: #f97316;
+            color: #000;
+        }
+
+        .equip-slot span {
+            font-size: 8px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* Кукла персонажа со слоями */
+        .character-doll {
+            position: relative;
+            width: 210px;
+            height: 210px;
+            background: #000;
+            border: 3.5px solid #000;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doll-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .wardrobe-list {
+            width: 100%;
+            max-height: 220px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-right: 4px;
+        }
+
+        /* Всплывающий текст и частицы */
+        .floating-number {
+            position: fixed;
+            font-size: 26px;
+            font-weight: 900;
+            color: #ef4444;
+            -webkit-text-stroke: 2px #000;
+            text-shadow: 0 3px 0 #000;
+            pointer-events: none;
+            z-index: 999;
+            animation: floatUp 0.75s ease-out forwards;
+        }
+
+        .floating-number.loot {
+            font-size: 30px;
+            color: #facc15;
+            z-index: 1000;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(0.8); }
+            40% { transform: translateY(-40px) scale(1.15); }
+            100% { opacity: 0; transform: translateY(-85px) scale(0.9); }
+        }
+
+        .shard {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: #84cc16;
+            border: 2px solid #000;
+            pointer-events: none;
+            z-index: 998;
+            animation: shardFly 0.55s ease-out forwards;
+        }
+
+        @keyframes shardFly {
+            0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3); }
+        }
+
+        .quality-arcade-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .arcade-banner {
+            background: var(--card-bg);
+            border: 3.5px solid #000;
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 0 #000;
+        }
+
+        .arcade-info h3 {
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+
+        .arcade-info p {
+            font-size: 10px;
+            color: var(--text-sub);
+            font-weight: 700;
+            margin-top: 3px;
+        }
+
+        .play-arcade-btn {
+            background: #f97316;
+            color: #000;
+            border: 2.5px solid #000;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-weight: 900;
+            font-size: 12px;
+            box-shadow: 0 3px 0 #000;
+            cursor: pointer;
+        }
+
+        /* Модальные окна */
+        #gameModal, #settingsModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 4px solid #000;
+            border-radius: 20px;
+            padding: 18px;
+            width: 100%;
+            max-width: 450px;
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 6px 0 #000;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #f97316;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .game-canvas-area {
+            background: var(--canvas-bg);
+            border: 4px solid #000;
+            border-radius: 16px;
+            width: 100%;
+            flex: 1;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .close-modal {
+            background: #ef4444;
+            color: #fff;
+            border: 3px solid #000;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 900;
+            font-size: 15px;
+            box-shadow: 0 4px 0 #000;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .settings-card {
+            background: var(--card-bg);
+            border: 4px solid #000;
+            border-radius: 20px;
+            padding: 22px;
+            width: 100%;
+            max-width: 340px;
+            box-shadow: 0 6px 0 #000;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--tab-bg);
+            border: 3px solid #000;
+            border-radius: 12px;
+            padding: 12px 14px;
+            box-shadow: 0 3px 0 #000;
+        }
+
+        .settings-row span {
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .settings-toggle-btn {
+            background: #f97316;
+            color: #000;
+            border: 2.5px solid #000;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-weight: 900;
+            font-size: 12px;
+            box-shadow: 0 2px 0 #000;
+            cursor: pointer;
+        }
+
+        /* Прокачка */
+        .shop-container {
+            width: 100%;
+            max-width: 420px;
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+        }
+
+        .shop-card {
+            background: var(--card-bg);
+            border: 3.5px solid #000;
+            border-radius: 14px;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 0 #000;
+        }
+
+        .shop-info h4 {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+
+        .shop-info p {
+            font-size: 10px;
+            color: var(--text-sub);
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .shop-btn {
+            background: #f97316;
+            color: #000;
+            border: 2.5px solid #000;
+            border-radius: 10px;
+            padding: 6px 10px;
+            font-weight: 900;
+            font-size: 11px;
+            box-shadow: 0 3px 0 #000;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .footer {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .energy-bar-wrap {
+            background: var(--energy-bg);
+            border: 3.5px solid #000;
+            border-radius: 14px;
+            height: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 3px 0 #000;
+        }
+
+        .energy-fill {
+            background: linear-gradient(90deg, #eab308, #fde047);
+            height: 100%;
+            width: 100%;
+            border-right: 2px solid #000;
+            transition: width 0.2s;
+        }
+
+        .energy-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 11px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+        }
+
+        .main-btn {
+            background: #22c55e;
+            color: #000;
+            border: 3.5px solid #000;
+            border-radius: 16px;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            box-shadow: 0 4px 0 #000;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .main-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #000;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <div class="header">
+            <div class="balance-box">
+                <span class="balance-label">Спички (Сессия)</span>
+                <span class="balance-val" id="scoreDisplay">0 🔥</span>
+            </div>
+            <div class="header-right">
+                <div class="byn-badge" id="bynDisplay">0.000 BYN</div>
+                <button class="settings-btn" onclick="openSettings()" title="Настройки">⚙️</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('tap', this)">🧟 Охота</button>
+            <button class="tab-btn" onclick="switchTab('hero', this)">👤 Перс</button>
+            <button class="tab-btn" onclick="switchTab('arcade', this)">🕹 Игры</button>
+            <button class="tab-btn" onclick="switchTab('shop', this)">🚀 База</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно Настроек -->
+    <div id="settingsModal">
+        <div class="settings-card">
+            <div class="modal-title">⚙️ Настройки</div>
+            <div class="settings-row">
+                <span>Оформление</span>
+                <button class="settings-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙 Тёмная</button>
+            </div>
+            <div class="settings-row">
+                <span>Звуковые эффекты</span>
+                <button class="settings-toggle-btn" id="soundToggleBtn" onclick="toggleSound()">🔊 Вкл</button>
+            </div>
+            <button class="close-modal" onclick="closeSettings()" style="padding: 10px; font-size: 13px;">Сохранить и закрыть</button>
+        </div>
+    </div>
+
+    <!-- Полноэкранное модальное окно мини-игры -->
+    <div id="gameModal">
+        <div class="modal-content">
+            <div class="modal-title" id="modalTitle">Мини-игра</div>
+            <div style="display: flex; justify-content: center; width: 100%; font-weight: 900; font-size: 16px;">
+                <span id="modalScore">Очки: 0 (x1)</span>
+            </div>
+            <div class="game-canvas-area" id="gameArea">
+                <canvas id="gameCanvas" width="340" height="280"></canvas>
+            </div>
+            <button class="close-modal" onclick="endMiniGame()">Забрать спички и выйти</button>
+        </div>
+    </div>
+
+    <!-- Экран 1: Охота на Зомби -->
+    <div class="screen active" id="screen-tap">
+        <div class="zombie-status-box">
+            <div class="zombie-info-row">
+                <span>🧟 ЗОМБИ-ХОДЯЧИЙ</span>
+                <span id="killCountText">💀 Убито: 0</span>
+            </div>
+            <div class="hp-bar-wrap">
+                <div class="hp-fill" id="zombieHpFill"></div>
+                <div class="hp-text" id="zombieHpText">❤️ 12 / 12 HP</div>
+            </div>
+        </div>
+
+        <div class="zombie-wrapper" id="zombieBtn">
+            <svg class="zombie-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <g id="zombieNormal">
+                    <ellipse cx="32" cy="105" rx="14" ry="22" fill="#65a30d" stroke="#000" stroke-width="6"/>
+                    <ellipse cx="168" cy="105" rx="14" ry="22" fill="#65a30d" stroke="#000" stroke-width="6"/>
+                    <rect x="40" y="30" width="120" height="140" rx="45" fill="#84cc16" stroke="#000" stroke-width="7"/>
+                    <path d="M 45 75 Q 100 90 155 75" fill="none" stroke="#4d7c0f" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="115" y1="42" x2="142" y2="68" stroke="#000" stroke-width="5" stroke-linecap="round"/>
+                    <line x1="122" y1="42" x2="114" y2="52" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="132" y1="50" x2="124" y2="60" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+                    <circle cx="75" cy="95" r="18" fill="#fef08a" stroke="#000" stroke-width="6"/>
+                    <circle cx="75" cy="95" r="5" fill="#dc2626"/>
+                    <circle cx="128" cy="95" r="14" fill="#fef08a" stroke="#000" stroke-width="6"/>
+                    <circle cx="128" cy="95" r="4" fill="#dc2626"/>
+                    <line x1="52" y1="72" x2="95" y2="85" stroke="#000" stroke-width="7" stroke-linecap="round"/>
+                    <line x1="148" y1="72" x2="108" y2="85" stroke="#000" stroke-width="7" stroke-linecap="round"/>
+                    <polygon points="100,102 92,118 108,118" fill="#4d7c0f" stroke="#000" stroke-width="5" stroke-linejoin="round"/>
+                    <rect x="65" y="130" width="70" height="22" rx="6" fill="#450a0a" stroke="#000" stroke-width="6"/>
+                    <rect x="73" y="130" width="12" height="11" fill="#fef9c3" stroke="#000" stroke-width="4"/>
+                    <rect x="95" y="130" width="12" height="13" fill="#fef9c3" stroke="#000" stroke-width="4"/>
+                    <rect x="112" y="140" width="12" height="12" fill="#fef9c3" stroke="#000" stroke-width="4"/>
+                </g>
+                <g id="zombieHit" style="display: none;">
+                    <ellipse cx="28" cy="110" rx="14" ry="22" fill="#4d7c0f" stroke="#000" stroke-width="6"/>
+                    <ellipse cx="172" cy="100" rx="14" ry="22" fill="#4d7c0f" stroke="#000" stroke-width="6"/>
+                    <path d="M 45 35 Q 100 45 155 30 Q 170 100 155 165 Q 100 175 45 165 Q 25 100 45 35 Z" fill="#65a30d" stroke="#000" stroke-width="7"/>
+                    <polygon points="115,25 130,45 155,35 138,55 158,70 130,68 120,85 112,62 90,60 110,45" fill="#ef4444" stroke="#000" stroke-width="4"/>
+                    <polyline points="58,85 88,96 58,107" fill="none" stroke="#000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="130" cy="95" r="21" fill="#fef08a" stroke="#000" stroke-width="6"/>
+                    <circle cx="130" cy="95" r="4" fill="#dc2626"/>
+                    <polygon points="60,128 142,122 135,160 68,155" fill="#7f1d1d" stroke="#000" stroke-width="6" stroke-linejoin="round"/>
+                    <rect x="80" y="126" width="12" height="12" fill="#fef9c3" stroke="#000" stroke-width="4"/>
+                    <rect x="115" y="144" width="13" height="12" fill="#fef9c3" stroke="#000" stroke-width="4"/>
+                    <circle cx="35" cy="65" r="6" fill="#dc2626" stroke="#000" stroke-width="3"/>
+                    <circle cx="175" cy="135" r="7" fill="#dc2626" stroke="#000" stroke-width="3"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="storage-widget">
+            <div class="storage-left">
+                <div class="storage-header-line">
+                    <span>📦 СХРОН СПИЧЕК</span>
+                    <span id="storageRateInfo">Добыча: 0/сек</span>
+                </div>
+                <div class="storage-bar-wrap">
+                    <div class="storage-fill" id="storageFill"></div>
+                    <div class="storage-text" id="storageText">0 / 100 🔥</div>
+                </div>
+            </div>
+            <button class="collect-storage-btn disabled" id="collectStorageBtn" onclick="collectFromStorage()">
+                Забрать
+            </button>
+        </div>
+    </div>
+
+    <!-- Экран 2: Персонаж и Сет «Воевода» -->
+    <div class="screen" id="screen-hero">
+        <div class="hero-container">
+            <div class="hero-stage">
+                <div class="equip-column">
+                    <div class="equip-slot" id="slot-hat">🧢<span>Голова</span></div>
+                    <div class="equip-slot" id="slot-jacket">🧥<span>Верх</span></div>
+                    <div class="equip-slot" id="slot-gloves">🧤<span>Руки</span></div>
+                </div>
+
+                <div class="character-doll">
+                    <img src="ПЕРС.png" alt="Персонаж" class="doll-layer" style="z-index: 1;">
+                    <!-- Слои экипировки сета «Воевода» -->
+                    <img id="layer-pants" class="doll-layer" style="z-index: 2; display: none;">
+                    <img id="layer-boots" class="doll-layer" style="z-index: 3; display: none;">
+                    <img id="layer-jacket" class="doll-layer" style="z-index: 4; display: none;">
+                    <img id="layer-armor" class="doll-layer" style="z-index: 5; display: none;">
+                    <img id="layer-gloves" class="doll-layer" style="z-index: 6; display: none;">
+                    <img id="layer-hat" class="doll-layer" style="z-index: 7; display: none;">
+                </div>
+
+                <div class="equip-column">
+                    <div class="equip-slot" id="slot-armor">🦺<span>Броня</span></div>
+                    <div class="equip-slot" id="slot-pants">👖<span>Низ</span></div>
+                    <div class="equip-slot" id="slot-boots">🥾<span>Обувь</span></div>
+                </div>
+            </div>
+
+            <div class="wardrobe-list" id="wardrobeList"></div>
+        </div>
+    </div>
+
+    <!-- Экран 3: Мини-игры -->
+    <div class="screen" id="screen-arcade">
+        <div class="quality-arcade-container">
+            <div class="arcade-banner">
+                <div class="arcade-info">
+                    <h3>🦖 Побег от Мертвецов</h3>
+                    <p>Прыгай через преграды! Множители до x20 + бонусные спички!</p>
+                </div>
+                <button class="play-arcade-btn" onclick="startDinoGame()">Играть</button>
+            </div>
+            <div class="arcade-banner">
+                <div class="arcade-info">
+                    <h3>🍎 Охота за Припасами</h3>
+                    <p>Руби провизию в плюс, не задень гранату!</p>
+                </div>
+                <button class="play-arcade-btn" onclick="startFruitNinja()">Играть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран 4: Прокачка (База) -->
+    <div class="screen" id="screen-shop">
+        <div class="shop-container">
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>📦 Расширить Схрон (+150 мест)</h4>
+                    <p id="storageLevelText">Вместимость: 100 🔥</p>
+                </div>
+                <button class="shop-btn" id="buyStorageBtn" onclick="buyUpgrade('storage')">300 🔥</button>
+            </div>
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>👊 Кастет / Заточка (+1 урон)</h4>
+                    <p id="clickLevelText">Урон с руки: 1</p>
+                </div>
+                <button class="shop-btn" id="buyClickBtn" onclick="buyUpgrade('click')">500 🔥</button>
+            </div>
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>🪤 Ловушки у забора (+50 🔥/час)</h4>
+                    <p id="passiveLevelText">Уровень: 0</p>
+                </div>
+                <button class="shop-btn" id="buyPassiveBtn" onclick="buyUpgrade('passive')">1500 🔥</button>
+            </div>
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>🔋 Выносливость (+50 ⚡)</h4>
+                    <p id="energyLevelText">Макс: 100</p>
+                </div>
+                <button class="shop-btn" id="buyEnergyBtn" onclick="buyUpgrade('energy')">1000 🔥</button>
+            </div>
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>🔫 Напарник на вышке (+1 🔥/сек)</h4>
+                    <p id="autoLevelText">Уровень: 0</p>
+                </div>
+                <button class="shop-btn" id="buyAutoBtn" onclick="buyUpgrade('auto')">3000 🔥</button>
+            </div>
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>🍖 Чифирь / Отдых (Реген ⚡)</h4>
+                    <p id="regenLevelText">Регенерация х1</p>
+                </div>
+                <button class="shop-btn" id="buyRegenBtn" onclick="buyUpgrade('regen')">2000 🔥</button>
+            </div>
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>🎯 Точный удар в голову (Крит)</h4>
+                    <p id="critLevelText">Шанс крита: 0%</p>
+                </div>
+                <button class="shop-btn" id="buyCritBtn" onclick="buyUpgrade('crit')">5000 🔥</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="energy-bar-wrap">
+            <div class="energy-fill" id="energyFill"></div>
+            <div class="energy-text" id="energyText">⚡ 100 / 100</div>
+        </div>
+        <button class="main-btn" onclick="saveAndExit()">
+            📥 Отправить спички в бота
+        </button>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let savedData = JSON.parse(localStorage.getItem('diamond_save') || '{}');
+
+        let sessionDiamonds = savedData.sessionDiamonds || 0;
+        let clickPower = savedData.clickPower || 1;
+        let maxEnergy = savedData.maxEnergy || 100;
+        let passiveRate = savedData.passiveRate || 0;
+        let autoClicker = savedData.autoClicker || 0;
+        let regenSpeed = savedData.regenSpeed || 1;
+        let critChance = savedData.critChance || 0;
+
+        let zombiesKilled = savedData.zombiesKilled || 0;
+        let zombieMaxHp = savedData.zombieMaxHp || getRandomInt(10, 15);
+        let zombieHp = savedData.zombieHp !== undefined ? savedData.zombieHp : zombieMaxHp;
+
+        let maxStorage = savedData.maxStorage || 100;
+        let storedDiamonds = savedData.storedDiamonds || 0;
+        let storageCost = savedData.storageCost || 300;
+
+        let clickCost = savedData.clickCost || 500;
+        let passiveCost = savedData.passiveCost || 1500;
+        let energyCost = savedData.energyCost || 1000;
+        let autoCost = savedData.autoCost || 3000;
+        let regenCost = savedData.regenCost || 2000;
+        let critCost = savedData.critCost || 5000;
+
+        let ownedItems = savedData.ownedItems || [];
+        let equippedItems = savedData.equippedItems || {};
+
+        // Каталог сета «Воевода» с привязанными файлами спрайтов
+        const clothingCatalog = [
+            { id: 'hat_voevoda', slot: 'hat', name: '🪖 Шлем «Воевода» (ЗШ)', desc: '+3% шанс крит. удара', cost: 400, bonusType: 'crit', bonusVal: 3, img: 'ЗШ.png' },
+            { id: 'armor_voevoda', slot: 'armor', name: '🦺 Бронежилет «Воевода»', desc: '+2 к урону по зомби', cost: 1000, bonusType: 'click', bonusVal: 2, img: 'Бронежилет.png' },
+            { id: 'gloves_voevoda', slot: 'gloves', name: '🧤 Тактические перчатки', desc: '+1 к урону по зомби', cost: 300, bonusType: 'click', bonusVal: 1, img: 'Перчатки.png' },
+            { id: 'pants_voevoda', slot: 'pants', name: '👖 Штаны «Воевода»', desc: '+50 к макс. энергии', cost: 500, bonusType: 'energy', bonusVal: 50, img: 'Штаны.png' },
+            { id: 'boots_voevoda', slot: 'boots', name: '🥾 Берцы «Воевода»', desc: '+1 к регену энергии', cost: 600, bonusType: 'regen', bonusVal: 1, img: 'Берцы.png' }
+        ];
+
+        let soundEnabled = savedData.soundEnabled !== undefined ? savedData.soundEnabled : true;
+        let currentTheme = savedData.theme || 'dark';
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        let lastExitTime = savedData.lastExitTime || Date.now();
+        let energy = savedData.energy !== undefined ? savedData.energy : 100;
+
+        let now = Date.now();
+        let secondsPassed = Math.floor((now - lastExitTime) / 1000);
+
+        if (secondsPassed > 0) {
+            let restoredEnergy = Math.floor(secondsPassed / 2) * regenSpeed;
+            energy = Math.min(maxEnergy, energy + restoredEnergy);
+
+            let totalOfflineEarned = 0;
+            if (passiveRate > 0) totalOfflineEarned += (secondsPassed / 3600) * passiveRate;
+            if (autoClicker > 0) totalOfflineEarned += secondsPassed * autoClicker;
+
+            if (totalOfflineEarned > 0) {
+                storedDiamonds = Math.min(maxStorage, storedDiamonds + totalOfflineEarned);
+            }
+        }
+
+        let activeScore = 0;
+        let gameInterval = null;
+        let hitTimeout = null;
+
+        function applySettingsUI() {
+            if (currentTheme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('themeToggleBtn').innerText = '☀️ Светлая';
+            } else {
+                document.body.classList.remove('light-theme');
+                document.getElementById('themeToggleBtn').innerText = '🌙 Тёмная';
+            }
+            document.getElementById('soundToggleBtn').innerText = soundEnabled ? '🔊 Вкл' : '🔇 Выкл';
+        }
+
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+            saveProgress();
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applySettingsUI();
+            saveProgress();
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            applySettingsUI();
+            saveProgress();
+            if (soundEnabled) playHitSound(false);
+        }
+
+        function initShopUI() {
+            document.getElementById('storageLevelText').innerText = `Вместимость: ${maxStorage} 🔥`;
+            document.getElementById('buyStorageBtn').innerText = `${storageCost} 🔥`;
+            document.getElementById('clickLevelText').innerText = `Урон с руки: ${clickPower}`;
+            document.getElementById('buyClickBtn').innerText = `${clickCost} 🔥`;
+            document.getElementById('passiveLevelText').innerText = `Уровень: ${passiveRate / 50}`;
+            document.getElementById('buyPassiveBtn').innerText = `${passiveCost} 🔥`;
+            document.getElementById('energyLevelText').innerText = `Макс: ${maxEnergy}`;
+            document.getElementById('buyEnergyBtn').innerText = `${energyCost} 🔥`;
+            document.getElementById('autoLevelText').innerText = `Уровень: ${autoClicker}`;
+            document.getElementById('buyAutoBtn').innerText = `${autoCost} 🔥`;
+            document.getElementById('regenLevelText').innerText = `Регенерация х${regenSpeed}`;
+            document.getElementById('buyRegenBtn').innerText = `${regenCost} 🔥`;
+            document.getElementById('critLevelText').innerText = `Шанс крита: ${critChance}%`;
+            document.getElementById('buyCritBtn').innerText = `${critCost} 🔥`;
+        }
+
+        function renderWardrobe() {
+            const list = document.getElementById('wardrobeList');
+            list.innerHTML = '';
+
+            ['hat', 'jacket', 'gloves', 'armor', 'pants', 'boots'].forEach(slot => {
+                const slotEl = document.getElementById(`slot-${slot}`);
+                if (equippedItems[slot]) {
+                    slotEl.classList.add('equipped');
+                } else {
+                    slotEl.classList.remove('equipped');
+                }
+            });
+
+            clothingCatalog.forEach(item => {
+                const isOwned = ownedItems.includes(item.id);
+                const isEquipped = equippedItems[item.slot] === item.id;
+
+                const card = document.createElement('div');
+                card.className = 'shop-card';
+                card.innerHTML = `
+                    <div class="shop-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.desc}</p>
+                    </div>
+                    <button class="shop-btn" style="background: ${isEquipped ? '#22c55e' : (isOwned ? '#38bdf8' : '#f97316')}">
+                        ${isEquipped ? 'Надето ✓' : (isOwned ? 'Надеть' : item.cost + ' 🔥')}
+                    </button>
+                `;
+                card.querySelector('button').onclick = () => handleWardrobeAction(item);
+                list.appendChild(card);
+            });
+        }
+
+        function handleWardrobeAction(item) {
+            if (!ownedItems.includes(item.id)) {
+                if (sessionDiamonds < item.cost) return failBuy();
+                sessionDiamonds -= item.cost;
+                ownedItems.push(item.id);
+
+                if (item.bonusType === 'click') clickPower += item.bonusVal;
+                if (item.bonusType === 'crit') critChance += item.bonusVal;
+                if (item.bonusType === 'regen') regenSpeed += item.bonusVal;
+                if (item.bonusType === 'energy') { maxEnergy += item.bonusVal; energy += item.bonusVal; }
+                if (item.bonusType === 'storage') maxStorage += item.bonusVal;
+
+                equippedItems[item.slot] = item.id;
+                playWinFanfare(false);
+            } else {
+                if (equippedItems[item.slot] === item.id) {
+                    delete equippedItems[item.slot];
+                } else {
+                    equippedItems[item.slot] = item.id;
+                }
+                playHitSound(false);
+            }
+
+            // Обновляем визуальный слой шмотки на кукле перса
+            const layerEl = document.getElementById(`layer-${item.slot}`);
+            if (layerEl) {
+                if (equippedItems[item.slot] === item.id && item.img) {
+                    layerEl.src = item.img;
+                    layerEl.style.display = 'block';
+                } else {
+                    layerEl.style.display = 'none';
+                }
+            }
+
+            initShopUI();
+            renderWardrobe();
+            updateUI();
+            saveProgress();
+        }
+
+        // При загрузке страницы восстанавливаем уже надетые шмотки визуально
+        function restoreEquippedLayers() {
+            Object.keys(equippedItems).forEach(slot => {
+                const itemId = equippedItems[slot];
+                const item = clothingCatalog.find(i => i.id === itemId);
+                if (item && item.img) {
+                    const layerEl = document.getElementById(`layer-${slot}`);
+                    if (layerEl) {
+                        layerEl.src = item.img;
+                        layerEl.style.display = 'block';
+                    }
+                }
+            });
+        }
+
+        function saveProgress() {
+            const data = {
+                sessionDiamonds, clickPower, energy, maxEnergy,
+                passiveRate, autoClicker, regenSpeed, critChance,
+                zombiesKilled, zombieMaxHp, zombieHp,
+                maxStorage, storedDiamonds, storageCost,
+                clickCost, passiveCost, energyCost, autoCost, regenCost, critCost,
+                ownedItems, equippedItems,
+                soundEnabled,
+                theme: currentTheme,
+                lastExitTime: Date.now()
+            };
+            localStorage.setItem('diamond_save', JSON.stringify(data));
+        }
+
+        window.addEventListener('beforeunload', () => saveProgress());
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') saveProgress();
+        });
+
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new AudioCtx();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playHitSound(isKill) {
+            if (!soundEnabled) return;
+            initAudio();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = isKill ? 'sawtooth' : 'triangle';
+            const startFreq = isKill ? 240 : (150 + Math.random() * 60);
+            osc.frequency.setValueAtTime(startFreq, now);
+            osc.frequency.exponentialRampToValueAtTime(45, now + (isKill ? 0.22 : 0.09));
+            gain.gain.setValueAtTime(0.4, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + (isKill ? 0.24 : 0.1));
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + (isKill ? 0.24 : 0.1));
+        }
+
+        function playWinFanfare(isBig) {
+            if (!soundEnabled) return;
+            initAudio();
+            const notes = isBig ? [523.25, 659.25, 783.99, 1046.50] : [440, 554.37, 659.25];
+            notes.forEach((freq, idx) => {
+                const now = audioCtx.currentTime + idx * 0.09;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            });
+        }
+
+        const zombieBtn = document.getElementById('zombieBtn');
+        const zombieNormalEl = document.getElementById('zombieNormal');
+        const zombieHitEl = document.getElementById('zombieHit');
+
+        zombieBtn.addEventListener('pointerdown', (e) => {
+            if (energy <= 0) {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                return;
+            }
+
+            let dmg = clickPower;
+            let isCrit = Math.random() * 100 < critChance;
+            if (isCrit) dmg *= 3;
+
+            energy = Math.max(0, energy - 1);
+            zombieHp -= dmg;
+
+            zombieNormalEl.style.display = 'none';
+            zombieHitEl.style.display = 'block';
+            zombieBtn.classList.add('pressed');
+
+            if (hitTimeout) clearTimeout(hitTimeout);
+            hitTimeout = setTimeout(() => {
+                zombieNormalEl.style.display = 'block';
+                zombieHitEl.style.display = 'none';
+                zombieBtn.classList.remove('pressed');
+            }, 140);
+
+            spawnShards(e.clientX, e.clientY);
+
+            if (zombieHp <= 0) {
+                let rewardMatches = getRandomInt(10, 100);
+                sessionDiamonds += rewardMatches;
+                zombiesKilled++;
+
+                zombieMaxHp = getRandomInt(10, 15);
+                zombieHp = zombieMaxHp;
+
+                playHitSound(true);
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+                zombieBtn.classList.remove('dead-anim');
+                void zombieBtn.offsetWidth;
+                zombieBtn.classList.add('dead-anim');
+
+                spawnFloatingNumber(e.clientX, e.clientY, `💀 УБИТ! +${rewardMatches} 🔥`, true);
+            } else {
+                playHitSound(false);
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+                spawnFloatingNumber(e.clientX, e.clientY, isCrit ? `💥 КРИТ -${dmg} HP` : `-${dmg} HP`, false);
+            }
+
+            updateUI();
+            saveProgress();
+        });
+
+        function collectFromStorage() {
+            let amountToCollect = Math.floor(storedDiamonds);
+            if (amountToCollect <= 0) {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                return;
+            }
+
+            storedDiamonds -= amountToCollect;
+            sessionDiamonds += amountToCollect;
+
+            playWinFanfare(false);
+            if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+            const btnRect = document.getElementById('collectStorageBtn').getBoundingClientRect();
+            spawnFloatingNumber(btnRect.left, btnRect.top, `+${amountToCollect} 🔥`, true);
+
+            updateUI();
+            saveProgress();
+        }
+
+        function spawnFloatingNumber(x, y, text, isLoot) {
+            const el = document.createElement('div');
+            el.className = isLoot ? 'floating-number loot' : 'floating-number';
+            el.innerText = text;
+            el.style.left = `${Math.max(20, Math.min(window.innerWidth - 140, x - 45))}px`;
+            el.style.top = `${y - 30}px`;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 750);
+        }
+
+        function spawnShards(x, y) {
+            for (let i = 0; i < 6; i++) {
+                const s = document.createElement('div');
+                s.className = 'shard';
+                s.style.left = `${x}px`;
+                s.style.top = `${y}px`;
+                s.style.background = i % 2 === 0 ? '#dc2626' : '#84cc16';
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 40 + Math.random() * 60;
+                s.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+                s.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+                s.style.setProperty('--rot', `${Math.random() * 360}deg`);
+                document.body.appendChild(s);
+                setTimeout(() => s.remove(), 550);
+            }
+        }
+
+        setInterval(() => {
+            let incomePerSec = autoClicker + (passiveRate / 3600);
+            if (incomePerSec > 0 && storedDiamonds < maxStorage) {
+                storedDiamonds = Math.min(maxStorage, storedDiamonds + incomePerSec);
+                updateUI();
+                saveProgress();
+            }
+        }, 1000);
+
+        setInterval(() => {
+            if (energy < maxEnergy) {
+                energy = Math.min(maxEnergy, energy + regenSpeed);
+                updateUI();
+                saveProgress();
+            }
+        }, 2000);
+
+        function getScoreMultiplier() {
+            if (activeScore >= 100000) return 20;
+            if (activeScore >= 50000) return 18;
+            if (activeScore >= 25000) return 15;
+            if (activeScore >= 10000) return 12;
+            if (activeScore >= 5000) return 10;
+            if (activeScore >= 2500) return 8;
+            if (activeScore >= 1200) return 6;
+            if (activeScore >= 600) return 5;
+            if (activeScore >= 300) return 4;
+            if (activeScore >= 100) return 2;
+            return 1;
+        }
+
+        function startFruitNinja() {
+            activeScore = 0;
+            document.getElementById('modalTitle').innerText = '🍎 Охота за Припасами';
+            document.getElementById('modalScore').innerText = `Очки: 0 (x1)`;
+            document.getElementById('gameModal').style.display = 'flex';
+
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.clientWidth - 20;
+            canvas.height = canvas.parentElement.clientHeight - 40;
+
+            let entities = [];
+            let spawnTimer = 0;
+
+            canvas.onpointerdown = (e) => {
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const clickY = e.clientY - rect.top;
+
+                for (let i = entities.length - 1; i >= 0; i--) {
+                    let ent = entities[i];
+                    if (Math.abs(clickX - (ent.x + 16)) < 35 && Math.abs(clickY - (ent.y + 16)) < 35) {
+                        if (ent.type === 'bomb') {
+                            clearInterval(gameInterval);
+                            alert(`💣 ВЗРЫВ! Вы задели гранату!\nНабрано очков: ${activeScore}`);
+                            endMiniGame();
+                            return;
+                        }
+                        let mult = getScoreMultiplier();
+                        activeScore += ent.points * mult;
+                        playHitSound(false);
+                        entities.splice(i, 1);
+                        break;
+                    }
+                }
+            };
+
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(() => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                spawnTimer++;
+                if (spawnTimer > 35) {
+                    spawnTimer = 0;
+                    let randType = Math.random();
+                    let entObj = {
+                        x: Math.random() * (canvas.width - 50) + 20,
+                        y: canvas.height + 20,
+                        vy: -(Math.random() * 3 + 10),
+                        vx: (Math.random() - 0.5) * 3,
+                        gravity: 0.38
+                    };
+                    if (randType < 0.2) { entObj.type = 'bomb'; entObj.emoji = '💣'; }
+                    else if (randType < 0.55) { entObj.type = 'fruit'; entObj.emoji = '🥫'; entObj.points = 20; }
+                    else if (randType < 0.8) { entObj.type = 'fruit'; entObj.emoji = '🍖'; entObj.points = 10; }
+                    else { entObj.type = 'fruit'; entObj.emoji = '🍞'; entObj.points = 5; }
+                    entities.push(entObj);
+                }
+
+                for (let i = entities.length - 1; i >= 0; i--) {
+                    let ent = entities[i];
+                    ent.vy += ent.gravity;
+                    ent.x += ent.vx;
+                    ent.y += ent.vy;
+                    ctx.font = '34px sans-serif';
+                    ctx.fillText(ent.emoji, ent.x, ent.y);
+
+                    if (ent.y > canvas.height + 40) {
+                        if (ent.type === 'fruit') {
+                            let mult = getScoreMultiplier();
+                            activeScore = Math.max(0, activeScore - ent.points * mult);
+                        }
+                        entities.splice(i, 1);
+                    }
+                }
+                document.getElementById('modalScore').innerText = `Очки: ${activeScore} (x${getScoreMultiplier()})`;
+            }, 30);
+        }
+
+        function startDinoGame() {
+            activeScore = 0;
+            document.getElementById('modalTitle').innerText = '🦖 Побег от Мертвецов';
+            document.getElementById('modalScore').innerText = `Очки: 0 (x1)`;
+            document.getElementById('gameModal').style.display = 'flex';
+
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.clientWidth - 20;
+            canvas.height = canvas.parentElement.clientHeight - 40;
+
+            let dino = { x: 30, y: canvas.height - 50, w: 26, h: 32, vy: 0, gravity: 0.65, jump: -10, grounded: true };
+            let obstacles = [];
+            let gameSpeed = 4.5;
+            let spawnTimer = 0;
+            let groundY = canvas.height - 20;
+
+            canvas.onpointerdown = (e) => {
+                e.preventDefault();
+                if (dino.grounded) {
+                    dino.vy = dino.jump;
+                    dino.grounded = false;
+                    playHitSound(false);
+                }
+            };
+
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(() => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = '#f97316';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(0, groundY);
+                ctx.lineTo(canvas.width, groundY);
+                ctx.stroke();
+
+                dino.vy += dino.gravity;
+                dino.y += dino.vy;
+                if (dino.y > groundY - dino.h) {
+                    dino.y = groundY - dino.h;
+                    dino.vy = 0;
+                    dino.grounded = true;
+                }
+
+                ctx.fillStyle = '#84cc16';
+                ctx.fillRect(dino.x, dino.y, dino.w, dino.h);
+
+                spawnTimer++;
+                if (spawnTimer > Math.max(45, 100 - gameSpeed * 4)) {
+                    spawnTimer = 0;
+                    obstacles.push({ x: canvas.width + 30, y: groundY - 25, w: 18, h: 25 });
+                }
+
+                for (let i = obstacles.length - 1; i >= 0; i--) {
+                    let obs = obstacles[i];
+                    obs.x -= gameSpeed;
+                    ctx.fillStyle = '#ef4444';
+                    ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+
+                    if (dino.x < obs.x + obs.w && dino.x + dino.w > obs.x && dino.y < obs.y + obs.h && dino.y + dino.h > obs.y) {
+                        clearInterval(gameInterval);
+                        alert(`💥 Столкновение! Набрано очков: ${activeScore}`);
+                        endMiniGame();
+                        return;
+                    }
+
+                    if (obs.x < -40) {
+                        obstacles.splice(i, 1);
+                        activeScore += 10 * getScoreMultiplier();
+                        document.getElementById('modalScore').innerText = `Очки: ${activeScore} (x${getScoreMultiplier()})`;
+                        gameSpeed += 0.12;
+                    }
+                }
+            }, 30);
+        }
+
+        function endMiniGame() {
+            if (gameInterval) clearInterval(gameInterval);
+            document.getElementById('gameModal').style.display = 'none';
+
+            let earnedMatches = Math.max(5, Math.floor(activeScore / 20));
+            sessionDiamonds += earnedMatches;
+            updateUI();
+            saveProgress();
+
+            playWinFanfare(earnedMatches >= 20);
+            alert(`🏁 Вылазка завершена!\nНабрано очков: ${activeScore}\nПолучено спичек: +${earnedMatches} 🔥`);
+        }
+
+        function buyUpgrade(type) {
+            if (type === 'storage') {
+                if (sessionDiamonds < storageCost) return failBuy();
+                sessionDiamonds -= storageCost;
+                maxStorage += 150;
+                storageCost = Math.floor(storageCost * 2.1);
+            } else if (type === 'click') {
+                if (sessionDiamonds < clickCost) return failBuy();
+                sessionDiamonds -= clickCost;
+                clickPower++;
+                clickCost = Math.floor(clickCost * 2.5);
+            } else if (type === 'passive') {
+                if (sessionDiamonds < passiveCost) return failBuy();
+                sessionDiamonds -= passiveCost;
+                passiveRate += 50;
+                passiveCost = Math.floor(passiveCost * 2.2);
+            } else if (type === 'energy') {
+                if (sessionDiamonds < energyCost) return failBuy();
+                sessionDiamonds -= energyCost;
+                maxEnergy += 50;
+                energy = Math.min(maxEnergy, energy + 50);
+                energyCost = Math.floor(energyCost * 2.2);
+            } else if (type === 'auto') {
+                if (sessionDiamonds < autoCost) return failBuy();
+                sessionDiamonds -= autoCost;
+                autoClicker++;
+                autoCost = Math.floor(autoCost * 2.3);
+            } else if (type === 'regen') {
+                if (sessionDiamonds < regenCost) return failBuy();
+                sessionDiamonds -= regenCost;
+                regenSpeed++;
+                regenCost = Math.floor(regenCost * 2.4);
+            } else if (type === 'crit') {
+                if (sessionDiamonds < critCost) return failBuy();
+                sessionDiamonds -= critCost;
+                critChance += 5;
+                critCost = Math.floor(critCost * 2.6);
+            }
+
+            initShopUI();
+            playWinFanfare(false);
+            updateUI();
+            saveProgress();
+        }
+
+        function failBuy() {
+            if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+        }
+
+        function updateUI() {
+            document.getElementById('scoreDisplay').innerText = `${sessionDiamonds} 🔥`;
+            document.getElementById('bynDisplay').innerText = `${(sessionDiamonds / 10000).toFixed(3)} BYN`;
+            document.getElementById('energyFill').style.width = `${(energy / maxEnergy) * 100}%`;
+            document.getElementById('energyText').innerText = `⚡ ${energy} / ${maxEnergy}`;
+
+            document.getElementById('killCountText').innerText = `💀 Убито: ${zombiesKilled}`;
+            document.getElementById('zombieHpFill').style.width = `${Math.max(0, (zombieHp / zombieMaxHp) * 100)}%`;
+            document.getElementById('zombieHpText').innerText = `❤️ ${zombieHp} / ${zombieMaxHp} HP`;
+
+            let displayStored = Math.floor(storedDiamonds);
+            let storagePercent = Math.min(100, (storedDiamonds / maxStorage) * 100);
+            let storageFillEl = document.getElementById('storageFill');
+            let storageTextEl = document.getElementById('storageText');
+            let collectBtnEl = document.getElementById('collectStorageBtn');
+
+            storageFillEl.style.width = `${storagePercent}%`;
+
+            if (displayStored >= maxStorage) {
+                storageFillEl.classList.add('full');
+                storageTextEl.innerText = `ПОЛНЫЙ! (${maxStorage}/${maxStorage} 🔥)`;
+                collectBtnEl.className = 'collect-storage-btn pulse';
+            } else {
+                storageFillEl.classList.remove('full');
+                storageTextEl.innerText = `${displayStored} / ${maxStorage} 🔥`;
+                collectBtnEl.className = displayStored > 0 ? 'collect-storage-btn' : 'collect-storage-btn disabled';
+            }
+
+            let rateText = '';
+            if (autoClicker > 0 && passiveRate > 0) rateText = `+${autoClicker}/с | +${passiveRate}/ч`;
+            else if (autoClicker > 0) rateText = `+${autoClicker} 🔥/сек`;
+            else if (passiveRate > 0) rateText = `+${passiveRate} 🔥/час`;
+            else rateText = `Нет авто-добычи`;
+            document.getElementById('storageRateInfo').innerText = rateText;
+        }
+
+        function switchTab(tab, btn) {
+            if (gameInterval) clearInterval(gameInterval);
+            document.getElementById('gameModal').style.display = 'none';
+
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('screen-tap').classList.toggle('active', tab === 'tap');
+            document.getElementById('screen-hero').classList.toggle('active', tab === 'hero');
+            document.getElementById('screen-arcade').classList.toggle('active', tab === 'arcade');
+            document.getElementById('screen-shop').classList.toggle('active', tab === 'shop');
+        }
+
+        function saveAndExit() {
+            playWinFanfare(true);
+            tg.sendData(JSON.stringify({
+                action: "webapp_sync",
+                earned_diamonds: sessionDiamonds
+            }));
+            sessionDiamonds = 0;
+            saveProgress();
+            updateUI();
+        }
+
+        applySettingsUI();
+        initShopUI();
+        renderWardrobe();
+        restoreEquippedLayers();
+        updateUI();
+    </script>
+</body>
+</html>
