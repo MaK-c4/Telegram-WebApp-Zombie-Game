@@ -1061,14 +1061,17 @@
         let critChance = savedData.critChance || 0;
 
         let zombiesKilled = savedData.zombiesKilled || 0;
-        let zombieMaxHp = savedData.zombieMaxHp || getRandomInt(10, 15);
-        let zombieHp = savedData.zombieHp !== undefined ? savedData.zombieHp : zombieMaxHp;
 
         // Система уровней и навыков
         let charLevel = savedData.charLevel || 1;
         let zombieKillsForCurrentLevel = savedData.zombieKillsForCurrentLevel || 0;
         let skillPoints = savedData.skillPoints || 0;
         let skills = savedData.skills || { crit: 0, dmg: 0, energy: 0 };
+
+        // Базовое ХП зомби зависит от уровня игрока (+10 HP за каждый уровень)
+        let baseZombieHp = 10 + (charLevel - 1) * 10;
+        let zombieMaxHp = savedData.zombieMaxHp || getRandomInt(baseZombieHp, baseZombieHp + 5);
+        let zombieHp = savedData.zombieHp !== undefined ? savedData.zombieHp : zombieMaxHp;
 
         let maxStorage = savedData.maxStorage || 100;
         let storedDiamonds = savedData.storedDiamonds || 0;
@@ -1421,7 +1424,7 @@
                 zombiesKilled++;
                 zombieKillsForCurrentLevel++;
 
-                // Проверка повышения уровня
+                // Проверка повышения уровня выжившего
                 let reqKills = getRequiredKillsForLevel(charLevel);
                 if (zombieKillsForCurrentLevel >= reqKills && charLevel < 1000) {
                     zombieKillsForCurrentLevel -= reqKills;
@@ -1430,7 +1433,10 @@
                     playWinFanfare(true);
                 }
 
-                zombieMaxHp = getRandomInt(10, 15);
+                // ХП зомби растет на 10 с каждым уровнем выжившего
+                let minHp = 10 + (charLevel - 1) * 10;
+                let maxHp = minHp + 5;
+                zombieMaxHp = getRandomInt(minHp, maxHp);
                 zombieHp = zombieMaxHp;
 
                 playHitSound(true);
