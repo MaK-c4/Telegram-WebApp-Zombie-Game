@@ -880,7 +880,7 @@
         </div>
     </div>
 
-    <!-- Экран 2: Персонаж по частям (Финальный порядок слоев) -->
+    <!-- Экран 2: Персонаж по частям (4 слота экипировки) -->
     <div class="screen" id="screen-hero">
         <div class="hero-container">
             <div class="hero-stage">
@@ -890,15 +890,15 @@
                     <div class="equip-slot" id="slot-gloves">🧤<span>Руки</span></div>
                 </div>
 
-                <!-- Контейнер персонажа с точной военной иерархией слоев -->
+                <!-- Контейнер персонажа -->
                 <div class="character-doll">
                     <!-- СЛОЙ 1: Ноги -->
                     <img src="НОГИ.png" alt="Ноги" class="doll-layer" style="z-index: 1;">
                     
-                    <!-- СЛОЙ 2: Обувь (Берцы - теперь ПОД штанами) -->
+                    <!-- СЛОЙ 2: Обувь (Берцы) -->
                     <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;">
 
-                    <!-- СЛОЙ 3: Штаны (поверх берцев) -->
+                    <!-- СЛОЙ 3: Штаны -->
                     <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;">
 
                     <!-- СЛОЙ 4: Тело -->
@@ -907,29 +907,27 @@
                     <!-- СЛОЙ 5: Верхняя часть правой руки -->
                     <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Верх правой руки" class="doll-layer" style="z-index: 5;">
 
-                    <!-- СЛОЙ 6: Левая рука (теперь ПОД бронежилетом) -->
+                    <!-- СЛОЙ 6: Левая рука (под броником) -->
                     <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer" style="z-index: 6;">
 
-                    <!-- СЛОЙ 7 & 8: Бронежилет и Верхняя одежда (поверх тела, плеча и левой руки) -->
+                    <!-- СЛОЙ 7: Верхняя одежда / Бронежилет (теперь в слоте jacket) -->
                     <img id="layer-jacket" class="doll-layer" style="z-index: 7; display: none;">
-                    <img id="layer-armor" class="doll-layer" style="z-index: 8; display: none;">
 
-                    <!-- СЛОЙ 9 & 10: Предплечье и Кисть правой руки (поверх бронежилета) -->
-                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье правой руки" class="doll-layer" style="z-index: 9;">
-                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть правой руки" class="doll-layer" style="z-index: 10;">
+                    <!-- СЛОЙ 8 & 9: Предплечье и Кисть правой руки (поверх бронежилета) -->
+                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье правой руки" class="doll-layer" style="z-index: 8;">
+                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть правой руки" class="doll-layer" style="z-index: 9;">
 
-                    <!-- СЛОЙ 11: Голова -->
-                    <img src="ГОЛОВА.png" alt="Голова" class="doll-layer" style="z-index: 11;">
+                    <!-- СЛОЙ 10: Голова -->
+                    <img src="ГОЛОВА.png" alt="Голова" class="doll-layer" style="z-index: 10;">
 
-                    <!-- СЛОЙ 12: Шлем -->
-                    <img id="layer-hat" class="doll-layer" style="z-index: 12; display: none;">
+                    <!-- СЛОЙ 11: Шлем -->
+                    <img id="layer-hat" class="doll-layer" style="z-index: 11; display: none;">
 
-                    <!-- СЛОЙ 13: Перчатки -->
-                    <img id="layer-gloves" class="doll-layer" style="z-index: 13; display: none;">
+                    <!-- СЛОЙ 12: Перчатки -->
+                    <img id="layer-gloves" class="doll-layer" style="z-index: 12; display: none;">
                 </div>
 
                 <div class="equip-column">
-                    <div class="equip-slot" id="slot-armor">🦺<span>Броня</span></div>
                     <div class="equip-slot" id="slot-pants">👖<span>Низ</span></div>
                     <div class="equip-slot" id="slot-boots">🥾<span>Обувь</span></div>
                 </div>
@@ -1056,9 +1054,10 @@
         let ownedItems = savedData.ownedItems || [];
         let equippedItems = savedData.equippedItems || {};
 
+        // Каталог одежды (бронежилет теперь переведен в слот 'jacket' / Верх)
         const clothingCatalog = [
             { id: 'hat_voevoda', slot: 'hat', name: '🪖 Шлем «Воевода» (ЗШ)', desc: '+3% шанс крит. удара', cost: 400, bonusType: 'crit', bonusVal: 3, img: 'ЗШ.png' },
-            { id: 'armor_voevoda', slot: 'armor', name: '🦺 Бронежилет «Воевода»', desc: '+2 к урону по зомби', cost: 1000, bonusType: 'click', bonusVal: 2, img: 'Бронежилет.png' },
+            { id: 'armor_voevoda', slot: 'jacket', name: '🦺 Бронежилет «Воевода»', desc: '+2 к урону по зомби', cost: 1000, bonusType: 'click', bonusVal: 2, img: 'Бронежилет.png' },
             { id: 'gloves_voevoda', slot: 'gloves', name: '🧤 Тактические перчатки', desc: '+1 к урону по зомби', cost: 300, bonusType: 'click', bonusVal: 1, img: 'Перчатки.png' },
             { id: 'pants_voevoda', slot: 'pants', name: '👖 Штаны «Воевода»', desc: '+50 к макс. энергии', cost: 500, bonusType: 'energy', bonusVal: 50, img: 'Штаны.png' },
             { id: 'boots_voevoda', slot: 'boots', name: '🥾 Берцы «Воевода»', desc: '+1 к регену энергии', cost: 600, bonusType: 'regen', bonusVal: 1, img: 'Берцы.png' }
@@ -1156,12 +1155,14 @@
             const list = document.getElementById('wardrobeList');
             list.innerHTML = '';
 
-            ['hat', 'jacket', 'gloves', 'armor', 'pants', 'boots'].forEach(slot => {
+            ['hat', 'jacket', 'gloves', 'pants', 'boots'].forEach(slot => {
                 const slotEl = document.getElementById(`slot-${slot}`);
-                if (equippedItems[slot]) {
-                    slotEl.classList.add('equipped');
-                } else {
-                    slotEl.classList.remove('equipped');
+                if (slotEl) {
+                    if (equippedItems[slot]) {
+                        slotEl.classList.add('equipped');
+                    } else {
+                        slotEl.classList.remove('equipped');
+                    }
                 }
             });
 
