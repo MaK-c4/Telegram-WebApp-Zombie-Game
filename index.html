@@ -124,7 +124,7 @@
 
         .tabs {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             margin-top: 8px;
             z-index: 10;
             width: 100%;
@@ -139,13 +139,14 @@
             color: var(--text-main);
             border: 3px solid #000;
             border-radius: 12px;
-            padding: 10px 6px;
+            padding: 9px 4px;
             font-weight: 900;
-            font-size: 12px;
+            font-size: 11px;
             box-shadow: 0 3px 0 #000;
             cursor: pointer;
             transition: transform 0.1s, background 0.2s, color 0.2s;
             white-space: nowrap;
+            text-align: center;
         }
 
         .tab-btn.active {
@@ -455,7 +456,7 @@
 
         .wardrobe-list {
             width: 100%;
-            max-height: 220px;
+            max-height: 200px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -655,7 +656,7 @@
             cursor: pointer;
         }
 
-        /* Прокачка */
+        /* Прокачка / Навыки */
         .shop-container {
             width: 100%;
             max-width: 420px;
@@ -781,6 +782,7 @@
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('tap', this)">🧟 Охота</button>
             <button class="tab-btn" onclick="switchTab('hero', this)">👤 Перс</button>
+            <button class="tab-btn" onclick="switchTab('skills', this)">📈 Навыки</button>
             <button class="tab-btn" onclick="switchTab('arcade', this)">🕹 Игры</button>
             <button class="tab-btn" onclick="switchTab('shop', this)">🚀 База</button>
         </div>
@@ -887,7 +889,7 @@
         </div>
     </div>
 
-    <!-- Экран 2: Персонаж по частям с рабочими слоями и HUD иконками на кнопках -->
+    <!-- Экран 2: Персонаж со слоями куклы и HUD-иконками -->
     <div class="screen" id="screen-hero">
         <div class="hero-container">
             <div class="hero-stage">
@@ -897,40 +899,19 @@
                     <div class="equip-slot" id="slot-gloves"><img src="HUD_РУКИ.png" alt="Руки"><span>Руки</span></div>
                 </div>
 
-                <!-- Контейнер персонажа (твоя рабочая иерархия слоев) -->
+                <!-- Контейнер персонажа -->
                 <div class="character-doll">
-                    <!-- СЛОЙ 1: Ноги -->
                     <img src="НОГИ.png" alt="Ноги" class="doll-layer" style="z-index: 1;">
-                    
-                    <!-- СЛОЙ 2: Обувь (Берцы) -->
                     <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;">
-
-                    <!-- СЛОЙ 3: Штаны -->
                     <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;">
-
-                    <!-- СЛОЙ 4: Тело -->
                     <img src="ТЕЛО.png" alt="Тело" class="doll-layer" style="z-index: 4;">
-
-                    <!-- СЛОЙ 5: Верхняя часть правой руки -->
                     <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Верх правой руки" class="doll-layer" style="z-index: 5;">
-
-                    <!-- СЛОЙ 6: Левая рука (под броником) -->
                     <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer" style="z-index: 6;">
-
-                    <!-- СЛОЙ 7: Верхняя одежда / Бронежилет -->
                     <img id="layer-jacket" class="doll-layer" style="z-index: 7; display: none;">
-
-                    <!-- СЛОЙ 8 & 9: Предплечье и Кисть правой руки -->
-                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье правой руки" class="doll-layer" style="z-index: 8;">
-                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть правой руки" class="doll-layer" style="z-index: 9;">
-
-                    <!-- СЛОЙ 10: Голова -->
+                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье" class="doll-layer" style="z-index: 8;">
+                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть" class="doll-layer" style="z-index: 9;">
                     <img src="ГОЛОВА.png" alt="Голова" class="doll-layer" style="z-index: 10;">
-
-                    <!-- СЛОЙ 11: Шлем -->
                     <img id="layer-hat" class="doll-layer" style="z-index: 11; display: none;">
-
-                    <!-- СЛОЙ 12: Перчатки -->
                     <img id="layer-gloves" class="doll-layer" style="z-index: 12; display: none;">
                 </div>
 
@@ -944,7 +925,43 @@
         </div>
     </div>
 
-    <!-- Экран 3: Мини-игры -->
+    <!-- Экран 3: Навыки и Уровни выжившего -->
+    <div class="screen" id="screen-skills">
+        <div class="shop-container">
+            <div style="background: var(--card-bg); border: 3.5px solid #000; border-radius: 14px; padding: 12px; margin-bottom: 8px; text-align: center; box-shadow: 0 3px 0 #000;">
+                <h3 style="font-size: 14px; font-weight: 900; color: #fb923c;">Уровень выжившего: <span id="charLevel">1</span> / 1000</h3>
+                <p style="font-size: 11px; color: var(--text-sub); margin-top: 4px;">Доступно очков навыков: <span id="skillPoints" style="color: #22c55e; font-weight: 900;">0</span></p>
+                <div class="hp-bar-wrap" style="margin-top: 8px; height: 18px;">
+                    <div class="hp-fill" id="levelProgressFill" style="background: linear-gradient(90deg, #38bdf8, #818cf8);"></div>
+                    <div class="hp-text" id="levelProgressText" style="font-size: 9px;">Зомби: 0 / 10</div>
+                </div>
+            </div>
+
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>🎯 Острый глаз (+3% шанс крита)</h4>
+                    <p id="skillCritText">Уровень: 0 / 10</p>
+                </div>
+                <button class="shop-btn" onclick="upgradeSkill('crit')">1 очко</button>
+            </div>
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>💪 Железный кулак (+1 урон с руки)</h4>
+                    <p id="skillDmgText">Уровень: 0 / 10</p>
+                </div>
+                <button class="shop-btn" onclick="upgradeSkill('dmg')">1 очко</button>
+            </div>
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>🏃 Марафонец (+20 макс. энергии)</h4>
+                    <p id="skillEnergyText">Уровень: 0 / 10</p>
+                </div>
+                <button class="shop-btn" onclick="upgradeSkill('energy')">1 очко</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран 4: Мини-игры -->
     <div class="screen" id="screen-arcade">
         <div class="quality-arcade-container">
             <div class="arcade-banner">
@@ -964,7 +981,7 @@
         </div>
     </div>
 
-    <!-- Экран 4: Прокачка (База) -->
+    <!-- Экран 5: Прокачка (База) -->
     <div class="screen" id="screen-shop">
         <div class="shop-container">
             <div class="shop-card">
@@ -1047,6 +1064,12 @@
         let zombieMaxHp = savedData.zombieMaxHp || getRandomInt(10, 15);
         let zombieHp = savedData.zombieHp !== undefined ? savedData.zombieHp : zombieMaxHp;
 
+        // Система уровней и навыков
+        let charLevel = savedData.charLevel || 1;
+        let zombieKillsForCurrentLevel = savedData.zombieKillsForCurrentLevel || 0;
+        let skillPoints = savedData.skillPoints || 0;
+        let skills = savedData.skills || { crit: 0, dmg: 0, energy: 0 };
+
         let maxStorage = savedData.maxStorage || 100;
         let storedDiamonds = savedData.storedDiamonds || 0;
         let storageCost = savedData.storageCost || 300;
@@ -1061,7 +1084,6 @@
         let ownedItems = savedData.ownedItems || [];
         let equippedItems = savedData.equippedItems || {};
 
-        // Каталог одежды (бронежилет в слоте 'jacket')
         const clothingCatalog = [
             { id: 'hat_voevoda', slot: 'hat', name: '🪖 Шлем «Воевода» (ЗШ)', desc: '+3% шанс крит. удара', cost: 400, bonusType: 'crit', bonusVal: 3, img: 'ЗШ.png' },
             { id: 'armor_voevoda', slot: 'jacket', name: '🦺 Бронежилет «Воевода»', desc: '+2 к урону по зомби', cost: 1000, bonusType: 'click', bonusVal: 2, img: 'Бронежилет.png' },
@@ -1156,6 +1178,57 @@
             document.getElementById('buyRegenBtn').innerText = `${regenCost} 🔥`;
             document.getElementById('critLevelText').innerText = `Шанс крита: ${critChance}%`;
             document.getElementById('buyCritBtn').innerText = `${critCost} 🔥`;
+
+            updateSkillsUI();
+        }
+
+        // Логика расчета требуемых убийств (10 зомби на 1ур, далее x2 каждый уровень до 1000)
+        function getRequiredKillsForLevel(lvl) {
+            if (lvl >= 1000) return 10 * Math.pow(2, 999);
+            return 10 * Math.pow(2, lvl - 1);
+        }
+
+        function updateSkillsUI() {
+            let reqKills = getRequiredKillsForLevel(charLevel);
+            let progress = Math.min(100, (zombieKillsForCurrentLevel / reqKills) * 100);
+
+            document.getElementById('charLevel').innerText = charLevel;
+            document.getElementById('skillPoints').innerText = skillPoints;
+            document.getElementById('levelProgressFill').style.width = `${progress}%`;
+            document.getElementById('levelProgressText').innerText = `Зомби: ${zombieKillsForCurrentLevel} / ${reqKills}`;
+
+            document.getElementById('skillCritText').innerText = `Уровень: ${skills.crit} / 10`;
+            document.getElementById('skillDmgText').innerText = `Уровень: ${skills.dmg} / 10`;
+            document.getElementById('skillEnergyText').innerText = `Уровень: ${skills.energy} / 10`;
+        }
+
+        function upgradeSkill(type) {
+            if (skillPoints <= 0) {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                return;
+            }
+
+            if (type === 'crit' && skills.crit < 10) {
+                skills.crit++;
+                skillPoints--;
+                critChance += 3;
+            } else if (type === 'dmg' && skills.dmg < 10) {
+                skills.dmg++;
+                skillPoints--;
+                clickPower += 1;
+            } else if (type === 'energy' && skills.energy < 10) {
+                skills.energy++;
+                skillPoints--;
+                maxEnergy += 20;
+                energy = maxEnergy;
+            } else {
+                return;
+            }
+
+            playWinFanfare(false);
+            initShopUI();
+            updateUI();
+            saveProgress();
         }
 
         function renderWardrobe() {
@@ -1251,6 +1324,7 @@
                 sessionDiamonds, clickPower, energy, maxEnergy,
                 passiveRate, autoClicker, regenSpeed, critChance,
                 zombiesKilled, zombieMaxHp, zombieHp,
+                charLevel, zombieKillsForCurrentLevel, skillPoints, skills,
                 maxStorage, storedDiamonds, storageCost,
                 clickCost, passiveCost, energyCost, autoCost, regenCost, critCost,
                 ownedItems, equippedItems,
@@ -1345,6 +1419,16 @@
                 let rewardMatches = getRandomInt(10, 100);
                 sessionDiamonds += rewardMatches;
                 zombiesKilled++;
+                zombieKillsForCurrentLevel++;
+
+                // Проверка повышения уровня
+                let reqKills = getRequiredKillsForLevel(charLevel);
+                if (zombieKillsForCurrentLevel >= reqKills && charLevel < 1000) {
+                    zombieKillsForCurrentLevel -= reqKills;
+                    charLevel++;
+                    skillPoints += 2; // +2 очка за каждый уровень
+                    playWinFanfare(true);
+                }
 
                 zombieMaxHp = getRandomInt(10, 15);
                 zombieHp = zombieMaxHp;
@@ -1696,6 +1780,8 @@
             else if (passiveRate > 0) rateText = `+${passiveRate} 🔥/час`;
             else rateText = `Нет авто-добычи`;
             document.getElementById('storageRateInfo').innerText = rateText;
+
+            updateSkillsUI();
         }
 
         function switchTab(tab, btn) {
@@ -1706,6 +1792,7 @@
             btn.classList.add('active');
             document.getElementById('screen-tap').classList.toggle('active', tab === 'tap');
             document.getElementById('screen-hero').classList.toggle('active', tab === 'hero');
+            document.getElementById('screen-skills').classList.toggle('active', tab === 'skills');
             document.getElementById('screen-arcade').classList.toggle('active', tab === 'arcade');
             document.getElementById('screen-shop').classList.toggle('active', tab === 'shop');
         }
