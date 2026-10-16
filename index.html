@@ -394,7 +394,7 @@
             overflow: hidden;
         }
 
-        /* Крупная кукла выжившего на весь экран */
+        /* Крупная кукла персонажа по центру */
         .character-doll-fs {
             position: relative;
             width: 280px;
@@ -469,6 +469,7 @@
             margin-top: 2px;
         }
 
+        /* Подсветка надетого слота */
         .equip-slot-fs.equipped {
             background: #f97316;
             color: #000;
@@ -970,7 +971,7 @@
                     <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Правая рука" class="doll-layer-fs" style="z-index: 5;">
                     <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer-fs" style="z-index: 6;">
                     <img id="layer-jacket" class="doll-layer-fs" style="z-index: 7; display: none;">
-                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье" class="doll-layer-fs" style="z-index: 8;">
+                    <img id="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье" class="doll-layer-fs" style="z-index: 8;">
                     <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть" class="doll-layer-fs" style="z-index: 9;">
                     <img src="ГОЛОВА.png" alt="Голова" class="doll-layer-fs" style="z-index: 10;">
                     <img id="layer-hat" class="doll-layer-fs" style="z-index: 11; display: none;">
@@ -1297,7 +1298,6 @@
             saveProgress();
         }
 
-        // Открытие модалки слота экипировки
         function openSlotModal(slotName, slotTitle) {
             document.getElementById('slotModalTitle').innerText = `Слот: ${slotTitle}`;
             const listEl = document.getElementById('slotModalList');
@@ -1325,13 +1325,12 @@
                     `;
                     card.querySelector('button').onclick = () => {
                         handleWardrobeAction(item);
-                        openSlotModal(slotName, slotTitle); // Обновить модалку
+                        openSlotModal(slotName, slotTitle);
                     };
                     listEl.appendChild(card);
                 });
             }
 
-            // Опция снять предмет, если он надет
             if (equippedItems[slotName]) {
                 const unequipCard = document.createElement('div');
                 unequipCard.className = 'shop-card';
