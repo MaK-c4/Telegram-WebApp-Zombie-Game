@@ -880,7 +880,7 @@
         </div>
     </div>
 
-    <!-- Экран 2: Персонаж по частям (исправленный порядок слоев) -->
+    <!-- Экран 2: Персонаж по частям (Финальный порядок слоев) -->
     <div class="screen" id="screen-hero">
         <div class="hero-container">
             <div class="hero-stage">
@@ -890,41 +890,41 @@
                     <div class="equip-slot" id="slot-gloves">🧤<span>Руки</span></div>
                 </div>
 
-                <!-- Контейнер персонажа с точным расположением броника под предплечьем и кистью -->
+                <!-- Контейнер персонажа с точной военной иерархией слоев -->
                 <div class="character-doll">
                     <!-- СЛОЙ 1: Ноги -->
                     <img src="НОГИ.png" alt="Ноги" class="doll-layer" style="z-index: 1;">
                     
-                    <!-- СЛОЙ 2: Штаны -->
-                    <img id="layer-pants" class="doll-layer" style="z-index: 2; display: none;">
+                    <!-- СЛОЙ 2: Обувь (Берцы - теперь ПОД штанами) -->
+                    <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;">
 
-                    <!-- СЛОЙ 3: Обувь (Берцы) -->
-                    <img id="layer-boots" class="doll-layer" style="z-index: 3; display: none;">
+                    <!-- СЛОЙ 3: Штаны (поверх берцев) -->
+                    <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;">
 
                     <!-- СЛОЙ 4: Тело -->
                     <img src="ТЕЛО.png" alt="Тело" class="doll-layer" style="z-index: 4;">
 
-                    <!-- СЛОЙ 5: Верхняя часть правой руки (плечо под броней) -->
+                    <!-- СЛОЙ 5: Верхняя часть правой руки -->
                     <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Верх правой руки" class="doll-layer" style="z-index: 5;">
 
-                    <!-- СЛОЙ 6: БРОНИК / Верхняя одежда (поверх тела и плеча, но под предплечьем) -->
-                    <img id="layer-jacket" class="doll-layer" style="z-index: 6; display: none;">
-                    <img id="layer-armor" class="doll-layer" style="z-index: 7; display: none;">
+                    <!-- СЛОЙ 6: Левая рука (теперь ПОД бронежилетом) -->
+                    <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer" style="z-index: 6;">
 
-                    <!-- СЛОЙ 8: Предплечье и Кисть правой руки (поверх брони) -->
-                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье правой руки" class="doll-layer" style="z-index: 8;">
-                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть правой руки" class="doll-layer" style="z-index: 9;">
+                    <!-- СЛОЙ 7 & 8: Бронежилет и Верхняя одежда (поверх тела, плеча и левой руки) -->
+                    <img id="layer-jacket" class="doll-layer" style="z-index: 7; display: none;">
+                    <img id="layer-armor" class="doll-layer" style="z-index: 8; display: none;">
 
-                    <!-- СЛОЙ 9: Левая рука -->
-                    <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer" style="z-index: 10;">
+                    <!-- СЛОЙ 9 & 10: Предплечье и Кисть правой руки (поверх бронежилета) -->
+                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье правой руки" class="doll-layer" style="z-index: 9;">
+                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть правой руки" class="doll-layer" style="z-index: 10;">
 
-                    <!-- СЛОЙ 10: Голова -->
+                    <!-- СЛОЙ 11: Голова -->
                     <img src="ГОЛОВА.png" alt="Голова" class="doll-layer" style="z-index: 11;">
 
-                    <!-- СЛОЙ 11: Шлем -->
+                    <!-- СЛОЙ 12: Шлем -->
                     <img id="layer-hat" class="doll-layer" style="z-index: 12; display: none;">
 
-                    <!-- СЛОЙ 12: Перчатки -->
+                    <!-- СЛОЙ 13: Перчатки -->
                     <img id="layer-gloves" class="doll-layer" style="z-index: 13; display: none;">
                 </div>
 
