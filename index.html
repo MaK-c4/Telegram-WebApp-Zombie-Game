@@ -409,6 +409,13 @@
             font-size: 18px;
             box-shadow: 0 3px 0 #000;
             position: relative;
+            overflow: hidden;
+        }
+
+        .equip-slot img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
         }
 
         .equip-slot.equipped {
@@ -417,10 +424,10 @@
         }
 
         .equip-slot span {
-            font-size: 8px;
+            font-size: 7px;
             font-weight: 900;
             text-transform: uppercase;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         /* Кукла персонажа со слоями */
@@ -880,20 +887,20 @@
         </div>
     </div>
 
-    <!-- Экран 2: Персонаж по частям (4 слота экипировки) -->
+    <!-- Экран 2: Персонаж со слоями куклы и HUD-иконками -->
     <div class="screen" id="screen-hero">
         <div class="hero-container">
             <div class="hero-stage">
                 <div class="equip-column">
-                    <div class="equip-slot" id="slot-hat">🧢<span>Голова</span></div>
-                    <div class="equip-slot" id="slot-jacket">🧥<span>Верх</span></div>
-                    <div class="equip-slot" id="slot-gloves">🧤<span>Руки</span></div>
+                    <div class="equip-slot" id="slot-hat"><img src="HUD_ГОЛОВА.png" alt="Голова"><span>Голова</span></div>
+                    <div class="equip-slot" id="slot-jacket"><img src="HUD_ВЕРХ.png" alt="Верх"><span>Верх</span></div>
+                    <div class="equip-slot" id="slot-gloves"><img src="HUD_РУКИ.png" alt="Руки"><span>Руки</span></div>
                 </div>
 
                 <!-- Контейнер персонажа -->
                 <div class="character-doll">
                     <!-- СЛОЙ 1: Ноги -->
-                    <img src="НОГИ.png" alt="Ноги" class="doll-layer" style="z-index: 1;">
+                    <img src="НОГИ_3.png" alt="Ноги" class="doll-layer" style="z-index: 1;">
                     
                     <!-- СЛОЙ 2: Обувь (Берцы) -->
                     <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;">
@@ -901,35 +908,25 @@
                     <!-- СЛОЙ 3: Штаны -->
                     <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;">
 
-                    <!-- СЛОЙ 4: Тело -->
-                    <img src="ТЕЛО.png" alt="Тело" class="doll-layer" style="z-index: 4;">
+                    <!-- СЛОЙ 4: База ВЕРХ -->
+                    <img src="ВЕРХ_3.png" alt="Верх" class="doll-layer" style="z-index: 4;">
 
-                    <!-- СЛОЙ 5: Верхняя часть правой руки -->
-                    <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Верх правой руки" class="doll-layer" style="z-index: 5;">
+                    <!-- СЛОЙ 5: Бронежилет -->
+                    <img id="layer-jacket" class="doll-layer" style="z-index: 5; display: none;">
 
-                    <!-- СЛОЙ 6: Левая рука (под броником) -->
-                    <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer" style="z-index: 6;">
+                    <!-- СЛОЙ 6: Кисти РУК -->
+                    <img src="РУКИ_3.png" alt="Руки" class="doll-layer" style="z-index: 6;">
 
-                    <!-- СЛОЙ 7: Верхняя одежда / Бронежилет (теперь в слоте jacket) -->
-                    <img id="layer-jacket" class="doll-layer" style="z-index: 7; display: none;">
+                    <!-- СЛОЙ 7: Шлем -->
+                    <img id="layer-hat" class="doll-layer" style="z-index: 7; display: none;">
 
-                    <!-- СЛОЙ 8 & 9: Предплечье и Кисть правой руки (поверх бронежилета) -->
-                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье правой руки" class="doll-layer" style="z-index: 8;">
-                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть правой руки" class="doll-layer" style="z-index: 9;">
-
-                    <!-- СЛОЙ 10: Голова -->
-                    <img src="ГОЛОВА.png" alt="Голова" class="doll-layer" style="z-index: 10;">
-
-                    <!-- СЛОЙ 11: Шлем -->
-                    <img id="layer-hat" class="doll-layer" style="z-index: 11; display: none;">
-
-                    <!-- СЛОЙ 12: Перчатки -->
-                    <img id="layer-gloves" class="doll-layer" style="z-index: 12; display: none;">
+                    <!-- СЛОЙ 8: Перчатки -->
+                    <img id="layer-gloves" class="doll-layer" style="z-index: 8; display: none;">
                 </div>
 
                 <div class="equip-column">
-                    <div class="equip-slot" id="slot-pants">👖<span>Низ</span></div>
-                    <div class="equip-slot" id="slot-boots">🥾<span>Обувь</span></div>
+                    <div class="equip-slot" id="slot-pants"><img src="HUD_НИЗ.png" alt="Низ"><span>Низ</span></div>
+                    <div class="equip-slot" id="slot-boots"><img src="HUD_ОБУВЬ.png" alt="Обувь"><span>Обувь</span></div>
                 </div>
             </div>
 
@@ -1054,7 +1051,7 @@
         let ownedItems = savedData.ownedItems || [];
         let equippedItems = savedData.equippedItems || {};
 
-        // Каталог одежды (бронежилет теперь переведен в слот 'jacket' / Верх)
+        // Каталог одежды
         const clothingCatalog = [
             { id: 'hat_voevoda', slot: 'hat', name: '🪖 Шлем «Воевода» (ЗШ)', desc: '+3% шанс крит. удара', cost: 400, bonusType: 'crit', bonusVal: 3, img: 'ЗШ.png' },
             { id: 'armor_voevoda', slot: 'jacket', name: '🦺 Бронежилет «Воевода»', desc: '+2 к урону по зомби', cost: 1000, bonusType: 'click', bonusVal: 2, img: 'Бронежилет.png' },
