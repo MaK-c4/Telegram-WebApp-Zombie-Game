@@ -469,6 +469,7 @@
             margin-top: 2px;
         }
 
+        /* Подсветка надетого слота */
         .equip-slot-fs.equipped {
             background: #f97316;
             color: #000;
@@ -508,34 +509,6 @@
             overflow-y: auto;
             max-height: 50vh;
             padding-right: 4px;
-        }
-
-        /* Карточка предмета с иконкой в модалке */
-        .item-card-row {
-            background: var(--tab-bg);
-            border: 3px solid #000;
-            border-radius: 12px;
-            padding: 10px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 3px 0 #000;
-        }
-
-        .item-card-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .item-card-icon {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
-            background: #000;
-            border: 2px solid #000;
-            border-radius: 8px;
-            padding: 2px;
         }
 
         /* Всплывающий текст и частицы */
@@ -999,7 +972,7 @@
                     <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer-fs" style="z-index: 6;">
                     <img id="layer-jacket" class="doll-layer-fs" style="z-index: 7; display: none;">
                     <img id="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье" class="doll-layer-fs" style="z-index: 8;">
-                    <img id="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть" class="doll-layer-fs" style="z-index: 9;">
+                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть" class="doll-layer-fs" style="z-index: 9;">
                     <img src="ГОЛОВА.png" alt="Голова" class="doll-layer-fs" style="z-index: 10;">
                     <img id="layer-hat" class="doll-layer-fs" style="z-index: 11; display: none;">
                     <img id="layer-gloves" class="doll-layer-fs" style="z-index: 12; display: none;">
@@ -1340,14 +1313,11 @@
                     const isEquipped = equippedItems[slotName] === item.id;
 
                     const card = document.createElement('div');
-                    card.className = 'item-card-row';
+                    card.className = 'shop-card';
                     card.innerHTML = `
-                        <div class="item-card-left">
-                            <img src="${item.img}" class="item-card-icon" alt="${item.name}">
-                            <div class="shop-info" style="text-align: left;">
-                                <h4>${item.name}</h4>
-                                <p>${item.desc}</p>
-                            </div>
+                        <div class="shop-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.desc}</p>
                         </div>
                         <button class="shop-btn" style="background: ${isEquipped ? '#22c55e' : (isOwned ? '#38bdf8' : '#f97316')}">
                             ${isEquipped ? 'Надето ✓' : (isOwned ? 'Надеть' : item.cost + ' 🔥')}
@@ -1363,14 +1333,11 @@
 
             if (equippedItems[slotName]) {
                 const unequipCard = document.createElement('div');
-                unequipCard.className = 'item-card-row';
+                unequipCard.className = 'shop-card';
                 unequipCard.innerHTML = `
-                    <div class="item-card-left">
-                        <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 8px; font-size: 16px;">❌</div>
-                        <div class="shop-info" style="text-align: left;">
-                            <h4>Снять снаряжение</h4>
-                            <p>Освободить слот</p>
-                        </div>
+                    <div class="shop-info">
+                        <h4>Снять снаряжение</h4>
+                        <p>Освободить слот</p>
                     </div>
                     <button class="shop-btn" style="background: #ef4444; color: #fff;">Снять</button>
                 `;
