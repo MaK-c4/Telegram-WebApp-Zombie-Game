@@ -894,30 +894,30 @@
         <div class="hero-container">
             <div class="hero-stage">
                 <div class="equip-column">
-                    <div class="equip-slot" id="slot-hat"><img src="HUD_ГОЛОВА.png" alt="Голова"><span>Голова</span></div>
-                    <div class="equip-slot" id="slot-jacket"><img src="HUD_ВЕРХ.png" alt="Верх"><span>Верх</span></div>
-                    <div class="equip-slot" id="slot-gloves"><img src="HUD_РУКИ.png" alt="Руки"><span>Руки</span></div>
+                    <div class="equip-slot" id="slot-hat"><img src="hud_head.png" alt="Голова" onerror="this.style.display='none'"><span>Голова</span></div>
+                    <div class="equip-slot" id="slot-jacket"><img src="hud_jacket.png" alt="Верх" onerror="this.style.display='none'"><span>Верх</span></div>
+                    <div class="equip-slot" id="slot-gloves"><img src="hud_gloves.png" alt="Руки" onerror="this.style.display='none'"><span>Руки</span></div>
                 </div>
 
                 <!-- Контейнер персонажа -->
                 <div class="character-doll">
-                    <img src="НОГИ.png" alt="Ноги" class="doll-layer" style="z-index: 1;">
-                    <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;">
-                    <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;">
-                    <img src="ТЕЛО.png" alt="Тело" class="doll-layer" style="z-index: 4;">
-                    <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Верх правой руки" class="doll-layer" style="z-index: 5;">
-                    <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer" style="z-index: 6;">
-                    <img id="layer-jacket" class="doll-layer" style="z-index: 7; display: none;">
-                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье" class="doll-layer" style="z-index: 8;">
-                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть" class="doll-layer" style="z-index: 9;">
-                    <img src="ГОЛОВА.png" alt="Голова" class="doll-layer" style="z-index: 10;">
-                    <img id="layer-hat" class="doll-layer" style="z-index: 11; display: none;">
-                    <img id="layer-gloves" class="doll-layer" style="z-index: 12; display: none;">
+                    <img src="legs.png" alt="Ноги" class="doll-layer" style="z-index: 1;" onerror="this.style.display='none'">
+                    <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;" onerror="this.style.display='none'">
+                    <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;" onerror="this.style.display='none'">
+                    <img src="body.png" alt="Тело" class="doll-layer" style="z-index: 4;" onerror="this.style.display='none'">
+                    <img src="upper_right_arm.png" alt="Верх правой руки" class="doll-layer" style="z-index: 5;" onerror="this.style.display='none'">
+                    <img src="left_arm.png" alt="Левая рука" class="doll-layer" style="z-index: 6;" onerror="this.style.display='none'">
+                    <img id="layer-jacket" class="doll-layer" style="z-index: 7; display: none;" onerror="this.style.display='none'">
+                    <img src="forearm_right.png" alt="Предплечье" class="doll-layer" style="z-index: 8;" onerror="this.style.display='none'">
+                    <img src="hand_right.png" alt="Кисть" class="doll-layer" style="z-index: 9;" onerror="this.style.display='none'">
+                    <img src="head.png" alt="Голова" class="doll-layer" style="z-index: 10;" onerror="this.style.display='none'">
+                    <img id="layer-hat" class="doll-layer" style="z-index: 11; display: none;" onerror="this.style.display='none'">
+                    <img id="layer-gloves" class="doll-layer" style="z-index: 12; display: none;" onerror="this.style.display='none'">
                 </div>
 
                 <div class="equip-column">
-                    <div class="equip-slot" id="slot-pants"><img src="HUD_НИЗ.png" alt="Низ"><span>Низ</span></div>
-                    <div class="equip-slot" id="slot-boots"><img src="HUD_ОБУВЬ.png" alt="Обувь"><span>Обувь</span></div>
+                    <div class="equip-slot" id="slot-pants"><img src="hud_pants.png" alt="Низ" onerror="this.style.display='none'"><span>Низ</span></div>
+                    <div class="equip-slot" id="slot-boots"><img src="hud_boots.png" alt="Обувь" onerror="this.style.display='none'"><span>Обувь</span></div>
                 </div>
             </div>
 
@@ -1088,11 +1088,11 @@
         let equippedItems = savedData.equippedItems || {};
 
         const clothingCatalog = [
-            { id: 'hat_voevoda', slot: 'hat', name: '🪖 Шлем «Воевода» (ЗШ)', desc: '+3% шанс крит. удара', cost: 400, bonusType: 'crit', bonusVal: 3, img: 'ЗШ.png' },
-            { id: 'armor_voevoda', slot: 'jacket', name: '🦺 Бронежилет «Воевода»', desc: '+2 к урону по зомби', cost: 1000, bonusType: 'click', bonusVal: 2, img: 'Бронежилет.png' },
-            { id: 'gloves_voevoda', slot: 'gloves', name: '🧤 Тактические перчатки', desc: '+1 к урону по зомби', cost: 300, bonusType: 'click', bonusVal: 1, img: 'Перчатки.png' },
-            { id: 'pants_voevoda', slot: 'pants', name: '👖 Штаны «Воевода»', desc: '+50 к макс. энергии', cost: 500, bonusType: 'energy', bonusVal: 50, img: 'Штаны.png' },
-            { id: 'boots_voevoda', slot: 'boots', name: '🥾 Берцы «Воевода»', desc: '+1 к регену энергии', cost: 600, bonusType: 'regen', bonusVal: 1, img: 'Берцы.png' }
+            { id: 'hat_voevoda', slot: 'hat', name: '🪖 Шлем «Воевода» (ЗШ)', desc: '+3% шанс крит. удара', cost: 400, bonusType: 'crit', bonusVal: 3, img: 'item_hat.png' },
+            { id: 'armor_voevoda', slot: 'jacket', name: '🦺 Бронежилет «Воевода»', desc: '+2 к урону по зомби', cost: 1000, bonusType: 'click', bonusVal: 2, img: 'item_armor.png' },
+            { id: 'gloves_voevoda', slot: 'gloves', name: '🧤 Тактические перчатки', desc: '+1 к урону по зомби', cost: 300, bonusType: 'click', bonusVal: 1, img: 'item_gloves.png' },
+            { id: 'pants_voevoda', slot: 'pants', name: '👖 Штаны «Воевода»', desc: '+50 к макс. энергии', cost: 500, bonusType: 'energy', bonusVal: 50, img: 'item_pants.png' },
+            { id: 'boots_voevoda', slot: 'boots', name: '🥾 Берцы «Воевода»', desc: '+1 к регену энергии', cost: 600, bonusType: 'regen', bonusVal: 1, img: 'item_boots.png' }
         ];
 
         let soundEnabled = savedData.soundEnabled !== undefined ? savedData.soundEnabled : true;
