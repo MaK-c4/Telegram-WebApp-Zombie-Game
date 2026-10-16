@@ -369,83 +369,47 @@
             100% { transform: scale(1.05); }
         }
 
-        /* Экран Персонажа и Гардероба */
+        /* ПОЛНОЭКРАННЫЙ ЭКРАН ПЕРСОНАЖА */
         .hero-container {
             width: 100%;
-            max-width: 440px;
+            height: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            position: relative;
+            padding: 10px 0;
         }
 
-        .hero-stage {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .hero-stage-fullscreen {
+            position: relative;
             width: 100%;
+            height: 100%;
             background: var(--card-bg);
-            border: 3.5px solid #000;
-            border-radius: 18px;
-            padding: 12px;
-            box-shadow: 0 4px 0 #000;
-        }
-
-        .equip-column {
+            border: 4px solid #000;
+            border-radius: 20px;
+            box-shadow: 0 6px 0 #000;
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .equip-slot {
-            width: 52px;
-            height: 52px;
-            background: var(--tab-bg);
-            border: 3px solid #000;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            box-shadow: 0 3px 0 #000;
-            position: relative;
             overflow: hidden;
         }
 
-        .equip-slot img {
-            width: 26px;
-            height: 26px;
-            object-fit: contain;
-        }
-
-        .equip-slot.equipped {
-            background: #f97316;
-            color: #000;
-        }
-
-        .equip-slot span {
-            font-size: 7px;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-top: 1px;
-        }
-
-        /* Кукла персонажа со слоями */
-        .character-doll {
+        /* Крупная кукла выжившего на весь экран */
+        .character-doll-fs {
             position: relative;
-            width: 210px;
-            height: 210px;
+            width: 280px;
+            height: 280px;
             background: #000;
-            border: 3.5px solid #000;
-            border-radius: 14px;
+            border: 4px solid #000;
+            border-radius: 16px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
 
-        .doll-layer {
+        .doll-layer-fs {
             position: absolute;
             inset: 0;
             width: 100%;
@@ -454,13 +418,95 @@
             pointer-events: none;
         }
 
-        .wardrobe-list {
-            width: 100%;
-            max-height: 200px;
-            overflow-y: auto;
+        /* Панели слотов слева и справа от персонажа */
+        .equip-panel-side {
+            position: absolute;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 12px;
+            z-index: 5;
+        }
+
+        .equip-panel-left {
+            left: 14px;
+        }
+
+        .equip-panel-right {
+            right: 14px;
+        }
+
+        .equip-slot-fs {
+            width: 58px;
+            height: 58px;
+            background: var(--tab-bg);
+            border: 3.5px solid #000;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 0 #000;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.1s;
+        }
+
+        .equip-slot-fs:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #000;
+        }
+
+        .equip-slot-fs img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .equip-slot-fs span {
+            font-size: 8px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .equip-slot-fs.equipped {
+            background: #f97316;
+            color: #000;
+        }
+
+        /* Модальное окно выбора предметов для слота */
+        #slotModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .slot-modal-content {
+            background: var(--card-bg);
+            border: 4px solid #000;
+            border-radius: 20px;
+            padding: 18px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 6px 0 #000;
+        }
+
+        .slot-modal-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            max-height: 50vh;
             padding-right: 4px;
         }
 
@@ -804,6 +850,15 @@
         </div>
     </div>
 
+    <!-- Модальное окно выбора предметов для слота -->
+    <div id="slotModal">
+        <div class="slot-modal-content">
+            <div class="modal-title" id="slotModalTitle">Слот</div>
+            <div class="slot-modal-list" id="slotModalList"></div>
+            <button class="close-modal" onclick="closeSlotModal()" style="padding: 10px; font-size: 13px;">Закрыть</button>
+        </div>
+    </div>
+
     <!-- Полноэкранное модальное окно мини-игры -->
     <div id="gameModal">
         <div class="modal-content">
@@ -889,39 +944,49 @@
         </div>
     </div>
 
-    <!-- Экран 2: Персонаж со слоями куклы и HUD-иконками -->
+    <!-- Экран 2: Персонаж на весь экран с боковыми кнопками-слотами -->
     <div class="screen" id="screen-hero">
         <div class="hero-container">
-            <div class="hero-stage">
-                <div class="equip-column">
-                    <div class="equip-slot" id="slot-hat"><img src="HUD_ГОЛОВА.png" alt="Голова"><span>Голова</span></div>
-                    <div class="equip-slot" id="slot-jacket"><img src="HUD_ВЕРХ.png" alt="Верх"><span>Верх</span></div>
-                    <div class="equip-slot" id="slot-gloves"><img src="HUD_РУКИ.png" alt="Руки"><span>Руки</span></div>
+            <div class="hero-stage-fullscreen">
+                <!-- Левая панель слотов (Голова, Верх, Руки) -->
+                <div class="equip-panel-side equip-panel-left">
+                    <div class="equip-slot-fs" id="slot-hat" onclick="openSlotModal('hat', 'Голова')">
+                        <img src="HUD_ГОЛОВА.png" alt="Голова"><span>Голова</span>
+                    </div>
+                    <div class="equip-slot-fs" id="slot-jacket" onclick="openSlotModal('jacket', 'Верх')">
+                        <img src="HUD_ВЕРХ.png" alt="Верх"><span>Верх</span>
+                    </div>
+                    <div class="equip-slot-fs" id="slot-gloves" onclick="openSlotModal('gloves', 'Руки')">
+                        <img src="HUD_РУКИ.png" alt="Руки"><span>Руки</span>
+                    </div>
                 </div>
 
-                <!-- Контейнер персонажа -->
-                <div class="character-doll">
-                    <img src="НОГИ.png" alt="Ноги" class="doll-layer" style="z-index: 1;">
-                    <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;">
-                    <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;">
-                    <img src="ТЕЛО.png" alt="Тело" class="doll-layer" style="z-index: 4;">
-                    <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Верх правой руки" class="doll-layer" style="z-index: 5;">
-                    <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer" style="z-index: 6;">
-                    <img id="layer-jacket" class="doll-layer" style="z-index: 7; display: none;">
-                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье" class="doll-layer" style="z-index: 8;">
-                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть" class="doll-layer" style="z-index: 9;">
-                    <img src="ГОЛОВА.png" alt="Голова" class="doll-layer" style="z-index: 10;">
-                    <img id="layer-hat" class="doll-layer" style="z-index: 11; display: none;">
-                    <img id="layer-gloves" class="doll-layer" style="z-index: 12; display: none;">
+                <!-- Крупная кукла персонажа по центру -->
+                <div class="character-doll-fs">
+                    <img src="НОГИ.png" alt="Ноги" class="doll-layer-fs" style="z-index: 1;">
+                    <img id="layer-boots" class="doll-layer-fs" style="z-index: 2; display: none;">
+                    <img id="layer-pants" class="doll-layer-fs" style="z-index: 3; display: none;">
+                    <img src="ТЕЛО.png" alt="Тело" class="doll-layer-fs" style="z-index: 4;">
+                    <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Правая рука" class="doll-layer-fs" style="z-index: 5;">
+                    <img src="ЛЕВАЯ РУКА.png" alt="Левая рука" class="doll-layer-fs" style="z-index: 6;">
+                    <img id="layer-jacket" class="doll-layer-fs" style="z-index: 7; display: none;">
+                    <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье" class="doll-layer-fs" style="z-index: 8;">
+                    <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть" class="doll-layer-fs" style="z-index: 9;">
+                    <img src="ГОЛОВА.png" alt="Голова" class="doll-layer-fs" style="z-index: 10;">
+                    <img id="layer-hat" class="doll-layer-fs" style="z-index: 11; display: none;">
+                    <img id="layer-gloves" class="doll-layer-fs" style="z-index: 12; display: none;">
                 </div>
 
-                <div class="equip-column">
-                    <div class="equip-slot" id="slot-pants"><img src="HUD_НИЗ.png" alt="Низ"><span>Низ</span></div>
-                    <div class="equip-slot" id="slot-boots"><img src="HUD_ОБУВЬ.png" alt="Обувь"><span>Обувь</span></div>
+                <!-- Правая панель слотов (Низ, Обувь) -->
+                <div class="equip-panel-side equip-panel-right">
+                    <div class="equip-slot-fs" id="slot-pants" onclick="openSlotModal('pants', 'Низ')">
+                        <img src="HUD_НИЗ.png" alt="Низ"><span>Низ</span>
+                    </div>
+                    <div class="equip-slot-fs" id="slot-boots" onclick="openSlotModal('boots', 'Обувь')">
+                        <img src="HUD_ОБУВЬ.png" alt="Обувь"><span>Обувь</span>
+                    </div>
                 </div>
             </div>
-
-            <div class="wardrobe-list" id="wardrobeList"></div>
         </div>
     </div>
 
@@ -1062,13 +1127,11 @@
 
         let zombiesKilled = savedData.zombiesKilled || 0;
 
-        // Система уровней и навыков
         let charLevel = savedData.charLevel || 1;
         let zombieKillsForCurrentLevel = savedData.zombieKillsForCurrentLevel || 0;
         let skillPoints = savedData.skillPoints || 0;
         let skills = savedData.skills || { crit: 0, dmg: 0, energy: 0 };
 
-        // Базовое ХП зомби зависит от уровня игрока (+10 HP за каждый уровень)
         let baseZombieHp = 10 + (charLevel - 1) * 10;
         let zombieMaxHp = savedData.zombieMaxHp || getRandomInt(baseZombieHp, baseZombieHp + 5);
         let zombieHp = savedData.zombieHp !== undefined ? savedData.zombieHp : zombieMaxHp;
@@ -1183,9 +1246,9 @@
             document.getElementById('buyCritBtn').innerText = `${critCost} 🔥`;
 
             updateSkillsUI();
+            updateSlotsUI();
         }
 
-        // Логика расчета требуемых убийств (10 зомби на 1ур, далее x2 каждый уровень до 1000)
         function getRequiredKillsForLevel(lvl) {
             if (lvl >= 1000) return 10 * Math.pow(2, 999);
             return 10 * Math.pow(2, lvl - 1);
@@ -1234,10 +1297,70 @@
             saveProgress();
         }
 
-        function renderWardrobe() {
-            const list = document.getElementById('wardrobeList');
-            list.innerHTML = '';
+        // Открытие модалки слота экипировки
+        function openSlotModal(slotName, slotTitle) {
+            document.getElementById('slotModalTitle').innerText = `Слот: ${slotTitle}`;
+            const listEl = document.getElementById('slotModalList');
+            listEl.innerHTML = '';
 
+            const slotItems = clothingCatalog.filter(i => i.slot === slotName);
+
+            if (slotItems.length === 0) {
+                listEl.innerHTML = `<p style="text-align:center; color:var(--text-sub); font-size:12px; font-weight:700; padding:10px;">В этом слоте пока нет предметов.</p>`;
+            } else {
+                slotItems.forEach(item => {
+                    const isOwned = ownedItems.includes(item.id);
+                    const isEquipped = equippedItems[slotName] === item.id;
+
+                    const card = document.createElement('div');
+                    card.className = 'shop-card';
+                    card.innerHTML = `
+                        <div class="shop-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.desc}</p>
+                        </div>
+                        <button class="shop-btn" style="background: ${isEquipped ? '#22c55e' : (isOwned ? '#38bdf8' : '#f97316')}">
+                            ${isEquipped ? 'Надето ✓' : (isOwned ? 'Надеть' : item.cost + ' 🔥')}
+                        </button>
+                    `;
+                    card.querySelector('button').onclick = () => {
+                        handleWardrobeAction(item);
+                        openSlotModal(slotName, slotTitle); // Обновить модалку
+                    };
+                    listEl.appendChild(card);
+                });
+            }
+
+            // Опция снять предмет, если он надет
+            if (equippedItems[slotName]) {
+                const unequipCard = document.createElement('div');
+                unequipCard.className = 'shop-card';
+                unequipCard.innerHTML = `
+                    <div class="shop-info">
+                        <h4>Снять снаряжение</h4>
+                        <p>Освободить слот</p>
+                    </div>
+                    <button class="shop-btn" style="background: #ef4444; color: #fff;">Снять</button>
+                `;
+                unequipCard.querySelector('button').onclick = () => {
+                    delete equippedItems[slotName];
+                    const layerEl = document.getElementById(`layer-${slotName}`);
+                    if (layerEl) layerEl.style.display = 'none';
+                    initShopUI();
+                    saveProgress();
+                    openSlotModal(slotName, slotTitle);
+                };
+                listEl.appendChild(unequipCard);
+            }
+
+            document.getElementById('slotModal').style.display = 'flex';
+        }
+
+        function closeSlotModal() {
+            document.getElementById('slotModal').style.display = 'none';
+        }
+
+        function updateSlotsUI() {
             ['hat', 'jacket', 'gloves', 'pants', 'boots'].forEach(slot => {
                 const slotEl = document.getElementById(`slot-${slot}`);
                 if (slotEl) {
@@ -1247,25 +1370,6 @@
                         slotEl.classList.remove('equipped');
                     }
                 }
-            });
-
-            clothingCatalog.forEach(item => {
-                const isOwned = ownedItems.includes(item.id);
-                const isEquipped = equippedItems[item.slot] === item.id;
-
-                const card = document.createElement('div');
-                card.className = 'shop-card';
-                card.innerHTML = `
-                    <div class="shop-info">
-                        <h4>${item.name}</h4>
-                        <p>${item.desc}</p>
-                    </div>
-                    <button class="shop-btn" style="background: ${isEquipped ? '#22c55e' : (isOwned ? '#38bdf8' : '#f97316')}">
-                        ${isEquipped ? 'Надето ✓' : (isOwned ? 'Надеть' : item.cost + ' 🔥')}
-                    </button>
-                `;
-                card.querySelector('button').onclick = () => handleWardrobeAction(item);
-                list.appendChild(card);
             });
         }
 
@@ -1303,7 +1407,6 @@
             }
 
             initShopUI();
-            renderWardrobe();
             updateUI();
             saveProgress();
         }
@@ -1424,16 +1527,14 @@
                 zombiesKilled++;
                 zombieKillsForCurrentLevel++;
 
-                // Проверка повышения уровня выжившего
                 let reqKills = getRequiredKillsForLevel(charLevel);
                 if (zombieKillsForCurrentLevel >= reqKills && charLevel < 1000) {
                     zombieKillsForCurrentLevel -= reqKills;
                     charLevel++;
-                    skillPoints += 2; // +2 очка за каждый уровень
+                    skillPoints += 2;
                     playWinFanfare(true);
                 }
 
-                // ХП зомби растет на 10 с каждым уровнем выжившего
                 let minHp = 10 + (charLevel - 1) * 10;
                 let maxHp = minHp + 5;
                 zombieMaxHp = getRandomInt(minHp, maxHp);
@@ -1788,6 +1889,7 @@
             document.getElementById('storageRateInfo').innerText = rateText;
 
             updateSkillsUI();
+            updateSlotsUI();
         }
 
         function switchTab(tab, btn) {
