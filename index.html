@@ -174,7 +174,6 @@
             display: flex;
         }
 
-        /* Тестовая кнопка накрутки */
         .test-cheat-btn {
             background: #38bdf8;
             color: #000;
@@ -424,7 +423,7 @@
             margin-top: 2px;
         }
 
-        /* Кукла персонажа по частям */
+        /* Кукла персонажа со слоями */
         .character-doll {
             position: relative;
             width: 210px;
@@ -812,7 +811,6 @@
 
     <!-- Экран 1: Охота на Зомби -->
     <div class="screen active" id="screen-tap">
-        <!-- Тестовая кнопка накрутки спичек -->
         <button class="test-cheat-btn" onclick="addTestMatches()">⚡ Тест: +10,000 спичек</button>
 
         <div class="zombie-status-box">
@@ -882,7 +880,7 @@
         </div>
     </div>
 
-    <!-- Экран 2: Персонаж по частям со слоями экипировки -->
+    <!-- Экран 2: Персонаж по частям (исправленный порядок слоев) -->
     <div class="screen" id="screen-hero">
         <div class="hero-container">
             <div class="hero-stage">
@@ -892,7 +890,7 @@
                     <div class="equip-slot" id="slot-gloves">🧤<span>Руки</span></div>
                 </div>
 
-                <!-- Контейнер персонажа по частям со строгим z-index -->
+                <!-- Контейнер персонажа с точным расположением броника под предплечьем и кистью -->
                 <div class="character-doll">
                     <!-- СЛОЙ 1: Ноги -->
                     <img src="НОГИ.png" alt="Ноги" class="doll-layer" style="z-index: 1;">
@@ -906,12 +904,14 @@
                     <!-- СЛОЙ 4: Тело -->
                     <img src="ТЕЛО.png" alt="Тело" class="doll-layer" style="z-index: 4;">
 
-                    <!-- СЛОЙ 5: Броня / Верхняя одежда -->
-                    <img id="layer-jacket" class="doll-layer" style="z-index: 5; display: none;">
-                    <img id="layer-armor" class="doll-layer" style="z-index: 6; display: none;">
+                    <!-- СЛОЙ 5: Верхняя часть правой руки (плечо под броней) -->
+                    <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Верх правой руки" class="doll-layer" style="z-index: 5;">
 
-                    <!-- СЛОЙ 6, 7, 8: Правая рука по частям -->
-                    <img src="ВВЕРХ ПРАВАЯ РУКА.png" alt="Верх правой руки" class="doll-layer" style="z-index: 7;">
+                    <!-- СЛОЙ 6: БРОНИК / Верхняя одежда (поверх тела и плеча, но под предплечьем) -->
+                    <img id="layer-jacket" class="doll-layer" style="z-index: 6; display: none;">
+                    <img id="layer-armor" class="doll-layer" style="z-index: 7; display: none;">
+
+                    <!-- СЛОЙ 8: Предплечье и Кисть правой руки (поверх брони) -->
                     <img src="ПРЕДПЛЕЧЬЕ ПРАВОЙ РУКИ.png" alt="Предплечье правой руки" class="doll-layer" style="z-index: 8;">
                     <img src="КИСТЬ ПРАВОЙ РУКИ.png" alt="Кисть правой руки" class="doll-layer" style="z-index: 9;">
 
@@ -1094,7 +1094,6 @@
         let gameInterval = null;
         let hitTimeout = null;
 
-        // Тестовая кнопка накрутки спичек
         function addTestMatches() {
             sessionDiamonds += 10000;
             playWinFanfare(false);
