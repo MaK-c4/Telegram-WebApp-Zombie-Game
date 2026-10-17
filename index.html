@@ -46,7 +46,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 10px;
+            padding: 8px;
             transition: background 0.2s, color 0.2s;
         }
 
@@ -54,7 +54,7 @@
             background: var(--card-bg);
             border: 3.5px solid #000000;
             border-radius: 14px;
-            padding: 8px 12px;
+            padding: 6px 10px;
             box-shadow: 0 4px 0 #000000;
             display: flex;
             justify-content: space-between;
@@ -65,41 +65,42 @@
             margin: 0 auto;
         }
 
-        .balance-box {
+        .currencies-grid {
             display: flex;
-            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .balance-label {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-sub);
-            font-weight: 800;
-        }
-
-        .balance-val {
-            font-size: 20px;
+        .currency-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
             font-weight: 900;
-            color: #fb923c;
-            text-shadow: 2px 2px 0 #000;
+            font-size: 13px;
+        }
+
+        .currency-item img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
         }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .byn-badge {
             background: #10b981;
             color: #000;
             font-weight: 900;
-            padding: 5px 10px;
+            padding: 4px 8px;
             border-radius: 8px;
-            border: 2.5px solid #000;
+            border: 2px solid #000;
             box-shadow: 0 2px 0 #000;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .settings-btn {
@@ -107,12 +108,12 @@
             color: var(--text-main);
             border: 2.5px solid #000;
             border-radius: 8px;
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 15px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
         }
@@ -120,8 +121,8 @@
         .tabs {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 4px;
-            margin-top: 6px;
+            gap: 3px;
+            margin-top: 5px;
             z-index: 10;
             width: 100%;
             max-width: 600px;
@@ -132,14 +133,13 @@
         .tab-btn {
             background: var(--tab-bg);
             color: var(--text-main);
-            border: 2.5px solid #000;
-            border-radius: 10px;
-            padding: 7px 2px;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 6px 1px;
             font-weight: 900;
-            font-size: 10px;
+            font-size: 9px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
-            transition: transform 0.1s, background 0.2s;
             white-space: nowrap;
             text-align: center;
         }
@@ -147,11 +147,6 @@
         .tab-btn.active {
             background: #f97316;
             color: #000;
-        }
-
-        .tab-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 0px 0 #000;
         }
 
         .screen {
@@ -163,7 +158,7 @@
             position: relative;
             width: 100%;
             max-width: 600px;
-            margin: 6px auto;
+            margin: 4px auto;
             overflow: hidden;
         }
 
@@ -176,38 +171,37 @@
             color: #000;
             border: 2px solid #000;
             border-radius: 8px;
-            padding: 4px 10px;
+            padding: 4px 8px;
             font-weight: 900;
-            font-size: 10px;
+            font-size: 9px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             text-transform: uppercase;
         }
 
-        /* Полоска ХП */
         .zombie-status-box {
             width: 100%;
             max-width: 400px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
 
         .zombie-info-row {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 900;
             text-shadow: 1px 1px 0 #000;
         }
 
         .hp-bar-wrap {
             background: var(--energy-bg);
-            border: 3px solid #000;
-            border-radius: 10px;
-            height: 24px;
+            border: 2.5px solid #000;
+            border-radius: 8px;
+            height: 22px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 2px 0 #000;
@@ -228,21 +222,20 @@
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 11px;
+            font-size: 10px;
             color: #fff;
-            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            text-shadow: 1px 1px 0 #000;
         }
 
-        /* Зомби / Босс */
         .zombie-wrapper {
             position: relative;
-            width: 185px;
-            height: 185px;
+            width: 170px;
+            height: 170px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform 0.05s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.05s;
         }
 
         .zombie-wrapper.pressed {
@@ -250,16 +243,15 @@
         }
 
         .zombie-svg {
-            width: 180px;
-            height: 180px;
-            filter: drop-shadow(0 6px 0 #000000);
+            width: 160px;
+            height: 160px;
+            filter: drop-shadow(0 5px 0 #000000);
         }
 
-        /* Панель одноразового оружия в бою */
         .weapons-quick-bar {
             display: flex;
-            gap: 6px;
-            margin-top: 8px;
+            gap: 4px;
+            margin-top: 6px;
             flex-wrap: wrap;
             justify-content: center;
             max-width: 400px;
@@ -268,49 +260,40 @@
         .weapon-use-btn {
             background: #dc2626;
             color: #fff;
-            border: 2.5px solid #000;
-            border-radius: 8px;
-            padding: 5px 8px;
-            font-size: 10px;
+            border: 2px solid #000;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-size: 9px;
             font-weight: 900;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        .weapon-use-btn:active {
-            transform: translateY(2px);
-            box-shadow: none;
-        }
-
-        /* Блок Схрона */
         .storage-widget {
             background: var(--card-bg);
-            border: 3px solid #000;
-            border-radius: 12px;
-            padding: 8px 12px;
+            border: 2.5px solid #000;
+            border-radius: 10px;
+            padding: 6px 10px;
             width: 100%;
             max-width: 400px;
             box-shadow: 0 3px 0 #000;
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 8px;
+            gap: 8px;
+            margin-top: 6px;
         }
 
         .storage-left {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
 
         .storage-header-line {
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 900;
             color: var(--text-sub);
         }
@@ -318,8 +301,8 @@
         .storage-bar-wrap {
             background: var(--energy-bg);
             border: 2px solid #000;
-            border-radius: 6px;
-            height: 18px;
+            border-radius: 5px;
+            height: 16px;
             position: relative;
             overflow: hidden;
         }
@@ -328,7 +311,6 @@
             background: linear-gradient(90deg, #f97316, #facc15);
             height: 100%;
             width: 0%;
-            border-right: 2px solid #000;
         }
 
         .storage-text {
@@ -338,7 +320,7 @@
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 10px;
+            font-size: 9px;
             color: #fff;
             text-shadow: 1px 1px 0 #000;
         }
@@ -346,23 +328,22 @@
         .collect-storage-btn {
             background: #f97316;
             color: #000;
-            border: 2.5px solid #000;
-            border-radius: 8px;
-            padding: 8px 12px;
+            border: 2px solid #000;
+            border-radius: 6px;
+            padding: 6px 10px;
             font-weight: 900;
-            font-size: 11px;
+            font-size: 10px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
         }
 
-        /* ЭКРАН ПЕРСОНАЖА НА ВЕСЬ ЭКРАН */
+        /* Полноэкранный персонаж */
         .hero-fullscreen-wrap {
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 8px;
         }
 
         .hero-stage-full {
@@ -370,8 +351,8 @@
             flex: 1;
             width: 100%;
             background: #0c0a09;
-            border: 4px solid #000;
-            border-radius: 18px;
+            border: 3.5px solid #000;
+            border-radius: 14px;
             overflow: hidden;
             display: flex;
             align-items: center;
@@ -403,29 +384,29 @@
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             z-index: 25;
         }
 
-        .equip-overlay-left { left: 10px; }
-        .equip-overlay-right { right: 10px; }
+        .equip-overlay-left { left: 8px; }
+        .equip-overlay-right { right: 8px; }
 
         .equip-slot {
-            width: 50px;
-            height: 50px;
-            background: rgba(41, 37, 36, 0.88);
-            border: 3px solid #000;
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            background: rgba(41, 37, 36, 0.9);
+            border: 2.5px solid #000;
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 0 #000;
+            box-shadow: 0 2px 0 #000;
         }
 
         .equip-slot img {
-            width: 26px;
-            height: 26px;
+            width: 22px;
+            height: 22px;
             object-fit: contain;
         }
 
@@ -435,128 +416,127 @@
         }
 
         .equip-slot span {
-            font-size: 7px;
+            font-size: 6px;
             font-weight: 900;
             text-transform: uppercase;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         .wardrobe-drawer-btn {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            bottom: 8px;
+            right: 8px;
             z-index: 30;
             background: #f97316;
             color: #000;
-            border: 3px solid #000;
-            border-radius: 10px;
-            padding: 8px 12px;
+            border: 2.5px solid #000;
+            border-radius: 8px;
+            padding: 6px 10px;
             font-weight: 900;
-            font-size: 11px;
-            box-shadow: 0 3px 0 #000;
+            font-size: 10px;
+            box-shadow: 0 2px 0 #000;
             cursor: pointer;
         }
 
-        /* Списки магазинов и боссов */
         .shop-container {
             width: 100%;
             height: 100%;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding-right: 4px;
+            gap: 6px;
+            padding-right: 2px;
         }
 
         .shop-card {
             background: var(--card-bg);
-            border: 3px solid #000;
-            border-radius: 14px;
-            padding: 10px 12px;
+            border: 2.5px solid #000;
+            border-radius: 12px;
+            padding: 8px 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 3px 0 #000;
+            box-shadow: 0 2px 0 #000;
         }
 
         .shop-info h4 {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 900;
             color: var(--text-main);
         }
 
         .shop-info p {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-sub);
             font-weight: 700;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         .shop-btn {
             background: #f97316;
             color: #000;
-            border: 2.5px solid #000;
-            border-radius: 10px;
-            padding: 7px 12px;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 6px 10px;
             font-weight: 900;
-            font-size: 11px;
+            font-size: 10px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
             white-space: nowrap;
         }
 
-        .lucky-box-card {
+        .box-banner {
             background: linear-gradient(135deg, #7c2d12, #431407);
-            border: 3.5px solid #000;
-            border-radius: 16px;
-            padding: 14px;
+            border: 3px solid #000;
+            border-radius: 14px;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 0 #000;
+            box-shadow: 0 3px 0 #000;
+            margin-bottom: 6px;
         }
 
         .boss-timer-badge {
             background: #dc2626;
             color: #fff;
-            border: 2.5px solid #000;
-            border-radius: 8px;
-            padding: 4px 10px;
+            border: 2px solid #000;
+            border-radius: 6px;
+            padding: 3px 8px;
             font-weight: 900;
-            font-size: 12px;
+            font-size: 11px;
             box-shadow: 0 2px 0 #000;
         }
 
-        /* Всплывающий текст и частицы */
         .floating-number {
             position: fixed;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 900;
             color: #ef4444;
             -webkit-text-stroke: 1.5px #000;
-            text-shadow: 0 3px 0 #000;
+            text-shadow: 0 2px 0 #000;
             pointer-events: none;
             z-index: 2000;
             animation: floatUp 0.75s ease-out forwards;
         }
 
         .floating-number.loot {
-            font-size: 28px;
+            font-size: 26px;
             color: #facc15;
         }
 
         @keyframes floatUp {
             0% { opacity: 1; transform: translateY(0) scale(0.8); }
-            40% { transform: translateY(-35px) scale(1.1); }
-            100% { opacity: 0; transform: translateY(-75px) scale(0.9); }
+            40% { transform: translateY(-30px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-65px) scale(0.9); }
         }
 
         .shard {
             position: fixed;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: #84cc16;
-            border: 2px solid #000;
+            border: 1.5px solid #000;
             pointer-events: none;
             z-index: 1999;
             animation: shardFly 0.5s ease-out forwards;
@@ -567,7 +547,6 @@
             100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3); }
         }
 
-        /* Модальные окна */
         #settingsModal, #wardrobeModal {
             display: none;
             position: fixed;
@@ -577,26 +556,26 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 12px;
         }
 
         .settings-card {
             background: var(--card-bg);
-            border: 4px solid #000;
-            border-radius: 20px;
-            padding: 18px;
+            border: 3.5px solid #000;
+            border-radius: 16px;
+            padding: 14px;
             width: 100%;
-            max-width: 380px;
+            max-width: 360px;
             max-height: 80vh;
-            box-shadow: 0 6px 0 #000;
+            box-shadow: 0 5px 0 #000;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             text-align: center;
         }
 
         .modal-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 900;
             color: #f97316;
             text-shadow: 2px 2px 0 #000;
@@ -607,20 +586,20 @@
             justify-content: space-between;
             align-items: center;
             background: var(--tab-bg);
-            border: 3px solid #000;
-            border-radius: 12px;
-            padding: 10px 14px;
+            border: 2.5px solid #000;
+            border-radius: 10px;
+            padding: 8px 12px;
         }
 
         .close-modal {
             background: #ef4444;
             color: #fff;
-            border: 3px solid #000;
-            border-radius: 12px;
-            padding: 10px;
+            border: 2.5px solid #000;
+            border-radius: 10px;
+            padding: 8px;
             font-weight: 900;
-            font-size: 13px;
-            box-shadow: 0 3px 0 #000;
+            font-size: 12px;
+            box-shadow: 0 2px 0 #000;
             cursor: pointer;
             width: 100%;
             text-transform: uppercase;
@@ -629,7 +608,7 @@
         .footer {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
             z-index: 10;
             width: 100%;
             max-width: 600px;
@@ -638,12 +617,14 @@
 
         .energy-bar-wrap {
             background: var(--energy-bg);
-            border: 3px solid #000;
-            border-radius: 12px;
-            height: 24px;
+            border: 2.5px solid #000;
+            border-radius: 10px;
+            height: 22px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 2px 0 #000;
+            display: flex;
+            align-items: center;
         }
 
         .energy-fill {
@@ -654,28 +635,34 @@
             transition: width 0.2s;
         }
 
-        .energy-text {
+        .energy-text-custom {
             position: absolute;
             inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 11px;
+            font-size: 10px;
             color: #fff;
             text-shadow: 1px 1px 0 #000;
+            gap: 4px;
+        }
+
+        .energy-text-custom img {
+            width: 14px;
+            height: 14px;
         }
 
         .main-btn {
             background: #22c55e;
             color: #000;
-            border: 3px solid #000;
-            border-radius: 14px;
-            padding: 10px;
-            font-size: 13px;
+            border: 2.5px solid #000;
+            border-radius: 12px;
+            padding: 8px;
+            font-size: 12px;
             font-weight: 900;
             text-transform: uppercase;
-            box-shadow: 0 3px 0 #000;
+            box-shadow: 0 2.5px 0 #000;
             cursor: pointer;
             width: 100%;
         }
@@ -685,9 +672,23 @@
 
     <div>
         <div class="header">
-            <div class="balance-box">
-                <span class="balance-label">Спички (Сессия)</span>
-                <span class="balance-val" id="scoreDisplay">0 🔥</span>
+            <div class="currencies-grid">
+                <div class="currency-item" title="Спички">
+                    <img src="спички_3.png" alt="Спички" onerror="this.style.display='none'">
+                    <span id="scoreDisplay">0 🔥</span>
+                </div>
+                <div class="currency-item" title="Мыло" style="color: #a8a29e;">
+                    <img src="хоз мыло_2.png" alt="Мыло" onerror="this.style.display='none'">
+                    <span id="soapDisplay">0</span>
+                </div>
+                <div class="currency-item" title="Тушенка" style="color: #ef4444;">
+                    <img src="тушняк_3.png" alt="Тушенка" onerror="this.style.display='none'">
+                    <span id="tushonkaDisplay">0</span>
+                </div>
+                <div class="currency-item" title="Авторитет" style="color: #facc15;">
+                    <img src="авторитет_3.png" alt="Авторитет" onerror="this.style.display='none'">
+                    <span id="authorityDisplay">0</span>
+                </div>
             </div>
             <div class="header-right">
                 <div class="byn-badge" id="bynDisplay">0.000 BYN</div>
@@ -699,13 +700,13 @@
             <button class="tab-btn active" onclick="switchTab('tap', this)">🧟 Охота</button>
             <button class="tab-btn" onclick="switchTab('bosses', this)">💀 Боссы</button>
             <button class="tab-btn" onclick="switchTab('hero', this)">👤 Перс</button>
-            <button class="tab-btn" onclick="switchTab('market', this)">🔫 Магазин</button>
+            <button class="tab-btn" onclick="switchTab('market', this)">📦 Боксы</button>
             <button class="tab-btn" onclick="switchTab('skills', this)">📈 Навыки</button>
             <button class="tab-btn" onclick="switchTab('shop', this)">🚀 База</button>
         </div>
     </div>
 
-    <!-- Модальное окно Настроек -->
+    <!-- Настройки -->
     <div id="settingsModal">
         <div class="settings-card">
             <div class="modal-title">⚙️ Настройки</div>
@@ -721,18 +722,18 @@
         </div>
     </div>
 
-    <!-- Модальное окно Гардероба -->
+    <!-- Гардероб модалка -->
     <div id="wardrobeModal">
         <div class="settings-card">
-            <div class="modal-title">🎒 Шмотки и Экипировка</div>
-            <div class="shop-container" id="wardrobeList" style="max-height: 55vh; text-align: left;"></div>
+            <div class="modal-title">🎒 Экипировка</div>
+            <div class="shop-container" id="wardrobeList" style="max-height: 50vh; text-align: left;"></div>
             <button class="close-modal" onclick="document.getElementById('wardrobeModal').style.display='none'">Закрыть</button>
         </div>
     </div>
 
-    <!-- Экран 1: Охота на обычных Зомби -->
+    <!-- Экран 1: Охота -->
     <div class="screen active" id="screen-tap">
-        <button class="test-cheat-btn" onclick="addTestMatches()">⚡ Тест: +10,000 спичек</button>
+        <button class="test-cheat-btn" onclick="addTestMatches()">⚡ Тест: +10k спичек / ресурсы</button>
 
         <div class="zombie-status-box">
             <div class="zombie-info-row">
@@ -756,8 +757,6 @@
                     <circle cx="75" cy="95" r="5" fill="#dc2626"/>
                     <circle cx="128" cy="95" r="14" fill="#fef08a" stroke="#000" stroke-width="6"/>
                     <circle cx="128" cy="95" r="4" fill="#dc2626"/>
-                    <line x1="52" y1="72" x2="95" y2="85" stroke="#000" stroke-width="7" stroke-linecap="round"/>
-                    <line x1="148" y1="72" x2="108" y2="85" stroke="#000" stroke-width="7" stroke-linecap="round"/>
                     <polygon points="100,102 92,118 108,118" fill="#4d7c0f" stroke="#000" stroke-width="5" stroke-linejoin="round"/>
                     <rect x="65" y="130" width="70" height="22" rx="6" fill="#450a0a" stroke="#000" stroke-width="6"/>
                     <rect x="73" y="130" width="12" height="11" fill="#fef9c3" stroke="#000" stroke-width="4"/>
@@ -766,7 +765,6 @@
             </svg>
         </div>
 
-        <!-- Быстрое применение оружия -->
         <div class="weapons-quick-bar" id="tapWeaponsBar"></div>
 
         <div class="storage-widget">
@@ -780,23 +778,20 @@
                     <div class="storage-text" id="storageText">0 / 100 🔥</div>
                 </div>
             </div>
-            <button class="collect-storage-btn" id="collectStorageBtn" onclick="collectFromStorage()">Забрать</button>
+            <button class="collect-storage-btn" onclick="collectFromStorage()">Забрать</button>
         </div>
     </div>
 
-    <!-- Экран 2: БОССЫ (Таймер 2 часа) -->
+    <!-- Экран 2: Боссы (2 часа таймер) -->
     <div class="screen" id="screen-bosses">
-        <!-- Список боссов -->
         <div class="shop-container" id="bossSelectionList"></div>
-
-        <!-- Активная арена боя с боссом -->
         <div id="bossArena" style="display: none; width: 100%; flex-direction: column; align-items: center;">
             <div class="zombie-status-box">
                 <div class="zombie-info-row">
-                    <span id="activeBossName" style="color: #facc15; font-size: 14px;">БОСС</span>
+                    <span id="activeBossName" style="color: #facc15; font-size: 13px;">БОСС</span>
                     <span class="boss-timer-badge" id="bossTimerDisplay">⏳ 02:00:00</span>
                 </div>
-                <div class="hp-bar-wrap" style="height: 28px;">
+                <div class="hp-bar-wrap" style="height: 26px;">
                     <div class="hp-fill" id="bossHpFill" style="background: linear-gradient(90deg, #7f1d1d, #ef4444);"></div>
                     <div class="hp-text" id="bossHpText">❤️ 5000 / 5000 HP</div>
                 </div>
@@ -807,44 +802,33 @@
                     <ellipse cx="28" cy="105" rx="16" ry="26" fill="#3f6212" stroke="#000" stroke-width="6"/>
                     <ellipse cx="172" cy="105" rx="16" ry="26" fill="#3f6212" stroke="#000" stroke-width="6"/>
                     <rect x="35" y="25" width="130" height="150" rx="35" fill="#4d7c0f" stroke="#000" stroke-width="8"/>
-                    <path d="M 40 60 L 160 60" stroke="#1c1917" stroke-width="10"/>
                     <circle cx="72" cy="95" r="20" fill="#ef4444" stroke="#000" stroke-width="6"/>
-                    <circle cx="72" cy="95" r="6" fill="#fef08a"/>
                     <circle cx="128" cy="95" r="20" fill="#ef4444" stroke="#000" stroke-width="6"/>
-                    <circle cx="128" cy="95" r="6" fill="#fef08a"/>
-                    <line x1="45" y1="68" x2="95" y2="85" stroke="#000" stroke-width="9" stroke-linecap="round"/>
-                    <line x1="155" y1="68" x2="105" y2="85" stroke="#000" stroke-width="9" stroke-linecap="round"/>
                     <rect x="55" y="130" width="90" height="28" rx="6" fill="#450a0a" stroke="#000" stroke-width="6"/>
-                    <rect x="62" y="130" width="14" height="14" fill="#fef9c3" stroke="#000" stroke-width="4"/>
-                    <rect x="85" y="130" width="14" height="14" fill="#fef9c3" stroke="#000" stroke-width="4"/>
-                    <rect x="110" y="130" width="14" height="14" fill="#fef9c3" stroke="#000" stroke-width="4"/>
                 </svg>
             </div>
 
             <div class="weapons-quick-bar" id="bossWeaponsBar"></div>
-
-            <button class="shop-btn" style="margin-top: 12px; background: #ef4444; color: #fff;" onclick="surrenderBoss()">🏳️ Сдаться (Сбросить бой)</button>
+            <button class="shop-btn" style="margin-top: 8px; background: #ef4444; color: #fff;" onclick="surrenderBoss()">🏳️ Сдаться</button>
         </div>
     </div>
 
-    <!-- Экран 3: Персонаж НА ВЕСЬ ЭКРАН -->
+    <!-- Экран 3: Персонаж на весь экран -->
     <div class="screen" id="screen-hero">
         <div class="hero-fullscreen-wrap">
             <div class="hero-stage-full">
-                <!-- Слоты слева поверх экрана -->
                 <div class="equip-overlay-left">
                     <div class="equip-slot" id="slot-hat"><img src="hud_head.png" alt="Голова" onerror="this.style.display='none'"><span>Голова</span></div>
                     <div class="equip-slot" id="slot-jacket"><img src="hud_jacket.png" alt="Верх" onerror="this.style.display='none'"><span>Верх</span></div>
                     <div class="equip-slot" id="slot-gloves"><img src="hud_gloves.png" alt="Руки" onerror="this.style.display='none'"><span>Руки</span></div>
                 </div>
 
-                <!-- Полноэкранная кукла персонажа -->
                 <div class="character-doll-full">
                     <img src="legs.png" alt="Ноги" class="doll-layer" style="z-index: 1;" onerror="this.style.display='none'">
                     <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;" onerror="this.style.display='none'">
                     <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;" onerror="this.style.display='none'">
                     <img src="body.png" alt="Тело" class="doll-layer" style="z-index: 4;" onerror="this.style.display='none'">
-                    <img src="upper_right_arm.png" alt="Верх правой руки" class="doll-layer" style="z-index: 5;" onerror="this.style.display='none'">
+                    <img src="upper_right_arm.png" alt="Правая рука" class="doll-layer" style="z-index: 5;" onerror="this.style.display='none'">
                     <img src="left_arm.png" alt="Левая рука" class="doll-layer" style="z-index: 6;" onerror="this.style.display='none'">
                     <img id="layer-jacket" class="doll-layer" style="z-index: 7; display: none;" onerror="this.style.display='none'">
                     <img src="forearm_right.png" alt="Предплечье" class="doll-layer" style="z-index: 8;" onerror="this.style.display='none'">
@@ -854,42 +838,73 @@
                     <img id="layer-gloves" class="doll-layer" style="z-index: 12; display: none;" onerror="this.style.display='none'">
                 </div>
 
-                <!-- Слоты справа поверх экрана -->
                 <div class="equip-overlay-right">
                     <div class="equip-slot" id="slot-pants"><img src="hud_pants.png" alt="Низ" onerror="this.style.display='none'"><span>Низ</span></div>
                     <div class="equip-slot" id="slot-boots"><img src="hud_boots.png" alt="Обувь" onerror="this.style.display='none'"><span>Обувь</span></div>
                 </div>
 
-                <button class="wardrobe-drawer-btn" onclick="openWardrobeModal()">🎒 Гардероб</button>
+                <button class="wardrobe-drawer-btn" onclick="openWardrobeModal()">🎒 Экипировка</button>
             </div>
         </div>
     </div>
 
-    <!-- Экран 4: Магазин (Лаки Бокс 0.001% и Одноразовое Оружие) -->
+    <!-- Экран 4: Магазин / Боксы и Обмен -->
     <div class="screen" id="screen-market">
         <div class="shop-container">
-            <div class="lucky-box-card">
-                <div class="shop-info">
-                    <h4 style="color: #facc15; font-size: 15px;">🎁 ЛАКИ БОКС ВЫЖИВШЕГО</h4>
-                    <p style="color: #fed7aa;">Шанс 0.001% выбить редкую шмотку или куш спичек!</p>
+            <!-- Кофе -->
+            <div class="shop-card">
+                <div class="shop-info" style="display: flex; align-items: center; gap: 8px;">
+                    <img src="кофе_3.png" alt="Кофе" style="width: 30px; height: 30px;">
+                    <div>
+                        <h4>Пакет Кофе <span style="color:#facc15;">(У вас: <span id="coffeeCount">0</span>)</span></h4>
+                        <p>Восстанавливает всю энергию</p>
+                    </div>
                 </div>
-                <button class="shop-btn" style="background: #facc15; padding: 10px 14px;" onclick="openLuckyBox()">250 🔥</button>
+                <button class="shop-btn" onclick="buyCoffee()">5 🧼 Мыла</button>
+            </div>
+            <div id="useCoffeeWrap" style="margin-bottom: 4px;"></div>
+
+            <!-- Обмен мыла на тушенку -->
+            <div class="shop-card" style="background: linear-gradient(135deg, #374151, #1f2937);">
+                <div class="shop-info">
+                    <h4>🔄 Черный рынок (Обмен)</h4>
+                    <p>Обменять 1,000 мыла на 1 тушенку</p>
+                </div>
+                <button class="shop-btn" style="background: #10b981; color:#000;" onclick="exchangeSoapForTushonka()">Обменять</button>
             </div>
 
-            <h4 style="margin-top: 6px; font-size: 12px; color: var(--text-sub); text-transform: uppercase;">💣 Одноразовое оружие (Расходники)</h4>
-            <div id="weaponsShopList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+            <!-- Лаки бокс (спички) -->
+            <div class="box-banner">
+                <div class="shop-info">
+                    <h4 style="color: #facc15; font-size: 13px;">🎁 ЛАКИ БОКС СНЕГОХОД / СПИЧКИ</h4>
+                    <p style="color: #fed7aa;">Шанс 0.001% выбить редкую шмотку или ценности!</p>
+                </div>
+                <button class="shop-btn" style="background: #facc15;" onclick="openLuckyBox('normal')">250 🔥</button>
+            </div>
+
+            <!-- Супер бокс (тушенка) -->
+            <div class="box-banner" style="background: linear-gradient(135deg, #7f1d1d, #450a0a);">
+                <div class="shop-info">
+                    <h4 style="color: #f87171; font-size: 13px;">👑 СУПЕР БОКС ЗА ТУШЕНКУ</h4>
+                    <p style="color: #fca5a5;">Повышенный шанс на топ-шмотки и редкие ресурсы!</p>
+                </div>
+                <button class="shop-btn" style="background: #ef4444; color:#fff;" onclick="openLuckyBox('super')">1 🥩</button>
+            </div>
+
+            <h4 style="margin-top: 4px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">💣 Одноразовое оружие</h4>
+            <div id="weaponsShopList" style="display: flex; flex-direction: column; gap: 6px;"></div>
         </div>
     </div>
 
     <!-- Экран 5: Навыки -->
     <div class="screen" id="screen-skills">
         <div class="shop-container">
-            <div style="background: var(--card-bg); border: 3px solid #000; border-radius: 14px; padding: 10px; text-align: center; box-shadow: 0 3px 0 #000;">
-                <h3 style="font-size: 14px; font-weight: 900; color: #fb923c;">Уровень выжившего: <span id="charLevel">1</span> / 1000</h3>
-                <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">Очков навыков: <span id="skillPoints" style="color: #22c55e; font-weight: 900;">0</span></p>
-                <div class="hp-bar-wrap" style="margin-top: 6px; height: 16px;">
+            <div style="background: var(--card-bg); border: 2.5px solid #000; border-radius: 12px; padding: 8px; text-align: center; box-shadow: 0 2px 0 #000;">
+                <h3 style="font-size: 13px; font-weight: 900; color: #fb923c;">Уровень выжившего: <span id="charLevel">1</span> / 1000</h3>
+                <p style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">Очков навыков: <span id="skillPoints" style="color: #22c55e; font-weight: 900;">0</span></p>
+                <div class="hp-bar-wrap" style="margin-top: 5px; height: 14px;">
                     <div class="hp-fill" id="levelProgressFill" style="background: linear-gradient(90deg, #38bdf8, #818cf8);"></div>
-                    <div class="hp-text" id="levelProgressText" style="font-size: 9px;">Зомби: 0 / 10</div>
+                    <div class="hp-text" id="levelProgressText" style="font-size: 8px;">Зомби: 0 / 10</div>
                 </div>
             </div>
 
@@ -961,7 +976,9 @@
     <div class="footer">
         <div class="energy-bar-wrap">
             <div class="energy-fill" id="energyFill"></div>
-            <div class="energy-text" id="energyText">⚡ 100 / 100</div>
+            <div class="energy-text-custom" id="energyText">
+                <img src="кофе — копия_3.png" alt="⚡"> <span>100 / 100</span>
+            </div>
         </div>
         <button class="main-btn" onclick="saveAndExit()">📥 Отправить спички в бота</button>
     </div>
@@ -973,6 +990,11 @@
         let savedData = JSON.parse(localStorage.getItem('diamond_save') || '{}');
 
         let sessionDiamonds = savedData.sessionDiamonds || 0;
+        let soap = savedData.soap || 0;             // Мыло
+        let tushonka = savedData.tushonka || 0;     // Тушенка
+        let authority = savedData.authority || 0;   // Авторитет
+        let coffee = savedData.coffee || 0;         // Кофе
+
         let clickPower = savedData.clickPower || 1;
         let maxEnergy = savedData.maxEnergy || 100;
         let energy = savedData.energy !== undefined ? savedData.energy : 100;
@@ -1006,39 +1028,33 @@
         let ownedItems = savedData.ownedItems || [];
         let equippedItems = savedData.equippedItems || {};
 
-        // Каталог шмоток
         const clothingCatalog = [
-            { id: 'hat_voevoda', slot: 'hat', name: '🪖 Шлем «Воевода» (ЗШ)', desc: '+3% шанс крит. удара', cost: 400, bonusType: 'crit', bonusVal: 3, img: 'item_hat.png' },
-            { id: 'armor_voevoda', slot: 'jacket', name: '🦺 Бронежилет «Воевода»', desc: '+2 к урону по зомби', cost: 1000, bonusType: 'click', bonusVal: 2, img: 'item_armor.png' },
-            { id: 'gloves_voevoda', slot: 'gloves', name: '🧤 Тактические перчатки', desc: '+1 к урону по зомби', cost: 300, bonusType: 'click', bonusVal: 1, img: 'item_gloves.png' },
-            { id: 'pants_voevoda', slot: 'pants', name: '👖 Штаны «Воевода»', desc: '+50 к макс. энергии', cost: 500, bonusType: 'energy', bonusVal: 50, img: 'item_pants.png' },
-            { id: 'boots_voevoda', slot: 'boots', name: '🥾 Берцы «Воевода»', desc: '+1 к регену энергии', cost: 600, bonusType: 'regen', bonusVal: 1, img: 'item_boots.png' }
+            { id: 'hat_voevoda', slot: 'hat', name: '🪖 Шлем «Воевода»', desc: '+3% шанс крита', cost: 400, bonusType: 'crit', bonusVal: 3, img: 'item_hat.png' },
+            { id: 'armor_voevoda', slot: 'jacket', name: '🦺 Бронежилет', desc: '+2 к урону', cost: 1000, bonusType: 'click', bonusVal: 2, img: 'item_armor.png' },
+            { id: 'gloves_voevoda', slot: 'gloves', name: '🧤 Перчатки', desc: '+1 к урону', cost: 300, bonusType: 'click', bonusVal: 1, img: 'item_gloves.png' },
+            { id: 'pants_voevoda', slot: 'pants', name: '👖 Штаны', desc: '+50 к энергии', cost: 500, bonusType: 'energy', bonusVal: 50, img: 'item_pants.png' },
+            { id: 'boots_voevoda', slot: 'boots', name: '🥾 Берцы', desc: '+1 к регену', cost: 600, bonusType: 'regen', bonusVal: 1, img: 'item_boots.png' }
         ];
 
-        // Каталог одноразового оружия (расходников)
         const consumableCatalog = [
-            { id: 'shiv', name: '🔪 Острая заточка', dmg: 35, cost: 80, icon: '🔪' },
-            { id: 'molotov', name: '🍾 Коктейль Молотова', dmg: 150, cost: 300, icon: '🍾' },
-            { id: 'grenade', name: '💣 Граната Ф-1', dmg: 450, cost: 800, icon: '💣' },
-            { id: 'dynamite', name: '🧨 Связка динамита', dmg: 1500, cost: 2200, icon: '🧨' },
-            { id: 'rpg', name: '🚀 Выстрел из РПГ-7', dmg: 6000, cost: 7500, icon: '🚀' }
+            { id: 'shiv', name: '🔪 Заточка', dmg: 35, cost: 80, icon: '🔪' },
+            { id: 'molotov', name: '🍾 Молотов', dmg: 150, cost: 300, icon: '🍾' },
+            { id: 'grenade', name: '💣 Граната', dmg: 450, cost: 800, icon: '💣' },
+            { id: 'dynamite', name: '🧨 Динамит', dmg: 1500, cost: 2200, icon: '🧨' },
+            { id: 'rpg', name: '🚀 РПГ-7', dmg: 6000, cost: 7500, icon: '🚀' }
         ];
-
         let consumables = savedData.consumables || { shiv: 0, molotov: 0, grenade: 0, dynamite: 0, rpg: 0 };
 
-        // Список Боссов (на бой дается ровно 2 часа = 7200 секунд)
         const bossesCatalog = [
-            { id: 'boss_butcher', name: '🧟‍♂️ Зомби-Мясник', maxHp: 2500, reward: 2000, dropChance: 0.05, desc: 'Жирный мертвец с тесаком. Награда: 2,000 🔥 + 5% шанс на шмотку' },
-            { id: 'boss_shtrikh', name: '👑 Босс «Штрих»', maxHp: 12000, reward: 10000, dropChance: 0.15, desc: 'Авторитет мертвой зоны. Награда: 10,000 🔥 + 15% шанс на шмотку' },
-            { id: 'boss_juggernaut', name: '🛡️ Бронированный Мутант', maxHp: 45000, reward: 40000, dropChance: 0.35, desc: 'Ходячий танк в ОМОНовской броне. Награда: 40,000 🔥 + 35% шанс на шмотку' }
+            { id: 'boss_butcher', name: '🧟‍♂️ Мясник', maxHp: 2500, reward: 2000, soapChance: 0.25, tushonkaChance: 0.01, dropChance: 0.05, desc: 'Награда: 2,000 🔥 + шанс мыла/тушенки' },
+            { id: 'boss_shtrikh', name: '👑 Штрих', maxHp: 12000, reward: 10000, soapChance: 0.50, tushonkaChance: 0.05, dropChance: 0.15, desc: 'Награда: 10,000 🔥 + высокий шанс мыла' },
+            { id: 'boss_juggernaut', name: '🛡️ Мутант', maxHp: 45000, reward: 40000, soapChance: 0.90, tushonkaChance: 0.15, dropChance: 0.35, desc: 'Награда: 40,000 🔥 + гарантированное мыло' }
         ];
-
-        let activeBoss = savedData.activeBoss || null; // { id, name, hp, maxHp, reward, dropChance, endTime }
+        let activeBoss = savedData.activeBoss || null;
 
         let soundEnabled = savedData.soundEnabled !== undefined ? savedData.soundEnabled : true;
         let currentTheme = savedData.theme || 'dark';
 
-        // Звуковой движок
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         let audioCtx = null;
 
@@ -1055,13 +1071,13 @@
             const gain = audioCtx.createGain();
             osc.type = isKill ? 'sawtooth' : 'triangle';
             osc.frequency.setValueAtTime(isKill ? 240 : 160, now);
-            osc.frequency.exponentialRampToValueAtTime(45, now + (isKill ? 0.22 : 0.09));
-            gain.gain.setValueAtTime(0.35, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            osc.frequency.exponentialRampToValueAtTime(45, now + 0.15);
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start(now);
-            osc.stop(now + 0.2);
+            osc.stop(now + 0.15);
         }
 
         function playWinFanfare(isBig) {
@@ -1069,57 +1085,105 @@
             initAudio();
             const notes = isBig ? [523.25, 659.25, 783.99, 1046.50] : [440, 554.37, 659.25];
             notes.forEach((freq, idx) => {
-                const now = audioCtx.currentTime + idx * 0.09;
+                const now = audioCtx.currentTime + idx * 0.08;
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(freq, now);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start(now);
-                osc.stop(now + 0.25);
+                osc.stop(now + 0.2);
             });
         }
 
-        // ЛАКИ БОКС (Шанс 0.001% на шмотку)
-        function openLuckyBox() {
-            const boxCost = 250;
-            if (sessionDiamonds < boxCost) {
-                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-                alert('Недостаточно спичек для открытия Лаки Бокса! Нужно 250 🔥');
+        // Покупка кофе за 5 мыла
+        function buyCoffee() {
+            if (soap < 5) {
+                alert('Недостаточно мыла! Нужно 5 🧼');
                 return;
             }
+            soap -= 5;
+            coffee++;
+            playWinFanfare(false);
+            updateUI();
+            renderMarket();
+            saveProgress();
+        }
 
-            sessionDiamonds -= boxCost;
-            let roll = Math.random() * 100; // от 0 до 100%
+        // Использование кофе для фулл регена энергии
+        function useCoffee() {
+            if (coffee <= 0 || energy >= maxEnergy) return;
+            coffee--;
+            energy = maxEnergy;
+            playWinFanfare(true);
+            updateUI();
+            renderMarket();
+            saveProgress();
+        }
 
-            if (roll <= 0.001) {
-                // 0.001% ШАНС НА ШМОТКУ!
+        // Обмен 1000 мыла на 1 тушенку
+        function exchangeSoapForTushonka() {
+            if (soap < 1000) {
+                alert('Нужно минимум 1000 🧼 мыла для обмена!');
+                return;
+            }
+            soap -= 1000;
+            tushonka++;
+            playWinFanfare(true);
+            alert('успешный обмен: +1 🥩 тушенка!');
+            updateUI();
+            saveProgress();
+        }
+
+        // Лаки боксы (0.001% на шмотку)
+        function openLuckyBox(type) {
+            if (type === 'normal') {
+                if (sessionDiamonds < 250) { alert('Нужно 250 🔥 спичек!'); return; }
+                sessionDiamonds -= 250;
+            } else {
+                if (tushonka < 1) { alert('Нужна 1 банка тушенки 🥩!'); return; }
+                tushonka--;
+            }
+
+            // Шанс 0.001% для обычного или повышенный для супер (например, 0.01% или гарантированный ценный лут)
+            let chance = type === 'super' ? 0.05 : 0.001;
+            let roll = Math.random() * 100;
+
+            if (roll <= chance) {
                 const unowned = clothingCatalog.filter(i => !ownedItems.includes(i.id));
                 if (unowned.length > 0) {
-                    const wonItem = unowned[Math.floor(Math.random() * unowned.length)];
-                    grantClothingItem(wonItem);
+                    const won = unowned[Math.floor(Math.random() * unowned.length)];
+                    grantClothingItem(won);
                     playWinFanfare(true);
-                    alert(`🎉 НЕВЕРОЯТНО! Шанс 0.001% сработал!\nВы выбили редкую шмотку: ${wonItem.name}!`);
+                    alert(`🎉 ДЖЕКПОТ! Вы выбили шмотку: ${won.name}!`);
                 } else {
-                    sessionDiamonds += 25000;
+                    sessionDiamonds += 50000;
                     playWinFanfare(true);
-                    alert(`🎉 ДЖЕКПОТ 0.001%! Все шмотки уже собраны, поэтому вы получаете 25,000 🔥!`);
+                    alert(`🎉 ДЖЕКПОТ! Все шмотки собраны, получено 50,000 🔥!`);
                 }
             } else {
-                // Утешительный приз спичками или расходником
-                if (Math.random() < 0.25) {
-                    consumables.shiv = (consumables.shiv || 0) + 1;
-                    playHitSound(false);
-                    alert(`📦 В боксе оказалась: 🔪 Острая заточка (x1)!`);
+                // Обычный дроп
+                if (type === 'super') {
+                    soap += 300;
+                    tushonka += Math.random() < 0.2 ? 1 : 0;
+                    alert('🎁 В Супер-боксе найдено: +300 🧼 мыла!');
                 } else {
-                    letbackMatches = getRandomInt(20, 400);
-                    sessionDiamonds += letbackMatches;
-                    playHitSound(false);
-                    alert(`📦 Вы открыли Лаки Бокс и нашли: +${letbackMatches} 🔥 спичек!`);
+                    if (Math.random() < 0.05) {
+                        tushonka++;
+                        alert('🎁 Редкая находка в боксе: +1 🥩 тушенка!');
+                    } else if (Math.random() < 0.2) {
+                        soap += 50;
+                        alert('🎁 Находка в боксе: +50 🧼 мыла!');
+                    } else {
+                        let reward = getRandomInt(30, 300);
+                        sessionDiamonds += reward;
+                        alert(`🎁 В боксе найдено: +${reward} 🔥 спичек!`);
+                    }
                 }
+                playHitSound(false);
             }
 
             updateUI();
@@ -1140,34 +1204,36 @@
             }
         }
 
-        // МАГАЗИН ОДНОРАЗОВОГО ОРУЖИЯ
         function renderMarket() {
+            document.getElementById('coffeeCount').innerText = coffee;
+            const useWrap = document.getElementById('useCoffeeWrap');
+            if (coffee > 0 && energy < maxEnergy) {
+                useWrap.innerHTML = `<button class="main-btn" style="background:#eab308; color:#000;" onclick="useCoffee()">☕ Выпить кофе (Фулл Энергия)</button>`;
+            } else {
+                useWrap.innerHTML = '';
+            }
+
             const list = document.getElementById('weaponsShopList');
             list.innerHTML = '';
-
             consumableCatalog.forEach(w => {
                 const count = consumables[w.id] || 0;
                 const card = document.createElement('div');
                 card.className = 'shop-card';
                 card.innerHTML = `
                     <div class="shop-info">
-                        <h4>${w.name} <span style="color:#facc15;">(В наличии: ${count})</span></h4>
-                        <p>Разовый урон: 💥 ${w.dmg} HP</p>
+                        <h4>${w.name} <span style="color:#facc15;">(${count})</span></h4>
+                        <p>Урон: 💥 ${w.dmg}</p>
                     </div>
                     <button class="shop-btn" onclick="buyConsumable('${w.id}')">${w.cost} 🔥</button>
                 `;
                 list.appendChild(card);
             });
-
             renderQuickWeaponsBars();
         }
 
         function buyConsumable(id) {
             const w = consumableCatalog.find(x => x.id === id);
-            if (!w || sessionDiamonds < w.cost) {
-                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-                return;
-            }
+            if (!w || sessionDiamonds < w.cost) return;
             sessionDiamonds -= w.cost;
             consumables[id] = (consumables[id] || 0) + 1;
             playHitSound(false);
@@ -1177,26 +1243,19 @@
         }
 
         function renderQuickWeaponsBars() {
-            const tapBar = document.getElementById('tapWeaponsBar');
-            const bossBar = document.getElementById('bossWeaponsBar');
-            tapBar.innerHTML = '';
-            bossBar.innerHTML = '';
-
-            consumableCatalog.forEach(w => {
-                const count = consumables[w.id] || 0;
-                if (count > 0) {
-                    const btn1 = document.createElement('button');
-                    btn1.className = 'weapon-use-btn';
-                    btn1.innerText = `${w.icon} -${w.dmg} HP (${count})`;
-                    btn1.onclick = (e) => useConsumableInFight(w.id, 'normal', e);
-                    tapBar.appendChild(btn1);
-
-                    const btn2 = document.createElement('button');
-                    btn2.className = 'weapon-use-btn';
-                    btn2.innerText = `${w.icon} -${w.dmg} HP (${count})`;
-                    btn2.onclick = (e) => useConsumableInFight(w.id, 'boss', e);
-                    bossBar.appendChild(btn2);
-                }
+            ['tapWeaponsBar', 'bossWeaponsBar'].forEach(barId => {
+                const bar = document.getElementById(barId);
+                bar.innerHTML = '';
+                consumableCatalog.forEach(w => {
+                    const count = consumables[w.id] || 0;
+                    if (count > 0) {
+                        const btn = document.createElement('button');
+                        btn.className = 'weapon-use-btn';
+                        btn.innerText = `${w.icon} -${w.dmg} (${count})`;
+                        btn.onclick = (e) => useConsumableInFight(w.id, barId === 'tapWeaponsBar' ? 'normal' : 'boss', e);
+                        bar.appendChild(btn);
+                    }
+                });
             });
         }
 
@@ -1204,7 +1263,6 @@
             if (!consumables[id] || consumables[id] <= 0) return;
             const w = consumableCatalog.find(x => x.id === id);
             consumables[id]--;
-
             const x = event ? event.clientX : window.innerWidth / 2;
             const y = event ? event.clientY : window.innerHeight / 2;
             spawnShards(x, y);
@@ -1212,20 +1270,19 @@
 
             if (targetType === 'normal') {
                 zombieHp -= w.dmg;
-                spawnFloatingNumber(x, y, `${w.icon} -${w.dmg} HP!`, true);
+                spawnFloatingNumber(x, y, `${w.icon} -${w.dmg}!`, true);
                 if (zombieHp <= 0) handleNormalZombieKill(x, y);
             } else if (targetType === 'boss' && activeBoss) {
                 activeBoss.hp -= w.dmg;
-                spawnFloatingNumber(x, y, `${w.icon} -${w.dmg} HP!`, true);
+                spawnFloatingNumber(x, y, `${w.icon} -${w.dmg}!`, true);
                 if (activeBoss.hp <= 0) handleBossKill(x, y);
             }
-
             renderMarket();
             updateUI();
             saveProgress();
         }
 
-        // СИСТЕМА БОССОВ (ТАЙМЕР 2 ЧАСА)
+        // БОССЫ
         function renderBossesTab() {
             const listEl = document.getElementById('bossSelectionList');
             const arenaEl = document.getElementById('bossArena');
@@ -1240,7 +1297,6 @@
                 listEl.style.display = 'flex';
                 arenaEl.style.display = 'none';
                 listEl.innerHTML = '';
-
                 bossesCatalog.forEach(b => {
                     const card = document.createElement('div');
                     card.className = 'shop-card';
@@ -1248,9 +1304,9 @@
                         <div class="shop-info">
                             <h4>${b.name} (❤️ ${b.maxHp} HP)</h4>
                             <p>${b.desc}</p>
-                            <p style="color: #ef4444; margin-top: 4px;">⏳ Время на бой: 2 часа</p>
+                            <p style="color: #ef4444; margin-top: 2px;">⏳ На бой: 2 часа</p>
                         </div>
-                        <button class="shop-btn" style="background:#ef4444; color:#fff;" onclick="startBossFight('${b.id}')">Вызвать</button>
+                        <button class="shop-btn" style="background:#ef4444; color:#fff;" onclick="startBossFight('${b.id}')">Атака</button>
                     `;
                     listEl.appendChild(card);
                 });
@@ -1260,18 +1316,11 @@
         function startBossFight(bossId) {
             const b = bossesCatalog.find(x => x.id === bossId);
             if (!b) return;
-
-            const twoHoursMs = 2 * 60 * 60 * 1000;
             activeBoss = {
-                id: b.id,
-                name: b.name,
-                hp: b.maxHp,
-                maxHp: b.maxHp,
-                reward: b.reward,
-                dropChance: b.dropChance,
-                endTime: Date.now() + twoHoursMs
+                id: b.id, name: b.name, hp: b.maxHp, maxHp: b.maxHp,
+                reward: b.reward, soapChance: b.soapChance, tushonkaChance: b.tushonkaChance, dropChance: b.dropChance,
+                endTime: Date.now() + 2 * 60 * 60 * 1000
             };
-
             playWinFanfare(false);
             renderBossesTab();
             renderQuickWeaponsBars();
@@ -1279,60 +1328,43 @@
         }
 
         function hitBoss(e) {
-            if (!activeBoss) return;
-            if (energy <= 0) {
-                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-                return;
-            }
-
+            if (!activeBoss || energy <= 0) return;
             let dmg = clickPower;
             let isCrit = Math.random() * 100 < critChance;
             if (isCrit) dmg *= 3;
-
             energy = Math.max(0, energy - 1);
             activeBoss.hp -= dmg;
-
-            const btn = document.getElementById('bossHitBtn');
-            btn.classList.add('pressed');
-            setTimeout(() => btn.classList.remove('pressed'), 120);
-
             spawnShards(e.clientX, e.clientY);
 
             if (activeBoss.hp <= 0) {
                 handleBossKill(e.clientX, e.clientY);
             } else {
                 playHitSound(false);
-                spawnFloatingNumber(e.clientX, e.clientY, isCrit ? `💥 КРИТ -${dmg}` : `-${dmg} HP`, false);
+                spawnFloatingNumber(e.clientX, e.clientY, isCrit ? `💥 КРИТ -${dmg}` : `-${dmg}`, false);
             }
-
             updateUI();
             saveProgress();
         }
 
         function handleBossKill(x, y) {
             const reward = activeBoss.reward;
-            const dropChance = activeBoss.dropChance;
-            const bossName = activeBoss.name;
-
             sessionDiamonds += reward;
             zombiesKilled += 10;
+            authority += 50; // Начисляем авторитет
+
+            // Дроп мыла и тушенки с босса
+            let bossInfo = bossesCatalog.find(b => b.id === activeBoss.id);
+            let soapDropped = 0;
+            let tushonkaDropped = 0;
+            if (Math.random() < bossInfo.soapChance) { soapDropped = getRandomInt(1, 5); soap += soapDropped; }
+            if (Math.random() < bossInfo.tushonkaChance) { tushonkaDropped = 1; tushonka += 1; }
+
             activeBoss = null;
-
             playWinFanfare(true);
-            spawnFloatingNumber(x, y, `🏆 ПОБЕДА! +${reward} 🔥`, true);
-
-            let dropMsg = '';
-            if (Math.random() < dropChance) {
-                const unowned = clothingCatalog.filter(i => !ownedItems.includes(i.id));
-                if (unowned.length > 0) {
-                    const droppedItem = unowned[Math.floor(Math.random() * unowned.length)];
-                    grantClothingItem(droppedItem);
-                    dropMsg = `\n🎁 ВЫБИТА ШМОТКА: ${droppedItem.name}!`;
-                }
-            }
+            spawnFloatingNumber(x, y, `🏆 +${reward} 🔥`, true);
 
             setTimeout(() => {
-                alert(`💀 Босс ${bossName} повержен!\nПолучено: +${reward} 🔥 спичек!${dropMsg}`);
+                alert(`💀 Босс повержен!\nНаграда: +${reward} 🔥\nМыло: +${soapDropped} 🧼\nТушенка: +${tushonkaDropped} 🥩\nАвторитет: +50 ✊`);
                 renderBossesTab();
                 updateUI();
                 saveProgress();
@@ -1340,36 +1372,34 @@
         }
 
         function surrenderBoss() {
-            if (confirm('Сдаться? Весь прогресс урона по боссу будет сброшен!')) {
+            if (confirm('Сдаться? Прогресс босса будет сброшен!')) {
                 activeBoss = null;
                 renderBossesTab();
                 saveProgress();
             }
         }
 
-        // Таймер проверки времени босса каждую секунду
+        // Таймеры регена и боссов
         setInterval(() => {
             if (activeBoss) {
-                let remainingMs = activeBoss.endTime - Date.now();
-                if (remainingMs <= 0) {
-                    // 2 часа истекли — проигрыш!
+                let rem = activeBoss.endTime - Date.now();
+                if (rem <= 0) {
                     activeBoss = null;
                     renderBossesTab();
                     saveProgress();
-                    alert('⏳ ВРЕМЯ ВЫШЛО! Вы не успели убить босса за 2 часа. Бой проигран!');
+                    alert('⏳ Время вышло! Босс ушел.');
                 } else {
-                    let totalSec = Math.floor(remainingMs / 1000);
-                    let hrs = String(Math.floor(totalSec / 3600)).padStart(2, '0');
-                    let mins = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
-                    let secs = String(totalSec % 60).padStart(2, '0');
-                    const timerEl = document.getElementById('bossTimerDisplay');
-                    if (timerEl) timerEl.innerText = `⏳ ${hrs}:${mins}:${secs}`;
+                    let s = Math.floor(rem / 1000);
+                    let h = String(Math.floor(s / 3600)).padStart(2, '0');
+                    let m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+                    let sec = String(s % 60).padStart(2, '0');
+                    const t = document.getElementById('bossTimerDisplay');
+                    if (t) t.innerText = `⏳ ${h}:${m}:${sec}`;
                 }
             }
-
-            let incomePerSec = autoClicker + (passiveRate / 3600);
-            if (incomePerSec > 0 && storedDiamonds < maxStorage) {
-                storedDiamonds = Math.min(maxStorage, storedDiamonds + incomePerSec);
+            let inc = autoClicker + (passiveRate / 3600);
+            if (inc > 0 && storedDiamonds < maxStorage) {
+                storedDiamonds = Math.min(maxStorage, storedDiamonds + inc);
                 updateUI();
             }
         }, 1000);
@@ -1381,38 +1411,33 @@
             }
         }, 2000);
 
-        // Обычная охота на зомби
+        // Клик по обычному зомби
         const zombieBtn = document.getElementById('zombieBtn');
         zombieBtn.addEventListener('pointerdown', (e) => {
             if (energy <= 0) return;
-
             let dmg = clickPower;
             let isCrit = Math.random() * 100 < critChance;
             if (isCrit) dmg *= 3;
-
             energy = Math.max(0, energy - 1);
             zombieHp -= dmg;
-
-            zombieBtn.classList.add('pressed');
-            setTimeout(() => zombieBtn.classList.remove('pressed'), 120);
             spawnShards(e.clientX, e.clientY);
 
             if (zombieHp <= 0) {
                 handleNormalZombieKill(e.clientX, e.clientY);
             } else {
                 playHitSound(false);
-                spawnFloatingNumber(e.clientX, e.clientY, isCrit ? `💥 КРИТ -${dmg}` : `-${dmg} HP`, false);
+                spawnFloatingNumber(e.clientX, e.clientY, isCrit ? `💥 КРИТ -${dmg}` : `-${dmg}`, false);
             }
-
             updateUI();
             saveProgress();
         });
 
         function handleNormalZombieKill(x, y) {
-            let rewardMatches = getRandomInt(10, 100);
-            sessionDiamonds += rewardMatches;
+            let reward = getRandomInt(10, 100);
+            sessionDiamonds += reward;
             zombiesKilled++;
             zombieKillsForCurrentLevel++;
+            authority += 1; // Авторитет за обычного зомби
 
             let reqKills = 10 * Math.pow(2, charLevel - 1);
             if (zombieKillsForCurrentLevel >= reqKills && charLevel < 1000) {
@@ -1425,29 +1450,21 @@
             let minHp = 10 + (charLevel - 1) * 10;
             zombieMaxHp = getRandomInt(minHp, minHp + 5);
             zombieHp = zombieMaxHp;
-
             playHitSound(true);
-            spawnFloatingNumber(x, y, `💀 УБИТ! +${rewardMatches} 🔥`, true);
+            spawnFloatingNumber(x, y, `💀 +${reward} 🔥`, true);
         }
 
-        function openWardrobeModal() {
-            renderWardrobe();
-            document.getElementById('wardrobeModal').style.display = 'flex';
-        }
-
+        function openWardrobeModal() { renderWardrobe(); document.getElementById('wardrobeModal').style.display = 'flex'; }
         function renderWardrobe() {
             const list = document.getElementById('wardrobeList');
             list.innerHTML = '';
-
             ['hat', 'jacket', 'gloves', 'pants', 'boots'].forEach(slot => {
-                const slotEl = document.getElementById(`slot-${slot}`);
-                if (slotEl) slotEl.classList.toggle('equipped', !!equippedItems[slot]);
+                const sEl = document.getElementById(`slot-${slot}`);
+                if (sEl) sEl.classList.toggle('equipped', !!equippedItems[slot]);
             });
-
             clothingCatalog.forEach(item => {
                 const isOwned = ownedItems.includes(item.id);
                 const isEquipped = equippedItems[item.slot] === item.id;
-
                 const card = document.createElement('div');
                 card.className = 'shop-card';
                 card.innerHTML = `
@@ -1456,7 +1473,7 @@
                         <p>${item.desc}</p>
                     </div>
                     <button class="shop-btn" style="background: ${isEquipped ? '#22c55e' : (isOwned ? '#38bdf8' : '#f97316')}">
-                        ${isEquipped ? 'Надето ✓' : (isOwned ? 'Надеть' : item.cost + ' 🔥')}
+                        ${isEquipped ? 'Надето' : (isOwned ? 'Надеть' : item.cost + ' 🔥')}
                     </button>
                 `;
                 card.querySelector('button').onclick = () => handleWardrobeAction(item);
@@ -1469,13 +1486,10 @@
                 if (sessionDiamonds < item.cost) return;
                 sessionDiamonds -= item.cost;
                 grantClothingItem(item);
-                playWinFanfare(false);
             } else {
                 if (equippedItems[item.slot] === item.id) delete equippedItems[item.slot];
                 else equippedItems[item.slot] = item.id;
-                playHitSound(false);
             }
-
             restoreEquippedLayers();
             renderWardrobe();
             updateUI();
@@ -1485,15 +1499,10 @@
         function restoreEquippedLayers() {
             ['hat', 'jacket', 'gloves', 'pants', 'boots'].forEach(slot => {
                 const layerEl = document.getElementById(`layer-${slot}`);
-                const itemId = equippedItems[slot];
-                const item = clothingCatalog.find(i => i.id === itemId);
+                const item = clothingCatalog.find(i => i.id === equippedItems[slot]);
                 if (layerEl) {
-                    if (item && item.img) {
-                        layerEl.src = item.img;
-                        layerEl.style.display = 'block';
-                    } else {
-                        layerEl.style.display = 'none';
-                    }
+                    if (item && item.img) { layerEl.src = item.img; layerEl.style.display = 'block'; }
+                    else { layerEl.style.display = 'none'; }
                 }
             });
         }
@@ -1518,18 +1527,12 @@
         }
 
         function buyUpgrade(type) {
-            if (type === 'storage' && sessionDiamonds >= storageCost) {
-                sessionDiamonds -= storageCost; maxStorage += 150; storageCost = Math.floor(storageCost * 2.1);
-            } else if (type === 'click' && sessionDiamonds >= clickCost) {
-                sessionDiamonds -= clickCost; clickPower++; clickCost = Math.floor(clickCost * 2.5);
-            } else if (type === 'passive' && sessionDiamonds >= passiveCost) {
-                sessionDiamonds -= passiveCost; passiveRate += 50; passiveCost = Math.floor(passiveCost * 2.2);
-            } else if (type === 'energy' && sessionDiamonds >= energyCost) {
-                sessionDiamonds -= energyCost; maxEnergy += 50; energy += 50; energyCost = Math.floor(energyCost * 2.2);
-            } else if (type === 'auto' && sessionDiamonds >= autoCost) {
-                sessionDiamonds -= autoCost; autoClicker++; autoCost = Math.floor(autoCost * 2.3);
-            } else return;
-
+            if (type === 'storage' && sessionDiamonds >= storageCost) { sessionDiamonds -= storageCost; maxStorage += 150; storageCost = Math.floor(storageCost * 2.1); }
+            else if (type === 'click' && sessionDiamonds >= clickCost) { sessionDiamonds -= clickCost; clickPower++; clickCost = Math.floor(clickCost * 2.5); }
+            else if (type === 'passive' && sessionDiamonds >= passiveCost) { sessionDiamonds -= passiveCost; passiveRate += 50; passiveCost = Math.floor(passiveCost * 2.2); }
+            else if (type === 'energy' && sessionDiamonds >= energyCost) { sessionDiamonds -= energyCost; maxEnergy += 50; energy += 50; energyCost = Math.floor(energyCost * 2.2); }
+            else if (type === 'auto' && sessionDiamonds >= autoCost) { sessionDiamonds -= autoCost; autoClicker++; autoCost = Math.floor(autoCost * 2.3); }
+            else return;
             playWinFanfare(false);
             updateUI();
             saveProgress();
@@ -1537,8 +1540,13 @@
 
         function addTestMatches() {
             sessionDiamonds += 10000;
+            soap += 500;
+            tushonka += 2;
+            authority += 100;
+            coffee += 3;
             playWinFanfare(false);
             updateUI();
+            renderMarket();
             saveProgress();
         }
 
@@ -1546,23 +1554,22 @@
             const el = document.createElement('div');
             el.className = isLoot ? 'floating-number loot' : 'floating-number';
             el.innerText = text;
-            el.style.left = `${Math.max(20, Math.min(window.innerWidth - 140, x - 40))}px`;
-            el.style.top = `${y - 30}px`;
+            el.style.left = `${Math.max(10, Math.min(window.innerWidth - 120, x - 30))}px`;
+            el.style.top = `${y - 25}px`;
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 750);
         }
 
         function spawnShards(x, y) {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 4; i++) {
                 const s = document.createElement('div');
                 s.className = 'shard';
                 s.style.left = `${x}px`;
                 s.style.top = `${y}px`;
-                s.style.background = i % 2 === 0 ? '#dc2626' : '#84cc16';
-                const angle = Math.random() * Math.PI * 2;
-                const dist = 35 + Math.random() * 50;
-                s.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
-                s.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+                const a = Math.random() * Math.PI * 2;
+                const d = 30 + Math.random() * 40;
+                s.style.setProperty('--tx', `${Math.cos(a) * d}px`);
+                s.style.setProperty('--ty', `${Math.sin(a) * d}px`);
                 s.style.setProperty('--rot', `${Math.random() * 360}deg`);
                 document.body.appendChild(s);
                 setTimeout(() => s.remove(), 500);
@@ -1571,17 +1578,20 @@
 
         function updateUI() {
             document.getElementById('scoreDisplay').innerText = `${sessionDiamonds} 🔥`;
+            document.getElementById('soapDisplay').innerText = soap;
+            document.getElementById('tushonkaDisplay').innerText = tushonka;
+            document.getElementById('authorityDisplay').innerText = authority;
             document.getElementById('bynDisplay').innerText = `${(sessionDiamonds / 10000).toFixed(3)} BYN`;
+
             document.getElementById('energyFill').style.width = `${(energy / maxEnergy) * 100}%`;
-            document.getElementById('energyText').innerText = `⚡ ${energy} / ${maxEnergy}`;
+            document.getElementById('energyText').innerHTML = `<img src="кофе — копия_3.png" alt="⚡"> <span>${energy} / ${maxEnergy}</span>`;
 
             document.getElementById('killCountText').innerText = `💀 Убито: ${zombiesKilled}`;
             document.getElementById('zombieHpFill').style.width = `${Math.max(0, (zombieHp / zombieMaxHp) * 100)}%`;
             document.getElementById('zombieHpText').innerText = `❤️ ${zombieHp} / ${zombieMaxHp} HP`;
 
-            let displayStored = Math.floor(storedDiamonds);
             document.getElementById('storageFill').style.width = `${Math.min(100, (storedDiamonds / maxStorage) * 100)}%`;
-            document.getElementById('storageText').innerText = `${displayStored} / ${maxStorage} 🔥`;
+            document.getElementById('storageText').innerText = `${Math.floor(storedDiamonds)} / ${maxStorage} 🔥`;
 
             document.getElementById('storageLevelText').innerText = `Вместимость: ${maxStorage} 🔥`;
             document.getElementById('buyStorageBtn').innerText = `${storageCost} 🔥`;
@@ -1602,11 +1612,6 @@
             document.getElementById('skillCritText').innerText = `Уровень: ${skills.crit} / 10`;
             document.getElementById('skillDmgText').innerText = `Уровень: ${skills.dmg} / 10`;
             document.getElementById('skillEnergyText').innerText = `Уровень: ${skills.energy} / 10`;
-
-            if (activeBoss) {
-                document.getElementById('bossHpFill').style.width = `${Math.max(0, (activeBoss.hp / activeBoss.maxHp) * 100)}%`;
-                document.getElementById('bossHpText').innerText = `❤️ ${Math.max(0, activeBoss.hp)} / ${activeBoss.maxHp} HP`;
-            }
         }
 
         function switchTab(tab, btn) {
@@ -1635,11 +1640,10 @@
 
         function saveProgress() {
             localStorage.setItem('diamond_save', JSON.stringify({
-                sessionDiamonds, clickPower, energy, maxEnergy,
-                passiveRate, autoClicker, regenSpeed, critChance,
-                zombiesKilled, zombieMaxHp, zombieHp,
-                charLevel, zombieKillsForCurrentLevel, skillPoints, skills,
-                maxStorage, storedDiamonds, storageCost,
+                sessionDiamonds, soap, tushonka, authority, coffee,
+                clickPower, energy, maxEnergy, passiveRate, autoClicker, regenSpeed, critChance,
+                zombiesKilled, zombieMaxHp, zombieHp, charLevel, zombieKillsForCurrentLevel,
+                skillPoints, skills, maxStorage, storedDiamonds, storageCost,
                 clickCost, passiveCost, energyCost, autoCost,
                 ownedItems, equippedItems, consumables, activeBoss,
                 soundEnabled, theme: currentTheme, lastExitTime: Date.now()
