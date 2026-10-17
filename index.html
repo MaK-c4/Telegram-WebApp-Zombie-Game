@@ -818,20 +818,27 @@
                     <div class="equip-slot" id="slot-gloves"><img src="hud_gloves.png" alt="Руки" onerror="this.style.display='none'"><span>Руки</span></div>
                 </div>
 
-                <div class="character-doll-full">
-                    <img src="legs.png" alt="Ноги" class="doll-layer" style="z-index: 1;" onerror="this.style.display='none'">
-                    <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;" onerror="this.style.display='none'">
-                    <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;" onerror="this.style.display='none'">
-                    <img src="body.png" alt="Тело" class="doll-layer" style="z-index: 4;" onerror="this.style.display='none'">
-                    <img src="upper_right_arm.png" alt="Правая рука" class="doll-layer" style="z-index: 5;" onerror="this.style.display='none'">
-                    <img src="left_arm.png" alt="Левая рука" class="doll-layer" style="z-index: 6;" onerror="this.style.display='none'">
-                    <img id="layer-jacket" class="doll-layer" style="z-index: 7; display: none;" onerror="this.style.display='none'">
-                    <img id="forearm_right.png" alt="Предплечье" class="doll-layer" style="z-index: 8;" onerror="this.style.display='none'">
-                    <img id="hand_right.png" alt="Кисть" class="doll-layer" style="z-index: 9;" onerror="this.style.display='none'">
-                    <img src="head.png" alt="Голова" class="doll-layer" style="z-index: 10;" onerror="this.style.display='none'">
-                    <img id="layer-hat" class="doll-layer" style="z-index: 11; display: none;" onerror="this.style.display='none'">
-                    <img id="layer-gloves" class="doll-layer" style="z-index: 12; display: none;" onerror="this.style.display='none'">
-                </div>
+<div class="character-doll-full">
+    <!-- 1. Ноги и обувь -->
+    <img src="legs.png" alt="Ноги" class="doll-layer" style="z-index: 1;" onerror="this.style.display='none'">
+    <img id="layer-boots" class="doll-layer" style="z-index: 2; display: none;" onerror="this.style.display='none'">
+    <img id="layer-pants" class="doll-layer" style="z-index: 3; display: none;" onerror="this.style.display='none'">
+    
+    <!-- 2. Тело и Бронежилет (ниже рук) -->
+    <img src="body.png" alt="Тело" class="doll-layer" style="z-index: 4;" onerror="this.style.display='none'">
+    <img id="layer-jacket" class="doll-layer" style="z-index: 5; display: none;" onerror="this.style.display='none'">
+
+    <!-- 3. Руки и Предплечье (поверх жилета, но под перчатками) -->
+    <img src="upper_right_arm.png" alt="Правая рука" class="doll-layer" style="z-index: 6;" onerror="this.style.display='none'">
+    <img src="left_arm.png" alt="Левая рука" class="doll-layer" style="z-index: 7;" onerror="this.style.display='none'">
+    <img src="forearm_right.png" alt="Предплечье" class="doll-layer" style="z-index: 8;" onerror="this.style.display='none'">
+    <img src="hand_right.png" alt="Кисть" class="doll-layer" style="z-index: 9;" onerror="this.style.display='none'">
+
+    <!-- 4. Голова, шлем и перчатки (самый верхний слой) -->
+    <img src="head.png" alt="Голова" class="doll-layer" style="z-index: 10;" onerror="this.style.display='none'">
+    <img id="layer-hat" class="doll-layer" style="z-index: 11; display: none;" onerror="this.style.display='none'">
+    <img id="layer-gloves" class="doll-layer" style="z-index: 12; display: none;" onerror="this.style.display='none'">
+</div> 
 
                 <div class="equip-overlay-right">
                     <div class="equip-slot" id="slot-pants"><img src="hud_pants.png" alt="Низ" onerror="this.style.display='none'"><span>Низ</span></div>
