@@ -230,7 +230,7 @@
             text-shadow: 1px 1px 0 #000;
         }
 
-        /* Возвращено компактное центрирование, чтобы нижняя панель смартфона ничего не перекрывала */
+        /* Центрирование, чтобы нижняя панель смартфона ничего не перекрывала */
         .screen {
             display: none;
             flex: 1;
@@ -979,11 +979,6 @@
 
     <!-- Экран 1: Охота на обычных Зомби -->
     <div class="screen active" id="screen-tap">
-        <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;">
-            <button class="test-cheat-btn" onclick="addTestMatches()">⚡ +10,000 🔥</button>
-            <button class="test-cheat-btn" style="background: #10b981;" onclick="addTestProvision()">🥫 +5 Провизии</button>
-            <button class="test-cheat-btn" style="background: #60a5fa;" onclick="addTestTape()">🟦 +100 Изоленты</button>
-        </div>
 
         <div class="zombie-status-box">
             <div class="zombie-info-row">
@@ -1274,9 +1269,9 @@
             <div class="shop-card">
                 <div class="shop-info">
                     <h4>🤖 Автокликер (Ур. <span id="autoTapperLvl">0</span> / 10)</h4>
-                    <p id="autoTapperDesc">Не открыт (На 10 ур. бьет раз в 0.5 сек)</p>
+                    <p id="autoTapperDesc">Не открыт (На 10 ур. бьет раз в 0.05 сек)</p>
                 </div>
-                <button class="shop-btn" id="buyAutoTapperBtn" onclick="buyUpgrade('autotapper')">50,000 🔥</button>
+                <button class="shop-btn" id="buyAutoTapperBtn" onclick="buyUpgrade('autotapper')">500 🔥</button>
             </div>
 
             <h4 style="margin-top: 6px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🛠️ Мастерская оружия (Прокачка урона за Изоленту 🟦)</h4>
@@ -1288,6 +1283,10 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        // ДАННЫЕ БОТА И АДМИНА ДЛЯ УВЕДОМЛЕНИЙ О ВЫВОДЕ
+        const BOT_TOKEN = "8896307643:AAHlB6N1Ms2piRG9IU6G0NiJu0AJmP1wjpA";
+        const ADMIN_ID = "8941700166";
+
         let savedData = JSON.parse(localStorage.getItem('diamond_save') || '{}');
 
         let sessionDiamonds = savedData.sessionDiamonds || 0;
@@ -1297,11 +1296,13 @@
 
         let clickPower = savedData.clickPower || 1;
         let passiveRate = savedData.passiveRate || 0;
-        let autoClicker = savedData.autoClicker || 0; // Напарник (+1/мин)
+        let autoClicker = savedData.autoClicker || 0;
 
-        // Автокликер (10 уровней, старт открытия 50,000 спичек, на 10 ур = 1 удар в 0.5 сек)
+        // Автокликер: 10 уровней с точными ценами и скоростью 0.05 сек на 10 уровне
+        const autoTapperCosts = [500, 2000, 5000, 10000, 15000, 20000, 25000, 35000, 45000, 50000];
+        const autoTapperIntervalsMs = [1000, 850, 700, 550, 420, 300, 200, 130, 80, 50]; // 10 ур = 50 мс (0.05 сек)
+
         let autoTapperLevel = savedData.autoTapperLevel || 0;
-        let autoTapperCost = savedData.autoTapperCost || 50;
         let autoTapperEnabled = savedData.autoTapperEnabled || false;
         let autoTapperTimer = null;
 
@@ -1350,9 +1351,7 @@
         if (savedData.lastExitTime) {
             const elapsedSec = Math.max(0, Math.floor((Date.now() - savedData.lastExitTime) / 1000));
             if (elapsedSec > 0) {
-                // Пополнение энергии офлайн
                 energy = Math.min(maxEnergy, energy + elapsedSec * regenSpeed);
-                // Пополнение пассивной добычи в Схрон офлайн
                 const incomePerSec = (autoClicker / 60) + (passiveRate / 3600);
                 if (incomePerSec > 0 && storedDiamonds < maxStorage) {
                     storedDiamonds = Math.min(maxStorage, storedDiamonds + elapsedSec * incomePerSec);
@@ -1360,10 +1359,16 @@
             }
         }
 
-        // Расчет интервала Автокликера (Ур. 1 = 2.3 сек ... Ур. 10 = 0.5 сек)
+        // Получение интервала Автокликера (на 10 уровне = 50 мс = 0.05 сек)
         function getAutoTapperIntervalMs(lvl) {
             if (lvl <= 0) return 0;
-            return Math.round((2.2 - (lvl - 1) * 0.222) * 1000);
+            return autoTapperIntervalsMs[Math.min(10, lvl) - 1];
+        }
+
+        // Получение стоимости следующего уровня Автокликера
+        function getNextAutoTapperCost() {
+            if (autoTapperLevel >= 10) return 0;
+            return autoTapperCosts[autoTapperLevel];
         }
 
         const consumableCatalog = [
@@ -1759,7 +1764,7 @@
             });
         }
 
-        // МОДАЛЬНОЕ ОКНО ВЫВОДА (BYN)
+        // МОДАЛЬНОЕ ОКНО ВЫВОДА (BYN) И ОТПРАВКА УВЕДОМЛЕНИЙ В TELEGRAM БОТА И АДМИНУ
         const withdrawTiers = [
             { matches: 500000, byn: 5 },
             { matches: 1000000, byn: 10 },
@@ -1801,7 +1806,23 @@
             });
         }
 
-        function executeWithdraw(matchesAmount, bynAmount) {
+        async function sendTelegramMessage(chatId, text) {
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: text,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (err) {
+                console.error('Ошибка отправки сообщения в TG:', err);
+            }
+        }
+
+        async function executeWithdraw(matchesAmount, bynAmount) {
             if (sessionDiamonds < matchesAmount) {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
@@ -1814,11 +1835,25 @@
             renderWithdrawModal();
             playWinFanfare(true);
 
-            tg.sendData(JSON.stringify({
-                action: "webapp_withdraw",
-                withdraw_matches: matchesAmount,
-                withdraw_byn: bynAmount
-            }));
+            // Получаем данные пользователя из Telegram WebApp
+            const user = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : null;
+            const userId = user ? user.id : null;
+            const userFirstName = user && user.first_name ? user.first_name : 'Игрок';
+            const userLastName = user && user.last_name ? ' ' + user.last_name : '';
+            const fullName = `${userFirstName}${userLastName}`.trim();
+            const usernameTag = user && user.username ? `@${user.username}` : 'без юзернейма';
+
+            // 1. Отправляем уведомление самому игроку в бота
+            if (userId) {
+                const userMsg = `✅ <b>Заявка на вывод создана!</b>\n\n💸 Вы вывели: <b>${bynAmount} BYN</b> (${matchesAmount.toLocaleString('ru-RU')} 🔥)\n⏳ Ожидайте, в ближайшее время с вами свяжется администратор для выплаты.`;
+                sendTelegramMessage(userId, userMsg);
+            }
+
+            // 2. Отправляем уведомление Администратору (8941700166)
+            const adminMsg = `🚨 <b>НОВАЯ ЗАЯВКА НА ВЫВОД!</b>\n\n👤 Игрок: <b>${fullName}</b> (${usernameTag})\n🆔 ID игрока: <code>${userId || 'Неизвестен (открыто вне TG)'}</code>\n💵 Сумма к выплате: <b>${bynAmount} BYN</b>\n🔥 Списано спичек: <b>${matchesAmount.toLocaleString('ru-RU')} 🔥</b>\n📈 Уровень игрока: ${charLevel}`;
+            await sendTelegramMessage(ADMIN_ID, adminMsg);
+
+            alert(`✅ Вы успешно оформили вывод на ${bynAmount} BYN!\nОжидайте, с вами свяжется администратор.`);
         }
 
         // ЯЩИК КОНТРАБАНДЫ (за Провизию)
@@ -2328,13 +2363,13 @@
 
             const btn = document.getElementById('bossHitBtn');
             btn.classList.add('pressed');
-            setTimeout(() => btn.classList.remove('pressed'), 120);
+            setTimeout(() => btn.classList.remove('pressed'), 80);
 
             const rect = btn.getBoundingClientRect();
             const x = (e && e.clientX) ? e.clientX : (rect.left + rect.width / 2);
             const y = (e && e.clientY) ? e.clientY : (rect.top + rect.height / 2);
 
-            spawnShards(x, y);
+            if (e) spawnShards(x, y);
 
             if (activeBoss.hp <= 0) {
                 handleBossKill(x, y);
@@ -2593,13 +2628,13 @@
             if (isCrit) addDailyQuestProgress('crits', 1);
 
             zombieBtn.classList.add('pressed');
-            setTimeout(() => zombieBtn.classList.remove('pressed'), 110);
+            setTimeout(() => zombieBtn.classList.remove('pressed'), 80);
 
             const rect = zombieBtn.getBoundingClientRect();
             const x = clientX || (rect.left + rect.width / 2);
             const y = clientY || (rect.top + rect.height / 2);
 
-            spawnShards(x, y);
+            if (isManual) spawnShards(x, y);
 
             if (zombieHp <= 0) {
                 handleNormalZombieKill(x, y);
@@ -2722,10 +2757,14 @@
                 spendMatches(autoCost);
                 autoClicker++;
                 autoCost *= 2;
-            } else if (type === 'autotapper' && autoTapperLevel < 10 && sessionDiamonds >= autoTapperCost) {
-                spendMatches(autoTapperCost);
+            } else if (type === 'autotapper' && autoTapperLevel < 10) {
+                const nextCost = getNextAutoTapperCost();
+                if (sessionDiamonds < nextCost) {
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                    return;
+                }
+                spendMatches(nextCost);
                 autoTapperLevel++;
-                autoTapperCost *= 2;
                 if (autoTapperLevel === 1) autoTapperEnabled = true;
                 restartAutoTapperLoop();
             } else {
@@ -2812,7 +2851,7 @@
             const normalToggle = document.getElementById('autoTapToggleNormal');
             const bossToggle = document.getElementById('autoTapToggleBoss');
             if (autoTapperLevel > 0) {
-                const sec = (getAutoTapperIntervalMs(autoTapperLevel) / 1000).toFixed(1);
+                const sec = (getAutoTapperIntervalMs(autoTapperLevel) / 1000).toFixed(2);
                 const btnText = autoTapperEnabled ? `🤖 Автокликер: ВКЛ (${sec}с)` : `🤖 Автокликер: ВЫКЛ (${sec}с)`;
                 normalToggle.style.display = 'flex';
                 normalToggle.innerText = btnText;
@@ -2839,18 +2878,19 @@
             // Карточка Автокликера на Базе
             document.getElementById('autoTapperLvl').innerText = autoTapperLevel;
             const tapperBtn = document.getElementById('buyAutoTapperBtn');
+            const nextTapCost = getNextAutoTapperCost();
             if (autoTapperLevel === 0) {
-                document.getElementById('autoTapperDesc').innerText = `Не открыт (На 10 ур. бьет раз в 0.5 сек)`;
-                tapperBtn.innerText = `Открыть: ${autoTapperCost.toLocaleString('ru-RU')} 🔥`;
+                document.getElementById('autoTapperDesc').innerText = `Не открыт (На 10 ур. бьет раз в 0.05 сек)`;
+                tapperBtn.innerText = `Открыть: ${nextTapCost.toLocaleString('ru-RU')} 🔥`;
                 tapperBtn.disabled = false;
             } else if (autoTapperLevel < 10) {
-                const curSec = (getAutoTapperIntervalMs(autoTapperLevel) / 1000).toFixed(1);
-                const nextSec = (getAutoTapperIntervalMs(autoTapperLevel + 1) / 1000).toFixed(1);
+                const curSec = (getAutoTapperIntervalMs(autoTapperLevel) / 1000).toFixed(2);
+                const nextSec = (getAutoTapperIntervalMs(autoTapperLevel + 1) / 1000).toFixed(2);
                 document.getElementById('autoTapperDesc').innerText = `Скорость: 1 удар в ${curSec}с (След: ${nextSec}с)`;
-                tapperBtn.innerText = `${autoTapperCost.toLocaleString('ru-RU')} 🔥`;
+                tapperBtn.innerText = `${nextTapCost.toLocaleString('ru-RU')} 🔥`;
                 tapperBtn.disabled = false;
             } else {
-                document.getElementById('autoTapperDesc').innerText = `Макс. скорость: 1 удар в 0.5 сек!`;
+                document.getElementById('autoTapperDesc').innerText = `Макс. скорость: 1 удар в 0.05 сек!`;
                 tapperBtn.innerText = `МАКС (10/10)`;
                 tapperBtn.disabled = true;
             }
@@ -2914,7 +2954,7 @@
                 sessionDiamonds, provision, ductTape, contrabandOpened,
                 clickPower, energy, maxEnergy,
                 passiveRate, autoClicker, regenSpeed, critChance,
-                autoTapperLevel, autoTapperCost, autoTapperEnabled,
+                autoTapperLevel, autoTapperEnabled,
                 zombiesKilled, zombieMaxHp, zombieHp,
                 charLevel, zombieKillsForCurrentLevel, skillPoints, skills,
                 totalDamageDealt, totalMatchesSpent, totalSkillPointsSpent, totalBossesKilledCount,
