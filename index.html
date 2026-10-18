@@ -1280,8 +1280,57 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+	const tg = window.Telegram.WebApp;
         tg.expand();
+
+        // Получаем Telegram ID или 'local_user'
+        const tgUser = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.id : 'local_user';
+
+        // Адрес твоего сервера (позже заменим на ngrok)
+        const SERVER_URL = "https://ebdab1dc481f6ff5-37-213-21-155.serveousercontent.com";
+
+        let matches = 0;
+        let provision = 0;
+        let ductTape = 0;
+
+        // Загрузка данных с твоего ПК при старте игры
+        async function loadUserData() {
+            try {
+                let response = await fetch(`${SERVER_URL}/get_data?tg_id=${tgUser}`);
+                let data = await response.json();
+                
+                matches = data.matches;
+                provision = data.provision;
+                ductTape = data.duct_tape;
+                
+                if (typeof updateUI === 'function') {
+                    updateUI(); // Обновляем экран, если такая функция есть
+                }
+            } catch (e) {
+                console.error("Не удалось подключиться к серверу баланса:", e);
+            }
+        }
+
+        // Вызов загрузки при старте
+        loadUserData();
+
+        // Функция сохранения данных на твой ПК
+        async function saveUserData() {
+            try {
+                await fetch(`${SERVER_URL}/save_data`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tg_id: tgUser,
+                        matches: matches,
+                        provision: provision,
+                        duct_tape: ductTape
+                    })
+                });
+            } catch (e) {
+                console.error("Ошибка сохранения на сервер:", e);
+            }
+        }
 
         // ДАННЫЕ БОТА И АДМИНА ДЛЯ УВЕДОМЛЕНИЙ О ВЫВОДЕ
         const BOT_TOKEN = "8896307643:AAHlB6N1Ms2piRG9IU6G0NiJu0AJmP1wjpA";
