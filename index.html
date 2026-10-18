@@ -215,7 +215,7 @@
             height: 100%;
             width: 100%;
             border-right: 2px solid #000;
-            transition: width 0.2s;
+            transition: width 0.09s linear;
         }
 
         .energy-text {
@@ -230,7 +230,34 @@
             text-shadow: 1px 1px 0 #000;
         }
 
-        /* Центрирование, чтобы нижняя панель смартфона ничего не перекрывала */
+        /* Всплывающее уведомление о выполненном достижении */
+        #achToast {
+            position: fixed;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-130%);
+            background: linear-gradient(135deg, #facc15, #f97316);
+            color: #000;
+            border: 3.5px solid #000;
+            border-radius: 14px;
+            padding: 9px 14px;
+            font-weight: 900;
+            font-size: 12px;
+            box-shadow: 0 5px 0 #000;
+            z-index: 3000;
+            transition: transform 0.32s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 92vw;
+            pointer-events: none;
+        }
+
+        #achToast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Центрирование экранов */
         .screen {
             display: none;
             flex: 1;
@@ -247,19 +274,6 @@
 
         .screen.active {
             display: flex;
-        }
-
-        .test-cheat-btn {
-            background: #38bdf8;
-            color: #000;
-            border: 2px solid #000;
-            border-radius: 8px;
-            padding: 4px 7px;
-            font-weight: 900;
-            font-size: 9px;
-            box-shadow: 0 2px 0 #000;
-            cursor: pointer;
-            text-transform: uppercase;
         }
 
         /* Полоска ХП */
@@ -493,17 +507,34 @@
             margin-top: 2px;
         }
 
+        .btn-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
         .shop-btn {
             background: #f97316;
             color: #000;
             border: 2.5px solid #000;
             border-radius: 10px;
-            padding: 7px 10px;
+            padding: 7px 9px;
             font-weight: 900;
             font-size: 10px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
             white-space: nowrap;
+        }
+
+        .shop-btn.max-btn {
+            background: #facc15;
+            padding: 7px 7px;
+        }
+
+        .shop-btn:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: none;
         }
 
         .shop-btn:disabled {
@@ -616,6 +647,7 @@
             padding: 8px 12px;
             font-size: 12px;
             font-weight: 800;
+            gap: 8px;
         }
 
         .close-modal {
@@ -842,6 +874,15 @@
 </head>
 <body>
 
+    <!-- Всплывающее уведомление о выполненном трофее -->
+    <div id="achToast">
+        <span style="font-size: 20px;">🏆</span>
+        <div>
+            <div style="font-size: 9px; text-transform: uppercase; color: #292524;">Трофей выполнен!</div>
+            <div id="achToastTitle">Достижение</div>
+        </div>
+    </div>
+
     <div class="top-container">
         <div class="header">
             <div class="currencies-wrap">
@@ -877,10 +918,10 @@
             <button class="tab-btn" onclick="switchTab('shop', this)">🚀 База</button>
         </div>
 
-        <!-- Шкала энергии сразу под навигацией -->
+        <!-- Шкала энергии сразу под навигацией (1 тап = 1 энергия) -->
         <div class="energy-bar-wrap">
             <div class="energy-fill" id="energyFill"></div>
-            <div class="energy-text" id="energyText">⚡ 100 / 100</div>
+            <div class="energy-text" id="energyText">⚡ 10.0 / 10 (1 тап = 1 ⚡)</div>
         </div>
     </div>
 
@@ -919,6 +960,10 @@
             <div class="settings-row">
                 <span>Фоновая мелодия</span>
                 <button class="shop-btn" id="musicToggleBtn" style="background: #22c55e;" onclick="toggleMusic()">🎵 Вкл</button>
+            </div>
+            <div class="settings-row">
+                <span>Выбор мелодии</span>
+                <button class="shop-btn" id="musicTrackBtn" style="background: #a855f7; color: #fff;" onclick="cycleMusicTrack()">🎼 1. Сталкер</button>
             </div>
             <div class="settings-row">
                 <span>Полный сброс прогресса</span>
@@ -965,7 +1010,7 @@
         <div class="settings-card case-modal-card" style="border-color: #10b981;">
             <div class="modal-title" style="color: #10b981;">🕵️ ЯЩИК КОНТРАБАНДЫ</div>
             <p style="font-size: 10px; color: var(--text-sub); font-weight: 700;">
-                Содержит: +1 очко навыка, 1–5 ключей боссов, спички по уровню и 0–1 провизию!
+                Содержит: +1 очко навыка, 1–2 ключа боссов, спички по уровню и +100 🟦 Изоленты!
             </p>
 
             <div class="crate-stage">
@@ -1048,7 +1093,7 @@
                 </div>
                 <div class="hp-bar-wrap" style="height: 26px;">
                     <div class="hp-fill" id="bossHpFill" style="background: linear-gradient(90deg, #7f1d1d, #ef4444);"></div>
-                    <div class="hp-text" id="bossHpText">❤️ 250 / 250 HP</div>
+                    <div class="hp-text" id="bossHpText">❤️ 1000 / 1000 HP</div>
                 </div>
             </div>
 
@@ -1088,7 +1133,7 @@
             <div class="lucky-box-card box-contraband">
                 <div class="shop-info">
                     <h4 style="color: #34d399; font-size: 13px;">🕵️ КОНТРАБАНДА</h4>
-                    <p style="color: #a7f3d0;">1 очко навыка, 1–3 ключей боссов, спички, изоленты + 50!</p>
+                    <p style="color: #a7f3d0;">+1 очко навыка, 1–2 ключа боссов, спички по уровню + 100 🟦 Изоленты!</p>
                 </div>
                 <button class="shop-btn" id="contrabandShopBtn" style="background: #10b981; color: #000; padding: 9px 12px;" onclick="openContrabandModal()">1 🥫</button>
             </div>
@@ -1134,7 +1179,7 @@
                     <h4 style="color: #f3f4f6; font-size: 13px;">🔪 ОБЫЧНЫЙ ОРУЖЕЙНЫЙ БОКС</h4>
                     <p style="color: #d1d5db;">Только оружие: Заточка, Молотов, Граната Ф-1, Связка динамита!</p>
                 </div>
-                <button class="shop-btn" style="background: #22c55e; padding: 8px 11px;" onclick="openCaseModal('weapon_basic')">250 🔥</button>
+                <button class="shop-btn" style="background: #22c55e; padding: 8px 11px;" onclick="openCaseModal('weapon_basic')">500 🔥</button>
             </div>
 
             <div class="lucky-box-card box-weapon-vip">
@@ -1142,7 +1187,7 @@
                     <h4 style="color: #fca5a5; font-size: 13px;">🚀 ВИП ОРУЖЕЙНЫЙ БОКС</h4>
                     <p style="color: #fecaca;">Только оружие: Граната Ф-1, Связка динамита, Выстрел с РПГ, Танк!</p>
                 </div>
-                <button class="shop-btn" style="background: #ef4444; color: #fff; padding: 8px 11px;" onclick="openCaseModal('weapon_vip')">5000 🔥</button>
+                <button class="shop-btn" style="background: #ef4444; color: #fff; padding: 8px 11px;" onclick="openCaseModal('weapon_vip')">10000 🔥</button>
             </div>
 
             <div class="lucky-box-card box-weapon-premium">
@@ -1150,7 +1195,7 @@
                     <h4 style="color: #fde047; font-size: 13px;">✈️ ПРЕМИУМ ОРУЖЕЙНЫЙ БОКС</h4>
                     <p style="color: #fef08a;">Только оружие: Выстрел с РПГ, Выстрел с танка, Огненный обстрел, Авиаудар!</p>
                 </div>
-                <button class="shop-btn" style="background: #facc15; padding: 8px 11px;" onclick="openCaseModal('weapon_premium')">50000 🔥</button>
+                <button class="shop-btn" style="background: #facc15; padding: 8px 11px;" onclick="openCaseModal('weapon_premium')">100000 🔥</button>
             </div>
         </div>
     </div>
@@ -1158,7 +1203,7 @@
     <!-- Экран 4: Оружие (Покупка расходников) -->
     <div class="screen" id="screen-market">
         <div class="shop-container">
-            <h4 style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">💣 Покупка одноразового оружия</h4>
+            <h4 style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">💣 Покупка одноразового оружия (Урон x3)</h4>
             <div id="weaponsShopList" style="display: flex; flex-direction: column; gap: 8px;"></div>
         </div>
     </div>
@@ -1169,7 +1214,7 @@
             <div style="background: var(--card-bg); border: 3px solid #000; border-radius: 14px; padding: 10px; text-align: center; box-shadow: 0 3px 0 #000;">
                 <h3 style="font-size: 14px; font-weight: 900; color: #fb923c;">📋 Ежедневные Задания</h3>
                 <p style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">
-                    Обновляются каждый день! Награда зависит от вашего уровня (<span id="questRewardRate">10</span> 🔥 за задание).
+                    Обновляются каждый день! Награда зависит от вашего уровня (<span id="questRewardRate">50</span> 🔥 за задание).
                 </p>
             </div>
             <div id="dailyQuestsList" style="display: flex; flex-direction: column; gap: 8px;"></div>
@@ -1213,26 +1258,35 @@
 
             <div class="shop-card">
                 <div class="shop-info">
-                    <h4>🎯 Острый глаз (+0.5% шанс крита)</h4>
-                    <p id="skillCritText">Уровень: 0 (Шанс: 0%)</p>
+                    <h4>🎯 Острый глаз (+0.2% шанс крита x3)</h4>
+                    <p id="skillCritText">Уровень: 0 (Шанс: 0.0%)</p>
                 </div>
-                <button class="shop-btn" onclick="upgradeSkill('crit')">1 очко</button>
+                <div class="btn-group">
+                    <button class="shop-btn" id="btnSkillCrit" onclick="upgradeSkill('crit', false)">1 очко</button>
+                    <button class="shop-btn max-btn" id="btnSkillCritMax" onclick="upgradeSkill('crit', true)">МАКС</button>
+                </div>
             </div>
 
             <div class="shop-card">
                 <div class="shop-info">
-                    <h4>🏃 Марафонец (+1 ⚡ в сек.)</h4>
-                    <p id="skillMarathonText">Уровень: 0 (Пополнение: 1 ⚡/сек)</p>
+                    <h4>🏃 Марафонец (+0.2 ⚡ в сек.)</h4>
+                    <p id="skillMarathonText">Уровень: 0 (Пополнение: 1.0 ⚡/сек)</p>
                 </div>
-                <button class="shop-btn" onclick="upgradeSkill('marathon')">1 очко</button>
+                <div class="btn-group">
+                    <button class="shop-btn" id="btnSkillMarathon" onclick="upgradeSkill('marathon', false)">1 очко</button>
+                    <button class="shop-btn max-btn" id="btnSkillMarathonMax" onclick="upgradeSkill('marathon', true)">МАКС</button>
+                </div>
             </div>
 
             <div class="shop-card">
                 <div class="shop-info">
-                    <h4>🔋 Выносливость (+50 макс. энергии)</h4>
-                    <p id="skillEnduranceText">Уровень: 0 (Макс: 100 ⚡)</p>
+                    <h4>🔋 Выносливость (+5 макс. энергии)</h4>
+                    <p id="skillEnduranceText">Уровень: 0 (Макс: 10 ⚡)</p>
                 </div>
-                <button class="shop-btn" onclick="upgradeSkill('endurance')">1 очко</button>
+                <div class="btn-group">
+                    <button class="shop-btn" id="btnSkillEndurance" onclick="upgradeSkill('endurance', false)">1 очко</button>
+                    <button class="shop-btn max-btn" id="btnSkillEnduranceMax" onclick="upgradeSkill('endurance', true)">МАКС</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1247,42 +1301,57 @@
                     <h4>📦 Расширить Схрон (+150 мест)</h4>
                     <p id="storageLevelText">Вместимость: 100 🔥</p>
                 </div>
-                <button class="shop-btn" id="buyStorageBtn" onclick="buyUpgrade('storage')">200 🔥</button>
+                <div class="btn-group">
+                    <button class="shop-btn" id="buyStorageBtn" onclick="buyUpgrade('storage', false)">500 🔥</button>
+                    <button class="shop-btn max-btn" id="buyStorageMaxBtn" onclick="buyUpgrade('storage', true)">МАКС</button>
+                </div>
             </div>
             <div class="shop-card">
                 <div class="shop-info">
                     <h4>👊 Удар (+1 урон с руки)</h4>
-                    <p id="clickLevelText">Урон с руки: 1</p>
+                    <p id="clickLevelText">Урон с руки: 1 (1 тап = 1 ⚡)</p>
                 </div>
-                <button class="shop-btn" id="buyClickBtn" onclick="buyUpgrade('click')">50 🔥</button>
+                <div class="btn-group">
+                    <button class="shop-btn" id="buyClickBtn" onclick="buyUpgrade('click', false)">150 🔥</button>
+                    <button class="shop-btn max-btn" id="buyClickMaxBtn" onclick="buyUpgrade('click', true)">МАКС</button>
+                </div>
             </div>
             <div class="shop-card">
                 <div class="shop-info">
                     <h4>🪤 Сборщики добычи (+50 🔥/час)</h4>
                     <p id="passiveLevelText">Уровень: 0</p>
                 </div>
-                <button class="shop-btn" id="buyPassiveBtn" onclick="buyUpgrade('passive')">1000 🔥</button>
+                <div class="btn-group">
+                    <button class="shop-btn" id="buyPassiveBtn" onclick="buyUpgrade('passive', false)">2500 🔥</button>
+                    <button class="shop-btn max-btn" id="buyPassiveMaxBtn" onclick="buyUpgrade('passive', true)">МАКС</button>
+                </div>
             </div>
             <div class="shop-card">
                 <div class="shop-info">
                     <h4>🔫 Напарник (+1 🔥/мин)</h4>
                     <p id="autoLevelText">Уровень: 0</p>
                 </div>
-                <button class="shop-btn" id="buyAutoBtn" onclick="buyUpgrade('auto')">5000 🔥</button>
+                <div class="btn-group">
+                    <button class="shop-btn" id="buyAutoBtn" onclick="buyUpgrade('auto', false)">10000 🔥</button>
+                    <button class="shop-btn max-btn" id="buyAutoMaxBtn" onclick="buyUpgrade('auto', true)">МАКС</button>
+                </div>
             </div>
             <div class="shop-card">
                 <div class="shop-info">
                     <h4>🤖 Автокликер (Ур. <span id="autoTapperLvl">0</span> / 10)</h4>
                     <p id="autoTapperDesc">Не открыт (На 10 ур. бьет раз в 0.05 сек)</p>
                 </div>
-                <button class="shop-btn" id="buyAutoTapperBtn" onclick="buyUpgrade('autotapper')">500 🔥</button>
+                <div class="btn-group">
+                    <button class="shop-btn" id="buyAutoTapperBtn" onclick="buyUpgrade('autotapper', false)">1500 🔥</button>
+                    <button class="shop-btn max-btn" id="buyAutoTapperMaxBtn" onclick="buyUpgrade('autotapper', true)">МАКС</button>
+                </div>
             </div>
 
             <!-- РАЗДЕЛ: МЕНЯЛА НА БАЗЕ -->
             <h4 style="margin-top: 6px; font-size: 11px; color: #facc15; text-transform: uppercase;">🤝 Меняла (Обмен спичек на Изоленту 🟦 и Провизию 🥫)</h4>
             <div id="exchangerList" style="display: flex; flex-direction: column; gap: 6px;"></div>
 
-            <h4 style="margin-top: 6px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🛠️ Мастерская оружия (Прокачка урона за Изоленту 🟦)</h4>
+            <h4 style="margin-top: 6px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🛠️ Мастерская оружия (Урон x3 • Прокачка за Изоленту 🟦)</h4>
             <div id="weaponUpgradesBaseList" style="display: flex; flex-direction: column; gap: 8px;"></div>
         </div>
     </div>
@@ -1291,7 +1360,6 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Флаг для полного сброса, чтобы при перезагрузке страницы старый прогресс не перезаписывался обратно
         let isResetting = false;
 
         // ДАННЫЕ БОТА И АДМИНА ДЛЯ УВЕДОМЛЕНИЙ О ВЫВОДЕ
@@ -1309,8 +1377,8 @@
         let passiveRate = savedData.passiveRate || 0;
         let autoClicker = savedData.autoClicker || 0;
 
-        // Автокликер: 10 уровней с точными ценами и скоростью 0.05 сек на 10 уровне
-        const autoTapperCosts = [500, 2000, 5000, 10000, 15000, 20000, 25000, 35000, 45000, 50000];
+        // Сбалансированные цены Автокликера (10 уровней, 10 ур = 0.05 сек)
+        const autoTapperCosts = [1500, 5000, 12000, 25000, 45000, 75000, 115000, 170000, 240000, 350000];
         const autoTapperIntervalsMs = [1000, 850, 700, 550, 420, 300, 200, 130, 80, 50];
 
         let autoTapperLevel = savedData.autoTapperLevel || 0;
@@ -1319,7 +1387,6 @@
 
         let zombiesKilled = savedData.zombiesKilled || 0;
         let charLevel = savedData.charLevel || 1;
-        // Каждый 10-й зомби повышает уровень и дает 1 очко навыка
         let zombieKillsForCurrentLevel = savedData.zombieKillsForCurrentLevel !== undefined ? (savedData.zombieKillsForCurrentLevel % 10) : 0;
         let skillPoints = savedData.skillPoints || 0;
 
@@ -1332,42 +1399,65 @@
         let skills = {
             crit: rawSkills.crit || 0,
             marathon: rawSkills.marathon || 0,
-            endurance: rawSkills.endurance !== undefined ? rawSkills.endurance : (rawSkills.energy || 0)
+            endurance: rawSkills.endurance !== undefined ? rawSkills.endurance : 0
         };
 
-        let critChance = skills.crit * 0.5;
-        let regenSpeed = 1 + skills.marathon;
-        let maxEnergy = 100 + skills.endurance * 50;
-        let energy = savedData.energy !== undefined ? Math.min(maxEnergy, savedData.energy) : maxEnergy;
+        // Единая функция пересчёта характеристик от навыков:
+        // Стартовая макс энергия = 10, каждый уровень Выносливости дает +5
+        // Стартовая регенерация = 1.0 в сек (по 0.1 каждые 0.1 сек), Марафонец дает +0.2 в сек
+        let critChance = 0;
+        let regenSpeed = 1;
+        let maxEnergy = 10;
+
+        function recalcSkillStats() {
+            critChance = +(skills.crit * 0.2).toFixed(2);
+            regenSpeed = +(1 + skills.marathon * 0.2).toFixed(2);
+            maxEnergy = 10 + skills.endurance * 5;
+        }
+        recalcSkillStats();
+
+        let energy = savedData.energy !== undefined ? Math.min(maxEnergy, Number(savedData.energy)) : maxEnergy;
 
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        let zombieMaxHp = 12 + Math.floor(zombiesKilled / 5);
-        let zombieHp = savedData.zombieHp !== undefined ? Math.min(zombieMaxHp, savedData.zombieHp) : zombieMaxHp;
+        // Формулы обычных ходячих:
+        // Каждые 10 убитых зомби ХП растет на +5 HP, а награда (дроп) растет на +1 🔥
+        function getCalculatedZombieMaxHp() {
+            return 12 + Math.floor(zombiesKilled / 10) * 5;
+        }
 
         function getZombieLootDrop() {
-            return 1 + Math.floor(zombiesKilled / 5);
+            return 1 + Math.floor(zombiesKilled / 10);
         }
+
+        let zombieMaxHp = getCalculatedZombieMaxHp();
+        let zombieHp = savedData.zombieHp !== undefined ? Math.min(zombieMaxHp, savedData.zombieHp) : zombieMaxHp;
+        if (zombieHp <= 0) zombieHp = zombieMaxHp;
 
         let maxStorage = savedData.maxStorage || 100;
         let storedDiamonds = savedData.storedDiamonds || 0;
 
-        // АРИФМЕТИЧЕСКАЯ ПРОГРЕССИЯ СТОИМОСТИ УЛУЧШЕНИЙ БАЗЫ (+50, +200, +1000, +5000 за каждый уровень)
+        // Сбалансированная линейная прогрессия цен на Базе:
+        const BASE_STEP_STORAGE = 500;
+        const BASE_STEP_CLICK = 150;
+        const BASE_STEP_PASSIVE = 2500;
+        const BASE_STEP_AUTO = 10000;
+
         let storageUpgCount = Math.max(0, Math.round((maxStorage - 100) / 150));
         let clickUpgCount = Math.max(0, clickPower - 1);
         let passiveUpgCount = Math.max(0, Math.round(passiveRate / 50));
         let autoUpgCount = Math.max(0, autoClicker);
 
-        let storageCost = (storageUpgCount + 1) * 200;
-        let clickCost = (clickUpgCount + 1) * 50;
-        let passiveCost = (passiveUpgCount + 1) * 1000;
-        let autoCost = (autoUpgCount + 1) * 5000;
+        let storageCost = (storageUpgCount + 1) * BASE_STEP_STORAGE;
+        let clickCost = (clickUpgCount + 1) * BASE_STEP_CLICK;
+        let passiveCost = (passiveUpgCount + 1) * BASE_STEP_PASSIVE;
+        let autoCost = (autoUpgCount + 1) * BASE_STEP_AUTO;
 
         // ОФЛАЙН ПОПОЛНЕНИЕ ЭНЕРГИИ И ПАССИВНОГО ДОХОДА В СХРОН
         if (savedData.lastExitTime) {
-            const elapsedSec = Math.max(0, Math.floor((Date.now() - savedData.lastExitTime) / 1000));
+            const elapsedSec = Math.max(0, (Date.now() - savedData.lastExitTime) / 1000);
             if (elapsedSec > 0) {
                 energy = Math.min(maxEnergy, energy + elapsedSec * regenSpeed);
                 const incomePerSec = (autoClicker / 60) + (passiveRate / 3600);
@@ -1387,27 +1477,26 @@
             return autoTapperCosts[autoTapperLevel];
         }
 
-        // ПРЕДЛОЖЕНИЯ МЕНЯЛЫ НА БАЗЕ
+        // ПРЕДЛОЖЕНИЯ МЕНЯЛЫ НА БАЗЕ (100 спичек = 1 изолента, 10000 спичек = 1 провизия)
         const exchangerCatalog = [
-            { id: 'ex_tape_1_fast', type: 'tape', cost: 10, reward: 1, title: '🟦 1 шт. Изоленты (Быстрый лот)', desc: 'Обмен: 10 🔥 спичек → 1 🟦 изолента' },
-            { id: 'ex_tape_1', type: 'tape', cost: 100, reward: 1, title: '🟦 1 шт. Изоленты', desc: 'Стандартный курс: 100 🔥 спичек → 1 🟦 изолента' },
-            { id: 'ex_tape_10', type: 'tape', cost: 1000, reward: 10, title: '🟦 10 шт. Изоленты', desc: 'Обмен: 1,000 🔥 спичек → 10 🟦 изоленты' },
-            { id: 'ex_tape_100', type: 'tape', cost: 10000, reward: 100, title: '🟦 100 шт. Изоленты', desc: 'Обмен: 10,000 🔥 спичек → 100 🟦 изоленты' },
-            { id: 'ex_tape_1000', type: 'tape', cost: 100000, reward: 1000, title: '🟦 1,000 шт. Изоленты', desc: 'Обмен: 100,000 🔥 спичек → 1,000 🟦 изоленты' },
-            { id: 'ex_tape_10000', type: 'tape', cost: 1000000, reward: 10000, title: '🟦 10,000 шт. Изоленты', desc: 'Оптовый обмен: 1,000,000 🔥 спичек → 10,000 🟦 изоленты' },
+            { id: 'ex_tape_1', type: 'tape', cost: 100, reward: 1, title: '🟦 1 шт. Изоленты', desc: 'Курс: 100 🔥 спичек → 1 🟦 изолента' },
+            { id: 'ex_tape_10', type: 'tape', cost: 1000, reward: 10, title: '🟦 10 шт. Изоленты', desc: 'Курс: 1,000 🔥 спичек → 10 🟦 изоленты' },
+            { id: 'ex_tape_100', type: 'tape', cost: 10000, reward: 100, title: '🟦 100 шт. Изоленты', desc: 'Курс: 10,000 🔥 спичек → 100 🟦 изоленты' },
+            { id: 'ex_tape_1000', type: 'tape', cost: 100000, reward: 1000, title: '🟦 1,000 шт. Изоленты', desc: 'Курс: 100,000 🔥 спичек → 1,000 🟦 изоленты' },
             { id: 'ex_prov_1', type: 'provision', cost: 10000, reward: 1, title: '🥫 1 банка Провизии', desc: 'Курс: 10,000 🔥 спичек → 1 🥫 банка провизии' },
             { id: 'ex_prov_5', type: 'provision', cost: 50000, reward: 5, title: '🥫 5 банок Провизии', desc: 'Курс: 50,000 🔥 спичек → 5 🥫 банок провизии' }
         ];
 
+        // ОРУЖИЕ С УВЕЛИЧЕННЫМ В 3 РАЗА УРОНОМ И ПЕРЕСЧИТАННОЙ ЭКОНОМИКОЙ
         const consumableCatalog = [
-            { id: 'shiv', name: '🔪 Острая заточка', shortName: 'Острая заточка', baseDmg: 35, cost: 35, icon: '🔪', upgTape: 1, upgMatches: 10, upgBonus: 1 },
-            { id: 'molotov', name: '🍾 Коктейль Молотова', shortName: 'Молотов', baseDmg: 150, cost: 150, icon: '🍾', upgTape: 5, upgMatches: 50, upgBonus: 5 },
-            { id: 'grenade', name: '💣 Граната Ф-1', shortName: 'Граната Ф-1', baseDmg: 450, cost: 450, icon: '💣', upgTape: 50, upgMatches: 500, upgBonus: 50 },
-            { id: 'dynamite', name: '🧨 Связка динамита', shortName: 'Связка динамита', baseDmg: 2500, cost: 2500, icon: '🧨', upgTape: 500, upgMatches: 5000, upgBonus: 500 },
-            { id: 'rpg', name: '🚀 Выстрел с РПГ-7', shortName: 'Выстрел с РПГ-7', baseDmg: 10000, cost: 10000, icon: '🚀', upgTape: 2500, upgMatches: 25000, upgBonus: 2500 },
-            { id: 'tank', name: '🚜 Выстрел с танка', shortName: 'Выстрел с танка', baseDmg: 25000, cost: 25000, icon: '🚜', upgTape: 5000, upgMatches: 50000, upgBonus: 5000 },
-            { id: 'firestorm', name: '🔥 Огненный обстрел', shortName: 'Огненный обстрел', baseDmg: 100000, cost: 100000, icon: '🔥', upgTape: 25000, upgMatches: 250000, upgBonus: 25000 },
-            { id: 'airstrike', name: '✈️ Авиаудар', shortName: 'Авиаудар', baseDmg: 250000, cost: 250000, icon: '✈️', upgTape: 50000, upgMatches: 500000, upgBonus: 50000 }
+            { id: 'shiv', name: '🔪 Острая заточка', shortName: 'Острая заточка', baseDmg: 105, cost: 120, icon: '🔪', upgTape: 3, upgMatches: 40, upgBonus: 3 },
+            { id: 'molotov', name: '🍾 Коктейль Молотова', shortName: 'Молотов', baseDmg: 450, cost: 500, icon: '🍾', upgTape: 15, upgMatches: 200, upgBonus: 15 },
+            { id: 'grenade', name: '💣 Граната Ф-1', shortName: 'Граната Ф-1', baseDmg: 1350, cost: 1500, icon: '💣', upgTape: 120, upgMatches: 1500, upgBonus: 150 },
+            { id: 'dynamite', name: '🧨 Связка динамита', shortName: 'Связка динамита', baseDmg: 7500, cost: 8000, icon: '🧨', upgTape: 1200, upgMatches: 15000, upgBonus: 1500 },
+            { id: 'rpg', name: '🚀 Выстрел с РПГ-7', shortName: 'Выстрел с РПГ-7', baseDmg: 30000, cost: 32000, icon: '🚀', upgTape: 6000, upgMatches: 75000, upgBonus: 7500 },
+            { id: 'tank', name: '🚜 Выстрел с танка', shortName: 'Выстрел с танка', baseDmg: 75000, cost: 80000, icon: '🚜', upgTape: 15000, upgMatches: 180000, upgBonus: 15000 },
+            { id: 'firestorm', name: '🔥 Огненный обстрел', shortName: 'Огненный обстрел', baseDmg: 300000, cost: 320000, icon: '🔥', upgTape: 60000, upgMatches: 750000, upgBonus: 75000 },
+            { id: 'airstrike', name: '✈️ Авиаудар', shortName: 'Авиаудар', baseDmg: 750000, cost: 800000, icon: '✈️', upgTape: 150000, upgMatches: 1800000, upgBonus: 150000 }
         ];
 
         let consumables = savedData.consumables || {};
@@ -1423,23 +1512,23 @@
             return w.baseDmg + (weaponLevels[id] || 0) * w.upgBonus;
         }
 
-        // 15 БОССОВ
+        // 15 БОССОВ (Выровнен прогресс ХП и наград)
         const bossesCatalog = [
-            { id: 'boss_1', idx: 1, name: '🧟‍♂️ Трупный Колосс', cleanName: 'Трупный Колосс', maxHp: 1000, reward: 100, tapeMin: 0, tapeMax: 0, provMin: 1, provMax: 5 },
-            { id: 'boss_2', idx: 2, name: '☣️ Некропат', cleanName: 'Некропат', maxHp: 5000, reward: 500, tapeMin: 0, tapeMax: 0, provMin: 5, provMax: 10 },
-            { id: 'boss_3', idx: 3, name: '🦴 Костегрыз', cleanName: 'Костегрыз', maxHp: 15000, reward: 5500, tapeMin: 0, tapeMax: 0, provMin: 10, provMax: 20 },
-            { id: 'boss_4', idx: 4, name: '🧬 Кадавр-Альфа', cleanName: 'Кадавр-Альфа', maxHp: 50000, reward: 10000, tapeMin: 5, tapeMax: 10, provMin: 15, provMax: 30 },
-            { id: 'boss_5', idx: 5, name: '🩸 Раздиратель', cleanName: 'Раздиратель', maxHp: 100000, reward: 25000, tapeMin: 10, tapeMax: 25, provMin: 30, provMax: 50 },
-            { id: 'boss_6', idx: 6, name: '👻 Пожиратель Душ', cleanName: 'Пожиратель Душ', maxHp: 500000, reward: 50000, tapeMin: 20, tapeMax: 50, provMin: 50, provMax: 100 },
-            { id: 'boss_7', idx: 7, name: '🪓 Архи-Палач', cleanName: 'Архи-Палач', maxHp: 1000000, reward: 50000, tapeMin: 100, tapeMax: 200, provMin: 100, provMax: 200 },
-            { id: 'boss_8', idx: 8, name: '🗿 Костяной Монолит', cleanName: 'Костяной Монолит', maxHp: 5000000, reward: 100000, tapeMin: 100, tapeMax: 200, provMin: 50, provMax: 150 },
-            { id: 'boss_9', idx: 9, name: '🧛 Кровожад', cleanName: 'Кровожад', maxHp: 10000000, reward: 200000, tapeMin: 200, tapeMax: 500, provMin: 200, provMax: 500 },
-            { id: 'boss_10', idx: 10, name: '👹 Мертвый Исполин', cleanName: 'Мертвый Исполин', maxHp: 50000000, reward: 500000, tapeMin: 500, tapeMax: 1000, provMin: 200, provMax: 250 },
-            { id: 'boss_11', idx: 11, name: '☣️ Владыка Мора', cleanName: 'Владыка Мора', maxHp: 100000000, reward: 500000, tapeMin: 1000, tapeMax: 2000, provMin: 500, provMax: 1000 },
-            { id: 'boss_12', idx: 12, name: '🐙 Кровавый Левиафан', cleanName: 'Кровавый Левиафан', maxHp: 500000000, reward: 1000000, tapeMin: 2000, tapeMax: 3000, provMin: 500, provMax: 1000 },
-            { id: 'boss_13', idx: 13, name: '💀 Вестник Погибели', cleanName: 'Вестник Погибели', maxHp: 1000000000, reward: 2500000, tapeMin: 3000, tapeMax: 5000, provMin: 1000, provMax: 2000 },
-            { id: 'boss_14', idx: 14, name: '👑 Царь Праха', cleanName: 'Царь Праха', maxHp: 5000000000, reward: 5000000, tapeMin: 5000, tapeMax: 10000, provMin: 5000, provMax: 10000 },
-            { id: 'boss_15', idx: 15, name: '👁️ Первородный Ужас', cleanName: 'Первородный Ужас', maxHp: 10000000000, reward: 10000000, tapeMin: 10000, tapeMax: 20000, provMin: 10000, provMax: 100000 }
+            { id: 'boss_1', idx: 1, name: '🧟‍♂️ Трупный Колосс', cleanName: 'Трупный Колосс', maxHp: 1500, reward: 150, tapeMin: 0, tapeMax: 0, provMin: 1, provMax: 3 },
+            { id: 'boss_2', idx: 2, name: '☣️ Некропат', cleanName: 'Некропат', maxHp: 7500, reward: 750, tapeMin: 0, tapeMax: 0, provMin: 3, provMax: 6 },
+            { id: 'boss_3', idx: 3, name: '🦴 Костегрыз', cleanName: 'Костегрыз', maxHp: 25000, reward: 2500, tapeMin: 0, tapeMax: 0, provMin: 6, provMax: 12 },
+            { id: 'boss_4', idx: 4, name: '🧬 Кадавр-Альфа', cleanName: 'Кадавр-Альфа', maxHp: 75000, reward: 7500, tapeMin: 5, tapeMax: 15, provMin: 10, provMax: 20 },
+            { id: 'boss_5', idx: 5, name: '🩸 Раздиратель', cleanName: 'Раздиратель', maxHp: 200000, reward: 20000, tapeMin: 15, tapeMax: 35, provMin: 20, provMax: 35 },
+            { id: 'boss_6', idx: 6, name: '👻 Пожиратель Душ', cleanName: 'Пожиратель Душ', maxHp: 600000, reward: 45000, tapeMin: 30, tapeMax: 70, provMin: 35, provMax: 60 },
+            { id: 'boss_7', idx: 7, name: '🪓 Архи-Палач', cleanName: 'Архи-Палач', maxHp: 1500000, reward: 90000, tapeMin: 80, tapeMax: 160, provMin: 60, provMax: 100 },
+            { id: 'boss_8', idx: 8, name: '🗿 Костяной Монолит', cleanName: 'Костяной Монолит', maxHp: 5000000, reward: 180000, tapeMin: 150, tapeMax: 300, provMin: 100, provMax: 160 },
+            { id: 'boss_9', idx: 9, name: '🧛 Кровожад', cleanName: 'Кровожад', maxHp: 15000000, reward: 350000, tapeMin: 300, tapeMax: 600, provMin: 160, provMax: 250 },
+            { id: 'boss_10', idx: 10, name: '👹 Мертвый Исполин', cleanName: 'Мертвый Исполин', maxHp: 50000000, reward: 700000, tapeMin: 600, tapeMax: 1200, provMin: 250, provMax: 400 },
+            { id: 'boss_11', idx: 11, name: '☣️ Владыка Мора', cleanName: 'Владыка Мора', maxHp: 150000000, reward: 1200000, tapeMin: 1200, tapeMax: 2500, provMin: 400, provMax: 700 },
+            { id: 'boss_12', idx: 12, name: '🐙 Кровавый Левиафан', cleanName: 'Кровавый Левиафан', maxHp: 500000000, reward: 2200000, tapeMin: 2500, tapeMax: 4500, provMin: 700, provMax: 1200 },
+            { id: 'boss_13', idx: 13, name: '💀 Вестник Погибели', cleanName: 'Вестник Погибели', maxHp: 1500000000, reward: 4000000, tapeMin: 4500, tapeMax: 8000, provMin: 1200, provMax: 2000 },
+            { id: 'boss_14', idx: 14, name: '👑 Царь Праха', cleanName: 'Царь Праха', maxHp: 5000000000, reward: 7500000, tapeMin: 8000, tapeMax: 15000, provMin: 2500, provMax: 5000 },
+            { id: 'boss_15', idx: 15, name: '👁️ Первородный Ужас', cleanName: 'Первородный Ужас', maxHp: 15000000000, reward: 15000000, tapeMin: 15000, tapeMax: 30000, provMin: 6000, provMax: 12000 }
         ];
 
         let bossKeys = savedData.bossKeys || {};
@@ -1456,21 +1545,21 @@
             weapon_basic: 0, weapon_vip: 0, weapon_premium: 0
         };
 
-        // ================= ОБНОВЛЕННАЯ КОНФИГУРАЦИЯ БОКСОВ =================
+        // КОНФИГУРАЦИЯ БОКСОВ
         const boxesConfig = {
             basic: {
                 title: '📦 ОБЫЧНЫЙ БОКС',
                 cost: 50,
                 desc: 'Выигрыши: 0, 100, 500 🔥 • 10 🟦 Изоленты • Заточка, Молотов, Граната • 1 🥫 Провизия',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 28 },
-                    { type: 'matches', val: 100, name: '100 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 24 },
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 32 },
+                    { type: 'matches', val: 100, name: '100 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 25 },
                     { type: 'tape', val: 10, name: '10 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 16 },
-                    { type: 'weapon', id: 'shiv', name: 'Заточка', icon: '🔪', rarity: 'rarity-purple', weight: 12 },
-                    { type: 'weapon', id: 'molotov', name: 'Молотов', icon: '🍾', rarity: 'rarity-purple', weight: 8 },
-                    { type: 'matches', val: 500, name: '500 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 5 },
-                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-red', weight: 4 },
-                    { type: 'provision', val: 1, name: '1 🥫 Провизия', icon: '🥫', rarity: 'rarity-gold', weight: 3 }
+                    { type: 'weapon', id: 'shiv', name: 'Заточка', icon: '🔪', rarity: 'rarity-purple', weight: 11 },
+                    { type: 'weapon', id: 'molotov', name: 'Молотов', icon: '🍾', rarity: 'rarity-purple', weight: 6 },
+                    { type: 'matches', val: 500, name: '500 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 4.5 },
+                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-red', weight: 3 },
+                    { type: 'provision', val: 1, name: '1 🥫 Провизия', icon: '🥫', rarity: 'rarity-gold', weight: 2.5 }
                 ]
             },
             super: {
@@ -1478,15 +1567,15 @@
                 cost: 500,
                 desc: 'Выигрыши: 0, 1000, 2000, 5000, 10000 🔥 • 100 🟦 Изоленты • Граната, РПГ • 5 🥫 Провизии',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 26 },
-                    { type: 'matches', val: 1000, name: '1000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 22 },
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 30 },
+                    { type: 'matches', val: 1000, name: '1000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 23 },
                     { type: 'tape', val: 100, name: '100 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 15 },
-                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-purple', weight: 12 },
-                    { type: 'matches', val: 2000, name: '2000 🔥 Спичек', icon: '💰', rarity: 'rarity-purple', weight: 10 },
-                    { type: 'matches', val: 5000, name: '5000 🔥 Спичек', icon: '💎', rarity: 'rarity-pink', weight: 6 },
-                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-red', weight: 4 },
-                    { type: 'provision', val: 5, name: '5 🥫 Провизии', icon: '🥫', rarity: 'rarity-red', weight: 3 },
-                    { type: 'matches', val: 10000, name: '10000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 2 }
+                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-purple', weight: 11 },
+                    { type: 'matches', val: 2000, name: '2000 🔥 Спичек', icon: '💰', rarity: 'rarity-purple', weight: 9 },
+                    { type: 'matches', val: 5000, name: '5000 🔥 Спичек', icon: '💎', rarity: 'rarity-pink', weight: 5 },
+                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-red', weight: 3 },
+                    { type: 'provision', val: 5, name: '5 🥫 Провизии', icon: '🥫', rarity: 'rarity-red', weight: 2.5 },
+                    { type: 'matches', val: 10000, name: '10000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 1.5 }
                 ]
             },
             vip: {
@@ -1494,14 +1583,14 @@
                 cost: 5000,
                 desc: 'Выигрыши: 0, 10000, 20000, 50000 🔥 • 1000 🟦 Изоленты • РПГ, Танк • 50 🥫 Провизии',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 26 },
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 30 },
                     { type: 'matches', val: 10000, name: '10000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 24 },
                     { type: 'tape', val: 1000, name: '1000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-purple', weight: 16 },
-                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-purple', weight: 12 },
-                    { type: 'matches', val: 20000, name: '20000 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 10 },
-                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-red', weight: 5 },
-                    { type: 'matches', val: 50000, name: '50000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 4 },
-                    { type: 'provision', val: 50, name: '50 🥫 Провизии', icon: '🥫', rarity: 'rarity-gold', weight: 3 }
+                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-purple', weight: 11 },
+                    { type: 'matches', val: 20000, name: '20000 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 9 },
+                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-red', weight: 4.5 },
+                    { type: 'matches', val: 50000, name: '50000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 3 },
+                    { type: 'provision', val: 50, name: '50 🥫 Провизии', icon: '🥫', rarity: 'rarity-gold', weight: 2.5 }
                 ]
             },
             premium: {
@@ -1509,47 +1598,47 @@
                 cost: 50000,
                 desc: 'Выигрыши: 0, 100к, 200к, 500к, 1 млн 🔥 • Огненный обстрел, Авиаудар • 5000 🥫 Провизии',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 26 },
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 30 },
                     { type: 'matches', val: 100000, name: '100000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 25 },
                     { type: 'matches', val: 200000, name: '200000 🔥 Спичек', icon: '💰', rarity: 'rarity-purple', weight: 17 },
-                    { type: 'weapon', id: 'firestorm', name: 'Огненный обстрел', icon: '🔥', rarity: 'rarity-pink', weight: 12 },
-                    { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-red', weight: 9 },
-                    { type: 'matches', val: 500000, name: '500000 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 6 },
-                    { type: 'provision', val: 5000, name: '5000 🥫 Провизии!', icon: '🥫', rarity: 'rarity-gold', weight: 3 },
-                    { type: 'matches', val: 1000000, name: '1 000 000 🔥 ДЖЕКПОТ!', icon: '👑', rarity: 'rarity-gold', weight: 2 }
+                    { type: 'weapon', id: 'firestorm', name: 'Огненный обстрел', icon: '🔥', rarity: 'rarity-pink', weight: 11 },
+                    { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-red', weight: 8 },
+                    { type: 'matches', val: 500000, name: '500000 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 5 },
+                    { type: 'provision', val: 5000, name: '5000 🥫 Провизии!', icon: '🥫', rarity: 'rarity-gold', weight: 2.5 },
+                    { type: 'matches', val: 1000000, name: '1 000 000 🔥 ДЖЕКПОТ!', icon: '👑', rarity: 'rarity-gold', weight: 1.5 }
                 ]
             },
             weapon_basic: {
                 title: '🔪 ОБЫЧНЫЙ ОРУЖЕЙНЫЙ БОКС',
-                cost: 250,
+                cost: 500,
                 desc: '100% гарантия оружия: Острая заточка, Молотов, Граната Ф-1 или Связка динамита!',
                 pool: [
-                    { type: 'weapon', id: 'shiv', name: 'Заточка', icon: '🔪', rarity: 'rarity-blue', weight: 45 },
+                    { type: 'weapon', id: 'shiv', name: 'Заточка', icon: '🔪', rarity: 'rarity-blue', weight: 46 },
                     { type: 'weapon', id: 'molotov', name: 'Молотов', icon: '🍾', rarity: 'rarity-purple', weight: 30 },
                     { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-pink', weight: 18 },
-                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-red', weight: 7 }
+                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-red', weight: 6 }
                 ]
             },
             weapon_vip: {
                 title: '🚀 ВИП ОРУЖЕЙНЫЙ БОКС',
-                cost: 5000,
+                cost: 10000,
                 desc: '100% гарантия оружия: Граната Ф-1, Связка динамита, Выстрел с РПГ или Выстрел с танка!',
                 pool: [
-                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-blue', weight: 42 },
+                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-blue', weight: 44 },
                     { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-purple', weight: 32 },
-                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-pink', weight: 18 },
-                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-gold', weight: 8 }
+                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-pink', weight: 17 },
+                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-gold', weight: 7 }
                 ]
             },
             weapon_premium: {
                 title: '✈️ ПРЕМИУМ ОРУЖЕЙНЫЙ БОКС',
-                cost: 50000,
+                cost: 100000,
                 desc: '100% гарантия оружия: Выстрел с РПГ, Выстрел с танка, Огненный обстрел или Авиаудар!',
                 pool: [
-                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-purple', weight: 44 },
+                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-purple', weight: 45 },
                     { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-pink', weight: 32 },
                     { type: 'weapon', id: 'firestorm', name: 'Огненный обстрел', icon: '🔥', rarity: 'rarity-red', weight: 16 },
-                    { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-gold', weight: 8 }
+                    { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-gold', weight: 7 }
                 ]
             }
         };
@@ -1558,6 +1647,7 @@
         let activeBoss = savedData.activeBoss || null;
         let soundEnabled = savedData.soundEnabled !== undefined ? savedData.soundEnabled : true;
         let musicEnabled = savedData.musicEnabled !== undefined ? savedData.musicEnabled : true;
+        let currentMusicTrack = savedData.currentMusicTrack || 0;
         let currentTheme = savedData.theme || 'dark';
         let isSpinningCase = false;
 
@@ -1565,8 +1655,8 @@
         const dailyQuestTemplates = [
             { id: 'dq_1', title: 'Убить 100 обычных зомби', metric: 'zombies', target: 100 },
             { id: 'dq_2', title: 'Убить 250 обычных зомби', metric: 'zombies', target: 250 },
-            { id: 'dq_3', title: 'Нанести 2,500 урона врагам', metric: 'damage', target: 2500 },
-            { id: 'dq_4', title: 'Нанести 10,000 урона врагам', metric: 'damage', target: 10000 },
+            { id: 'dq_3', title: 'Нанести 5,000 урона врагам', metric: 'damage', target: 5000 },
+            { id: 'dq_4', title: 'Нанести 25,000 урона врагам', metric: 'damage', target: 25000 },
             { id: 'dq_5', title: 'Победить любых боссов 3 раза', metric: 'bosses', target: 3 },
             { id: 'dq_6', title: 'Победить любых боссов 15 раз', metric: 'bosses', target: 15 },
             { id: 'dq_7', title: 'Открыть 5 Обычных боксов', metric: 'box_basic', target: 5 },
@@ -1574,7 +1664,7 @@
             { id: 'dq_9', title: 'Собрать спички из Схрона 3 раза', metric: 'storage_collect', target: 3 },
             { id: 'dq_10', title: 'Использовать любое оружие 3 раза', metric: 'use_weapon', target: 3 },
             { id: 'dq_11', title: 'Нанести 15 критических ударов', metric: 'crits', target: 15 },
-            { id: 'dq_12', title: 'Потратить 500 спичек', metric: 'spend_matches', target: 500 },
+            { id: 'dq_12', title: 'Потратить 1,000 спичек', metric: 'spend_matches', target: 1000 },
             { id: 'dq_13', title: 'Купить любое оружие в Оружейной 3 раза', metric: 'buy_weapon', target: 3 },
             { id: 'dq_14', title: 'Улучшить Базу или Оружие 1 раз', metric: 'upgrade_base', target: 1 },
             { id: 'dq_15', title: 'Сделать 150 ударов в охоте', metric: 'taps', target: 150 }
@@ -1611,7 +1701,7 @@
             }
         }
 
-        // ================= ДОСТИЖЕНИЯ С ПРОГРЕССИВНОЙ НАГРАДОЙ ПРОВИЗИИ =================
+        // ================= ДОСТИЖЕНИЯ И ЗВУКОВОЕ ОПОВЕЩЕНИЕ =================
         const achievementsCatalog = [];
 
         const zMilestones = [100, 500, 1000, 5000, 10000, 50000, 100000, 500000];
@@ -1724,26 +1814,91 @@
         });
 
         let claimedAchievements = savedData.claimedAchievements || {};
+        let notifiedAchievements = savedData.notifiedAchievements || {};
+        // Помечаем уже выполненные до обновления достижения, чтобы не спамить при старте
+        achievementsCatalog.forEach(a => {
+            if (claimedAchievements[a.id] || a.getVal() >= a.target) {
+                notifiedAchievements[a.id] = true;
+            }
+        });
+
         let currentAchFilter = 'all';
+        let achToastTimer = null;
+
+        function checkNewAchievementsUnlock() {
+            let newlyUnlocked = null;
+            for (const a of achievementsCatalog) {
+                if (!notifiedAchievements[a.id] && !claimedAchievements[a.id] && a.getVal() >= a.target) {
+                    notifiedAchievements[a.id] = true;
+                    newlyUnlocked = a;
+                }
+            }
+            if (newlyUnlocked) {
+                playAchievementUnlockSound();
+                showAchToast(`${newlyUnlocked.title} (+${newlyUnlocked.reward} 🥫)`);
+                if (document.getElementById('screen-achievements').classList.contains('active')) {
+                    renderAchievements();
+                }
+            }
+        }
+
+        function showAchToast(text) {
+            const toast = document.getElementById('achToast');
+            document.getElementById('achToastTitle').innerText = text;
+            toast.classList.add('show');
+            if (achToastTimer) clearTimeout(achToastTimer);
+            achToastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3200);
+        }
 
         function spendMatches(amount) {
             sessionDiamonds -= amount;
             totalMatchesSpent += amount;
             addDailyQuestProgress('spend_matches', amount);
+            checkNewAchievementsUnlock();
         }
 
-        // ================= ЗВУКОВОЙ ДВИЖОК И ФОНОВАЯ МЕЛОДИЯ =================
+        // ================= ЗВУКОВОЙ ДВИЖОК И 3 ФОНОВЫЕ МЕЛОДИИ =================
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         let audioCtx = null;
         let bgmInterval = null;
         let bgmStep = 0;
 
-        // Атмосферная постапокалиптическая мелодия в миноре (DayZ / Stalker vibe)
-        const bgmMelodyNotes = [
-            146.83, 220.00, 261.63, 220.00, // Dm: D3, A3, C4, A3
-            174.61, 220.00, 293.66, 261.63, // F:  F3, A3, D4, C4
-            130.81, 196.00, 246.94, 196.00, // C:  C3, G3, B3, G3
-            110.00, 164.81, 220.00, 174.61  // Am: A2, E3, A3, F3
+        const musicTracks = [
+            {
+                name: '🎼 1. Сталкер',
+                tempo: 540,
+                oscType: 'triangle',
+                notes: [
+                    146.83, 220.00, 261.63, 220.00, // Dm
+                    174.61, 220.00, 293.66, 261.63, // F
+                    130.81, 196.00, 246.94, 196.00, // C
+                    110.00, 164.81, 220.00, 174.61  // Am
+                ]
+            },
+            {
+                name: '🎼 2. Мёртвый Город',
+                tempo: 420,
+                oscType: 'sine',
+                notes: [
+                    164.81, 246.94, 329.63, 246.94, // Em
+                    196.00, 293.66, 392.00, 293.66, // G
+                    146.83, 220.00, 293.66, 220.00, // D
+                    130.81, 196.00, 246.94, 164.81  // C
+                ]
+            },
+            {
+                name: '🎼 3. Бункер',
+                tempo: 330,
+                oscType: 'triangle',
+                notes: [
+                    110.00, 130.81, 164.81, 220.00, // Am pulse
+                    110.00, 146.83, 174.61, 220.00, // Dm pulse
+                    98.00,  130.81, 164.81, 196.00, // G/C pulse
+                    82.41,  123.47, 164.81, 196.00  // Em pulse
+                ]
+            }
         ];
 
         function initAudio() {
@@ -1757,25 +1912,23 @@
         function playBgmNote() {
             if (!musicEnabled || !audioCtx || audioCtx.state !== 'running') return;
             const now = audioCtx.currentTime;
+            const track = musicTracks[currentMusicTrack] || musicTracks[0];
+            const freq = track.notes[bgmStep % track.notes.length];
 
-            const freq = bgmMelodyNotes[bgmStep % bgmMelodyNotes.length];
-
-            // Мягкий атмосферный синт-арпеджио
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = 'triangle';
+            osc.type = track.oscType;
             osc.frequency.setValueAtTime(freq, now);
 
             gain.gain.setValueAtTime(0.001, now);
-            gain.gain.linearRampToValueAtTime(0.055, now + 0.08);
-            gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.52);
+            gain.gain.linearRampToValueAtTime(0.05, now + 0.06);
+            gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.45);
 
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start(now);
-            osc.stop(now + 0.55);
+            osc.stop(now + 0.48);
 
-            // Глубокий бас на сильную долю каждого такта
             if (bgmStep % 4 === 0) {
                 const bassOsc = audioCtx.createOscillator();
                 const bassGain = audioCtx.createGain();
@@ -1783,13 +1936,13 @@
                 bassOsc.frequency.setValueAtTime(freq / 2, now);
 
                 bassGain.gain.setValueAtTime(0.001, now);
-                bassGain.gain.linearRampToValueAtTime(0.075, now + 0.15);
-                bassGain.gain.exponentialRampToValueAtTime(0.0008, now + 2.1);
+                bassGain.gain.linearRampToValueAtTime(0.07, now + 0.12);
+                bassGain.gain.exponentialRampToValueAtTime(0.0008, now + 1.8);
 
                 bassOsc.connect(bassGain);
                 bassGain.connect(audioCtx.destination);
                 bassOsc.start(now);
-                bassOsc.stop(now + 2.15);
+                bassOsc.stop(now + 1.85);
             }
 
             bgmStep++;
@@ -1798,7 +1951,8 @@
         function startBackgroundMusic() {
             if (bgmInterval) clearInterval(bgmInterval);
             if (!musicEnabled) return;
-            bgmInterval = setInterval(playBgmNote, 550);
+            const track = musicTracks[currentMusicTrack] || musicTracks[0];
+            bgmInterval = setInterval(playBgmNote, track.tempo);
         }
 
         function stopBackgroundMusic() {
@@ -1822,7 +1976,17 @@
             saveProgress();
         }
 
-        // Автозапуск аудио и мелодии при первом касании экрана
+        function cycleMusicTrack() {
+            currentMusicTrack = (currentMusicTrack + 1) % musicTracks.length;
+            bgmStep = 0;
+            document.getElementById('musicTrackBtn').innerText = musicTracks[currentMusicTrack].name;
+            if (musicEnabled) {
+                initAudio();
+                startBackgroundMusic();
+            }
+            saveProgress();
+        }
+
         document.addEventListener('pointerdown', () => {
             initAudio();
         }, { once: true });
@@ -1836,7 +2000,7 @@
             osc.type = isKill ? 'sawtooth' : 'triangle';
             osc.frequency.setValueAtTime(isKill ? 240 : 160, now);
             osc.frequency.exponentialRampToValueAtTime(45, now + (isKill ? 0.22 : 0.09));
-            gain.gain.setValueAtTime(0.35, now);
+            gain.gain.setValueAtTime(0.32, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
             osc.connect(gain);
             gain.connect(audioCtx.destination);
@@ -1871,7 +2035,7 @@
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(freq, now);
-                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.setValueAtTime(0.28, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -1880,13 +2044,34 @@
             });
         }
 
+        // Специальный торжественный звук разблокировки Трофея (Достижения)
+        function playAchievementUnlockSound() {
+            if (!soundEnabled) return;
+            initAudio();
+            const notes = [587.33, 739.99, 880.00, 1174.66, 1479.98];
+            notes.forEach((freq, idx) => {
+                const now = audioCtx.currentTime + idx * 0.075;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.36);
+            });
+            if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        }
+
         // МОДАЛЬНОЕ ОКНО ВЫВОДА (BYN)
         const withdrawTiers = [
             { matches: 500000, byn: 5 },
             { matches: 1000000, byn: 10 },
             { matches: 2000000, byn: 20 },
             { matches: 5000000, byn: 50 },
-            { matches: 100000000, byn: 100 }
+            { matches: 10000000, byn: 100 }
         ];
 
         function openWithdrawModal() {
@@ -2023,7 +2208,7 @@
 
                 skillPoints += 1;
 
-                const keysAmount = getRandomInt(0, 1);
+                const keysAmount = getRandomInt(1, 2);
                 const randomBoss = bossesCatalog[getRandomInt(1, bossesCatalog.length - 1)];
                 bossKeys[randomBoss.id] = (bossKeys[randomBoss.id] || 0) + keysAmount;
 
@@ -2032,8 +2217,8 @@
                 const wonMatches = getRandomInt(minMatches, maxMatches);
                 sessionDiamonds += wonMatches;
 
-				const wonTape = 100;
-				ductTape += wonTape;
+                const wonTape = 100;
+                ductTape += wonTape;
 
                 lootGrid.innerHTML = `
                     <div class="contraband-loot-item">📈 +1 Очко навыка</div>
@@ -2117,6 +2302,7 @@
             spendMatches(cfg.cost);
             boxOpenCounts[currentBoxKey] = (boxOpenCounts[currentBoxKey] || 0) + 1;
             if (currentBoxKey === 'basic') addDailyQuestProgress('box_basic', 1);
+            checkNewAchievementsUnlock();
 
             updateUI();
             saveProgress();
@@ -2210,6 +2396,7 @@
                     playWinFanfare(true);
                 }
 
+                checkNewAchievementsUnlock();
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
                 updateUI();
                 renderMarket();
@@ -2218,7 +2405,7 @@
             }, spinDurationMs + 80);
         }
 
-        // МАГАЗИН ОРУЖИЯ
+        // МАГАЗИН ОРУЖИЯ (с кнопкой МАКС)
         function renderMarket() {
             const cbBtn = document.getElementById('contrabandShopBtn');
             if (cbBtn) cbBtn.innerText = `${getContrabandCost()} 🥫`;
@@ -2229,6 +2416,9 @@
             consumableCatalog.forEach(w => {
                 const count = consumables[w.id] || 0;
                 const currentDmg = getWeaponDamage(w.id);
+                const maxAffordable = Math.floor(sessionDiamonds / w.cost);
+                const canAfford = maxAffordable >= 1;
+
                 const card = document.createElement('div');
                 card.className = 'shop-card';
                 card.innerHTML = `
@@ -2236,7 +2426,10 @@
                         <h4>${w.name} <span style="color:#facc15;">(В наличии: ${count})</span></h4>
                         <p>Разовый урон: 💥 <b style="color:#ef4444;">${currentDmg.toLocaleString('ru-RU')} HP</b> (Ур. +${weaponLevels[w.id] || 0})</p>
                     </div>
-                    <button class="shop-btn" onclick="buyConsumable('${w.id}')">${w.cost.toLocaleString('ru-RU')} 🔥</button>
+                    <div class="btn-group">
+                        <button class="shop-btn" ${!canAfford ? 'disabled' : ''} onclick="buyConsumable('${w.id}', false)">${w.cost.toLocaleString('ru-RU')} 🔥</button>
+                        <button class="shop-btn max-btn" ${!canAfford ? 'disabled' : ''} onclick="buyConsumable('${w.id}', true)">МАКС${maxAffordable > 1 ? ' (' + maxAffordable + ')' : ''}</button>
+                    </div>
                 `;
                 list.appendChild(card);
             });
@@ -2244,14 +2437,15 @@
             renderQuickWeaponsBars();
         }
 
-        // РЕНДЕР МЕНЯЛЫ НА БАЗЕ
+        // РЕНДЕР МЕНЯЛЫ НА БАЗЕ (с кнопкой МАКС)
         function renderExchanger() {
             const list = document.getElementById('exchangerList');
             if (!list) return;
             list.innerHTML = '';
 
             exchangerCatalog.forEach(item => {
-                const canAfford = sessionDiamonds >= item.cost;
+                const maxTimes = Math.floor(sessionDiamonds / item.cost);
+                const canAfford = maxTimes >= 1;
                 const btnColor = item.type === 'tape' ? '#60a5fa' : '#38bdf8';
 
                 const card = document.createElement('div');
@@ -2261,37 +2455,44 @@
                         <h4 style="color: ${btnColor};">${item.title}</h4>
                         <p>${item.desc}</p>
                     </div>
-                    <button class="shop-btn" style="background: ${canAfford ? btnColor : '#57534e'}; color: #000;" ${!canAfford ? 'disabled' : ''} onclick="buyExchangeItem('${item.id}')">
-                        ${item.cost.toLocaleString('ru-RU')} 🔥
-                    </button>
+                    <div class="btn-group">
+                        <button class="shop-btn" style="background: ${canAfford ? btnColor : '#57534e'}; color: #000;" ${!canAfford ? 'disabled' : ''} onclick="buyExchangeItem('${item.id}', false)">
+                            ${item.cost.toLocaleString('ru-RU')} 🔥
+                        </button>
+                        <button class="shop-btn max-btn" ${!canAfford ? 'disabled' : ''} onclick="buyExchangeItem('${item.id}', true)">
+                            МАКС${maxTimes > 1 ? ' (' + maxTimes + ')' : ''}
+                        </button>
+                    </div>
                 `;
                 list.appendChild(card);
             });
         }
 
-        function buyExchangeItem(itemId) {
+        function buyExchangeItem(itemId, isMax) {
             const item = exchangerCatalog.find(x => x.id === itemId);
             if (!item) return;
-            if (sessionDiamonds < item.cost) {
+            const maxTimes = Math.floor(sessionDiamonds / item.cost);
+            if (maxTimes < 1) {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
 
-            spendMatches(item.cost);
+            const count = isMax ? maxTimes : 1;
+            spendMatches(item.cost * count);
             if (item.type === 'tape') {
-                ductTape += item.reward;
+                ductTape += item.reward * count;
             } else if (item.type === 'provision') {
-                provision += item.reward;
+                provision += item.reward * count;
             }
 
-            playWinFanfare(false);
+            playWinFanfare(count > 1);
             updateUI();
             renderExchanger();
             renderBaseWeaponUpgrades();
             saveProgress();
         }
 
-        // ПРОКАЧКА ОРУЖИЯ НА БАЗЕ ЗА ИЗОЛЕНТУ И СПИЧКИ
+        // ПРОКАЧКА ОРУЖИЯ НА БАЗЕ ЗА ИЗОЛЕНТУ И СПИЧКИ (с кнопкой МАКС)
         function renderBaseWeaponUpgrades() {
             renderExchanger();
 
@@ -2302,7 +2503,10 @@
             consumableCatalog.forEach(w => {
                 const lvl = weaponLevels[w.id] || 0;
                 const curDmg = getWeaponDamage(w.id);
-                const canAfford = ductTape >= w.upgTape && sessionDiamonds >= w.upgMatches;
+                const maxByTape = Math.floor(ductTape / w.upgTape);
+                const maxByMatches = Math.floor(sessionDiamonds / w.upgMatches);
+                const maxPossible = Math.min(maxByTape, maxByMatches);
+                const canAfford = maxPossible >= 1;
 
                 const card = document.createElement('div');
                 card.className = 'shop-card';
@@ -2311,43 +2515,57 @@
                         <h4>${w.name} <span style="color:#38bdf8;">[Ур. ${lvl}]</span></h4>
                         <p>Урон: <b style="color:#ef4444;">${curDmg.toLocaleString('ru-RU')} HP</b> (+${w.upgBonus.toLocaleString('ru-RU')} за ур.)</p>
                     </div>
-                    <button class="shop-btn" style="background:${canAfford ? '#38bdf8' : '#57534e'};" ${!canAfford ? 'disabled' : ''} onclick="upgradeWeaponOnBase('${w.id}')">
-                        ${w.upgTape.toLocaleString('ru-RU')} 🟦 + ${w.upgMatches.toLocaleString('ru-RU')} 🔥
-                    </button>
+                    <div class="btn-group">
+                        <button class="shop-btn" style="background:${canAfford ? '#38bdf8' : '#57534e'};" ${!canAfford ? 'disabled' : ''} onclick="upgradeWeaponOnBase('${w.id}', false)">
+                            ${w.upgTape.toLocaleString('ru-RU')} 🟦 + ${w.upgMatches.toLocaleString('ru-RU')} 🔥
+                        </button>
+                        <button class="shop-btn max-btn" ${!canAfford ? 'disabled' : ''} onclick="upgradeWeaponOnBase('${w.id}', true)">
+                            МАКС${maxPossible > 1 ? ' (+' + maxPossible + ')' : ''}
+                        </button>
+                    </div>
                 `;
                 list.appendChild(card);
             });
         }
 
-        function upgradeWeaponOnBase(id) {
+        function upgradeWeaponOnBase(id, isMax) {
             const w = consumableCatalog.find(x => x.id === id);
             if (!w) return;
-            if (ductTape < w.upgTape || sessionDiamonds < w.upgMatches) {
+            const maxByTape = Math.floor(ductTape / w.upgTape);
+            const maxByMatches = Math.floor(sessionDiamonds / w.upgMatches);
+            const maxPossible = Math.min(maxByTape, maxByMatches);
+
+            if (maxPossible < 1) {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
 
-            ductTape -= w.upgTape;
-            spendMatches(w.upgMatches);
-            weaponLevels[id] = (weaponLevels[id] || 0) + 1;
+            const count = isMax ? maxPossible : 1;
+            ductTape -= w.upgTape * count;
+            spendMatches(w.upgMatches * count);
+            weaponLevels[id] = (weaponLevels[id] || 0) + count;
 
-            addDailyQuestProgress('upgrade_base', 1);
-            playWinFanfare(false);
+            addDailyQuestProgress('upgrade_base', count);
+            playWinFanfare(count > 1);
             updateUI();
             renderBaseWeaponUpgrades();
             renderMarket();
             saveProgress();
         }
 
-        function buyConsumable(id) {
+        function buyConsumable(id, isMax) {
             const w = consumableCatalog.find(x => x.id === id);
-            if (!w || sessionDiamonds < w.cost) {
+            if (!w) return;
+            const maxPossible = Math.floor(sessionDiamonds / w.cost);
+            if (maxPossible < 1) {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
-            spendMatches(w.cost);
-            consumables[id] = (consumables[id] || 0) + 1;
-            addDailyQuestProgress('buy_weapon', 1);
+            const count = isMax ? maxPossible : 1;
+            spendMatches(w.cost * count);
+            consumables[id] = (consumables[id] || 0) + count;
+            addDailyQuestProgress('buy_weapon', count);
+            checkNewAchievementsUnlock();
             playHitSound(false);
             updateUI();
             renderMarket();
@@ -2366,13 +2584,13 @@
                 if (count > 0) {
                     const btn1 = document.createElement('button');
                     btn1.className = 'weapon-use-btn';
-                    btn1.innerText = `${w.icon} -${curDmg} HP (${count})`;
+                    btn1.innerText = `${w.icon} -${curDmg.toLocaleString('ru-RU')} HP (${count})`;
                     btn1.onclick = (e) => useConsumableInFight(w.id, 'normal', e);
                     tapBar.appendChild(btn1);
 
                     const btn2 = document.createElement('button');
                     btn2.className = 'weapon-use-btn';
-                    btn2.innerText = `${w.icon} -${curDmg} HP (${count})`;
+                    btn2.innerText = `${w.icon} -${curDmg.toLocaleString('ru-RU')} HP (${count})`;
                     btn2.onclick = (e) => useConsumableInFight(w.id, 'boss', e);
                     bossBar.appendChild(btn2);
                 }
@@ -2388,6 +2606,7 @@
             totalDamageDealt += curDmg;
             addDailyQuestProgress('damage', curDmg);
             addDailyQuestProgress('use_weapon', 1);
+            checkNewAchievementsUnlock();
 
             const x = event ? event.clientX : window.innerWidth / 2;
             const y = event ? event.clientY : window.innerHeight / 2;
@@ -2396,11 +2615,11 @@
 
             if (targetType === 'normal') {
                 zombieHp -= curDmg;
-                spawnFloatingNumber(x, y, `${w.icon} -${curDmg} HP!`, true);
+                spawnFloatingNumber(x, y, `${w.icon} -${curDmg.toLocaleString('ru-RU')} HP!`, true);
                 if (zombieHp <= 0) handleNormalZombieKill(x, y);
             } else if (targetType === 'boss' && activeBoss) {
                 activeBoss.hp -= curDmg;
-                spawnFloatingNumber(x, y, `${w.icon} -${curDmg} HP!`, true);
+                spawnFloatingNumber(x, y, `${w.icon} -${curDmg.toLocaleString('ru-RU')} HP!`, true);
                 if (activeBoss.hp <= 0) handleBossKill(x, y);
             }
 
@@ -2505,23 +2724,25 @@
             saveProgress();
         }
 
+        // УДАР ПО БОССУ: ТРАТИТСЯ СТРОГО 1 ЭНЕРГИЯ ЗА ТАП НЕЗАВИСИМО ОТ УРОНА
         function hitBoss(e) {
             if (!activeBoss) return;
-            let dmg = clickPower;
-            let isCrit = Math.random() * 100 < critChance;
-            if (isCrit) dmg *= 3;
-
-            if (energy < dmg) {
+            if (energy < 1) {
                 if (e && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
 
-            energy = Math.max(0, energy - dmg);
+            let dmg = clickPower;
+            let isCrit = Math.random() * 100 < critChance;
+            if (isCrit) dmg *= 3;
+
+            energy = Math.max(0, +(energy - 1).toFixed(2));
             activeBoss.hp -= dmg;
             totalDamageDealt += dmg;
 
             addDailyQuestProgress('damage', dmg);
             if (isCrit) addDailyQuestProgress('crits', 1);
+            checkNewAchievementsUnlock();
 
             const btn = document.getElementById('bossHitBtn');
             btn.classList.add('pressed');
@@ -2582,6 +2803,7 @@
             }
 
             activeBoss = null;
+            checkNewAchievementsUnlock();
 
             playWinFanfare(true);
             spawnFloatingNumber(x, y, `🏆 ПОБЕДА! +${reward} 🔥`, true);
@@ -2602,10 +2824,10 @@
             }
         }
 
-        // ЕЖЕДНЕВНЫЕ ЗАДАНИЯ
+        // ЕЖЕДНЕВНЫЕ ЗАДАНИЯ (Синхронизирована награда: charLevel * 50)
         function renderDailyQuests() {
             checkDailyReset();
-            const rewardPerQuest = charLevel * 100;
+            const rewardPerQuest = charLevel * 50;
             document.getElementById('questRewardRate').innerText = rewardPerQuest;
 
             const list = document.getElementById('dailyQuestsList');
@@ -2699,6 +2921,7 @@
             if (!a || claimedAchievements[achId] || a.getVal() < a.target) return;
 
             claimedAchievements[achId] = true;
+            notifiedAchievements[achId] = true;
             provision += (a.reward || 1);
             playWinFanfare(true);
             updateUI();
@@ -2717,7 +2940,8 @@
                 ['Убито зомби', zombiesKilled.toLocaleString('ru-RU')],
                 ['Убито боссов всего', totalBossesKilledCount.toLocaleString('ru-RU')],
                 ['Нанесено всего урона', `${totalDamageDealt.toLocaleString('ru-RU')} HP`],
-                ['Урон с руки / Шанс крита', `${clickPower} HP / ${(skills.crit * 0.5).toFixed(1)}%`],
+                ['Урон с руки / Шанс крита', `${clickPower} HP / ${critChance.toFixed(1)}%`],
+                ['Энергия / Пополнение', `${maxEnergy} ⚡ / ${regenSpeed.toFixed(1)} ⚡/с`],
                 ['Уровень Автокликера', `${autoTapperLevel} / 10`],
                 ['Баланс Изоленты', `${ductTape.toLocaleString('ru-RU')} 🟦`],
                 ['Потрачено спичек в игре', `${totalMatchesSpent.toLocaleString('ru-RU')} 🔥`],
@@ -2737,54 +2961,68 @@
             document.getElementById('statsModal').style.display = 'flex';
         }
 
-        // Таймер каждую секунду
+        // ПЛАВНОЕ ПОПОЛНЕНИЕ ЭНЕРГИИ И ПАССИВНОГО ДОХОДА КАЖДЫЕ 0.1 СЕКУНДЫ (100 мс)
+        let tickCounter = 0;
         setInterval(() => {
             if (isResetting) return;
+            tickCounter++;
 
-            if (activeBoss) {
-                let remainingMs = activeBoss.endTime - Date.now();
-                if (remainingMs <= 0) {
-                    activeBoss = null;
-                    renderBossesTab();
-                    saveProgress();
-                    alert('⏳ ВРЕМЯ ВЫШЛО! Вы не успели убить босса за 2 часа. Бой проигран!');
-                } else {
-                    let totalSec = Math.floor(remainingMs / 1000);
-                    let hrs = String(Math.floor(totalSec / 3600)).padStart(2, '0');
-                    let mins = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
-                    let secs = String(totalSec % 60).padStart(2, '0');
-                    const timerEl = document.getElementById('bossTimerDisplay');
-                    if (timerEl) timerEl.innerText = `⏳ ${hrs}:${mins}:${secs}`;
-                }
-            }
-
-            let incomePerSec = (autoClicker / 60) + (passiveRate / 3600);
-            if (incomePerSec > 0 && storedDiamonds < maxStorage) {
-                storedDiamonds = Math.min(maxStorage, storedDiamonds + incomePerSec);
-            }
-
+            // Каждые 0.1 секунды добавляем 1/10 от секундной регенерации
             if (energy < maxEnergy) {
-                energy = Math.min(maxEnergy, energy + regenSpeed);
+                energy = Math.min(maxEnergy, +(energy + regenSpeed * 0.1).toFixed(3));
             }
 
-            updateUI();
-            saveProgress();
-        }, 1000);
+            let incomePerTenthSec = ((autoClicker / 60) + (passiveRate / 3600)) * 0.1;
+            if (incomePerTenthSec > 0 && storedDiamonds < maxStorage) {
+                storedDiamonds = Math.min(maxStorage, storedDiamonds + incomePerTenthSec);
+            }
 
-        // Обычная охота на зомби
+            // Раз в секунду (каждый 10-й тик) обновляем таймер босса и сохраняем прогресс
+            if (tickCounter % 10 === 0) {
+                if (activeBoss) {
+                    let remainingMs = activeBoss.endTime - Date.now();
+                    if (remainingMs <= 0) {
+                        activeBoss = null;
+                        renderBossesTab();
+                        saveProgress();
+                        alert('⏳ ВРЕМЯ ВЫШЛО! Вы не успели убить босса за 2 часа. Бой проигран!');
+                    } else {
+                        let totalSec = Math.floor(remainingMs / 1000);
+                        let hrs = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+                        let mins = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+                        let secs = String(totalSec % 60).padStart(2, '0');
+                        const timerEl = document.getElementById('bossTimerDisplay');
+                        if (timerEl) timerEl.innerText = `⏳ ${hrs}:${mins}:${secs}`;
+                    }
+                }
+                saveProgress();
+            }
+
+            updateEnergyBarOnly();
+            if (tickCounter % 5 === 0) {
+                updateUI();
+            }
+        }, 100);
+
+        function updateEnergyBarOnly() {
+            document.getElementById('energyFill').style.width = `${Math.min(100, (energy / maxEnergy) * 100)}%`;
+            document.getElementById('energyText').innerText = `⚡ ${energy.toFixed(1)} / ${maxEnergy} (1 тап = 1 ⚡)`;
+        }
+
+        // Обычная охота на зомби: ТРАТИТСЯ СТРОГО 1 ЭНЕРГИЯ ЗА ТАП НЕЗАВИСИМО ОТ УРОНА
         const zombieBtn = document.getElementById('zombieBtn');
 
         function hitNormalZombie(clientX, clientY, isManual) {
-            let dmg = clickPower;
-            let isCrit = Math.random() * 100 < critChance;
-            if (isCrit) dmg *= 3;
-
-            if (energy < dmg) {
+            if (energy < 1) {
                 if (isManual && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
 
-            energy = Math.max(0, energy - dmg);
+            let dmg = clickPower;
+            let isCrit = Math.random() * 100 < critChance;
+            if (isCrit) dmg *= 3;
+
+            energy = Math.max(0, +(energy - 1).toFixed(2));
             zombieHp -= dmg;
             totalDamageDealt += dmg;
 
@@ -2808,6 +3046,7 @@
                 spawnFloatingNumber(x, y, isCrit ? `💥 КРИТ -${dmg}` : `-${dmg} HP`, false);
             }
 
+            checkNewAchievementsUnlock();
             updateUI();
             saveProgress();
         }
@@ -2846,7 +3085,7 @@
             }
         }
 
-        // КАЖДЫЙ 10-Й УБИТЫЙ ЗОМБИ ПОВЫШАЕТ УРОВЕНЬ И ДАЕТ +1 ОЧКО НАВЫКА
+        // КАЖДЫЙ 10-Й УБИТЫЙ ЗОМБИ: +1 УРОВЕНЬ, +1 ОЧКО НАВЫКА, +5 ХП ЗОМБИ И +1 ДРОП СПИЧЕК
         function handleNormalZombieKill(x, y) {
             let rewardMatches = getZombieLootDrop();
             sessionDiamonds += rewardMatches;
@@ -2862,7 +3101,7 @@
                 playWinFanfare(true);
             }
 
-            zombieMaxHp = 12 + Math.floor(zombiesKilled / 10);
+            zombieMaxHp = getCalculatedZombieMaxHp();
             zombieHp = zombieMaxHp;
 
             playHitSound(true);
@@ -2880,66 +3119,118 @@
             saveProgress();
         }
 
-        function upgradeSkill(type) {
-            if (skillPoints <= 0) return;
-
-            if (type === 'crit') {
-                skills.crit++;
-                skillPoints--;
-                totalSkillPointsSpent++;
-                critChance = skills.crit * 0.2;
-            } else if (type === 'marathon') {
-                skills.marathon++;
-                skillPoints--;
-                totalSkillPointsSpent++;
-                regenSpeed = 10 + skills.marathon;
-            } else if (type === 'endurance') {
-                skills.endurance++;
-                skillPoints--;
-                totalSkillPointsSpent++;
-                maxEnergy = 100 + skills.endurance * 100;
-                energy += 100;
+        // ПРОКАЧКА НАВЫКОВ (Одиночная и МАКС на все очки)
+        function upgradeSkill(type, isMax) {
+            if (skillPoints <= 0) {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                return;
             }
 
+            const count = isMax ? skillPoints : 1;
+            skillPoints -= count;
+            totalSkillPointsSpent += count;
+
+            if (type === 'crit') {
+                skills.crit += count;
+            } else if (type === 'marathon') {
+                skills.marathon += count;
+            } else if (type === 'endurance') {
+                skills.endurance += count;
+                energy += count * 5;
+            }
+
+            recalcSkillStats();
+            checkNewAchievementsUnlock();
             playHitSound(false);
             updateUI();
             saveProgress();
         }
 
-        // УЛУЧШЕНИЯ БАЗЫ В АРИФМЕТИЧЕСКОЙ ПРОГРЕССИИ (+200, +50, +1000, +5000)
-        function buyUpgrade(type) {
-            if (type === 'storage' && sessionDiamonds >= storageCost) {
-                spendMatches(storageCost);
-                maxStorage += 150;
-                storageCost += 200;
-            } else if (type === 'click' && sessionDiamonds >= clickCost) {
-                spendMatches(clickCost);
-                clickPower++;
-                clickCost += 50;
-            } else if (type === 'passive' && sessionDiamonds >= passiveCost) {
-                spendMatches(passiveCost);
-                passiveRate += 50;
-                passiveCost += 1000;
-            } else if (type === 'auto' && sessionDiamonds >= autoCost) {
-                spendMatches(autoCost);
-                autoClicker++;
-                autoCost += 5000;
-            } else if (type === 'autotapper' && autoTapperLevel < 10) {
-                const nextCost = getNextAutoTapperCost();
-                if (sessionDiamonds < nextCost) {
+        // Вспомогательный расчёт: сколько уровней линейного апгрейда можно купить на текущие спички
+        function calcMaxLinearUpgrades(currentCost, stepCost, availableMatches) {
+            let count = 0;
+            let totalSpent = 0;
+            let nextPrice = currentCost;
+            while (availableMatches >= totalSpent + nextPrice) {
+                totalSpent += nextPrice;
+                count++;
+                nextPrice += stepCost;
+            }
+            return { count, totalSpent, nextPrice };
+        }
+
+        // УЛУЧШЕНИЯ БАЗЫ (Одиночная и МАКС)
+        function buyUpgrade(type, isMax) {
+            if (type === 'storage') {
+                const res = isMax ? calcMaxLinearUpgrades(storageCost, BASE_STEP_STORAGE, sessionDiamonds) : (sessionDiamonds >= storageCost ? { count: 1, totalSpent: storageCost, nextPrice: storageCost + BASE_STEP_STORAGE } : { count: 0 });
+                if (res.count < 1) {
                     if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                     return;
                 }
-                spendMatches(nextCost);
-                autoTapperLevel++;
-                if (autoTapperLevel === 1) autoTapperEnabled = true;
+                spendMatches(res.totalSpent);
+                maxStorage += 150 * res.count;
+                storageCost = res.nextPrice;
+                addDailyQuestProgress('upgrade_base', res.count);
+            } else if (type === 'click') {
+                const res = isMax ? calcMaxLinearUpgrades(clickCost, BASE_STEP_CLICK, sessionDiamonds) : (sessionDiamonds >= clickCost ? { count: 1, totalSpent: clickCost, nextPrice: clickCost + BASE_STEP_CLICK } : { count: 0 });
+                if (res.count < 1) {
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                    return;
+                }
+                spendMatches(res.totalSpent);
+                clickPower += res.count;
+                clickCost = res.nextPrice;
+                addDailyQuestProgress('upgrade_base', res.count);
+            } else if (type === 'passive') {
+                const res = isMax ? calcMaxLinearUpgrades(passiveCost, BASE_STEP_PASSIVE, sessionDiamonds) : (sessionDiamonds >= passiveCost ? { count: 1, totalSpent: passiveCost, nextPrice: passiveCost + BASE_STEP_PASSIVE } : { count: 0 });
+                if (res.count < 1) {
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                    return;
+                }
+                spendMatches(res.totalSpent);
+                passiveRate += 50 * res.count;
+                passiveCost = res.nextPrice;
+                addDailyQuestProgress('upgrade_base', res.count);
+            } else if (type === 'auto') {
+                const res = isMax ? calcMaxLinearUpgrades(autoCost, BASE_STEP_AUTO, sessionDiamonds) : (sessionDiamonds >= autoCost ? { count: 1, totalSpent: autoCost, nextPrice: autoCost + BASE_STEP_AUTO } : { count: 0 });
+                if (res.count < 1) {
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                    return;
+                }
+                spendMatches(res.totalSpent);
+                autoClicker += res.count;
+                autoCost = res.nextPrice;
+                addDailyQuestProgress('upgrade_base', res.count);
+            } else if (type === 'autotapper' && autoTapperLevel < 10) {
+                let bought = 0;
+                let totalCost = 0;
+                let tempLvl = autoTapperLevel;
+                while (tempLvl < 10) {
+                    const c = autoTapperCosts[tempLvl];
+                    if (sessionDiamonds >= totalCost + c) {
+                        totalCost += c;
+                        tempLvl++;
+                        bought++;
+                        if (!isMax) break;
+                    } else {
+                        break;
+                    }
+                }
+                if (bought < 1) {
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                    return;
+                }
+                const wasZero = autoTapperLevel === 0;
+                spendMatches(totalCost);
+                autoTapperLevel = tempLvl;
+                if (wasZero) autoTapperEnabled = true;
                 restartAutoTapperLoop();
+                addDailyQuestProgress('upgrade_base', bought);
             } else {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
 
-            addDailyQuestProgress('upgrade_base', 1);
             playWinFanfare(false);
             updateUI();
             renderBaseWeaponUpgrades();
@@ -2978,8 +3269,8 @@
             document.getElementById('provisionDisplay').innerText = `${provision.toLocaleString('ru-RU')} 🥫`;
             document.getElementById('tapeDisplay').innerText = `${ductTape.toLocaleString('ru-RU')} 🟦`;
             document.getElementById('bynDisplay').innerText = `${(sessionDiamonds / 100000).toFixed(3)} BYN`;
-            document.getElementById('energyFill').style.width = `${(energy / maxEnergy) * 100}%`;
-            document.getElementById('energyText').innerText = `⚡ ${Math.floor(energy)} / ${maxEnergy}`;
+
+            updateEnergyBarOnly();
 
             let currentDrop = getZombieLootDrop();
             document.getElementById('killCountText').innerText = `💀 Убито: ${zombiesKilled} (Дроп: ${currentDrop} 🔥)`;
@@ -2993,7 +3284,7 @@
             let ratePerMin = (autoClicker + (passiveRate / 60)).toFixed(1);
             document.getElementById('storageRateInfo').innerText = `Добыча: ${ratePerMin}/мин`;
 
-            // Кнопки переключения Автокликера в Охоте и у Боссов
+            // Кнопки переключения Автокликера
             const normalToggle = document.getElementById('autoTapToggleNormal');
             const bossToggle = document.getElementById('autoTapToggleBoss');
             if (autoTapperLevel > 0) {
@@ -3011,54 +3302,71 @@
                 bossToggle.style.display = 'none';
             }
 
-            // База
+            // База и кнопки МАКС
             document.getElementById('storageLevelText').innerText = `Вместимость: ${maxStorage} 🔥`;
             document.getElementById('buyStorageBtn').innerText = `${storageCost.toLocaleString('ru-RU')} 🔥`;
-            document.getElementById('clickLevelText').innerText = `Урон с руки: ${clickPower}`;
+            document.getElementById('buyStorageBtn').disabled = sessionDiamonds < storageCost;
+            document.getElementById('buyStorageMaxBtn').disabled = sessionDiamonds < storageCost;
+
+            document.getElementById('clickLevelText').innerText = `Урон с руки: ${clickPower} (1 тап = 1 ⚡)`;
             document.getElementById('buyClickBtn').innerText = `${clickCost.toLocaleString('ru-RU')} 🔥`;
+            document.getElementById('buyClickBtn').disabled = sessionDiamonds < clickCost;
+            document.getElementById('buyClickMaxBtn').disabled = sessionDiamonds < clickCost;
+
             document.getElementById('passiveLevelText').innerText = `Уровень: ${passiveRate / 50}`;
             document.getElementById('buyPassiveBtn').innerText = `${passiveCost.toLocaleString('ru-RU')} 🔥`;
+            document.getElementById('buyPassiveBtn').disabled = sessionDiamonds < passiveCost;
+            document.getElementById('buyPassiveMaxBtn').disabled = sessionDiamonds < passiveCost;
+
             document.getElementById('autoLevelText').innerText = `Уровень: ${autoClicker} (${autoClicker} 🔥/мин)`;
             document.getElementById('buyAutoBtn').innerText = `${autoCost.toLocaleString('ru-RU')} 🔥`;
+            document.getElementById('buyAutoBtn').disabled = sessionDiamonds < autoCost;
+            document.getElementById('buyAutoMaxBtn').disabled = sessionDiamonds < autoCost;
 
             // Карточка Автокликера на Базе
             document.getElementById('autoTapperLvl').innerText = autoTapperLevel;
             const tapperBtn = document.getElementById('buyAutoTapperBtn');
+            const tapperMaxBtn = document.getElementById('buyAutoTapperMaxBtn');
             const nextTapCost = getNextAutoTapperCost();
             if (autoTapperLevel === 0) {
                 document.getElementById('autoTapperDesc').innerText = `Не открыт (На 10 ур. бьет раз в 0.05 сек)`;
                 tapperBtn.innerText = `Открыть: ${nextTapCost.toLocaleString('ru-RU')} 🔥`;
-                tapperBtn.disabled = false;
+                tapperBtn.disabled = sessionDiamonds < nextTapCost;
+                tapperMaxBtn.disabled = sessionDiamonds < nextTapCost;
             } else if (autoTapperLevel < 10) {
                 const curSec = (getAutoTapperIntervalMs(autoTapperLevel) / 1000).toFixed(2);
                 const nextSec = (getAutoTapperIntervalMs(autoTapperLevel + 1) / 1000).toFixed(2);
                 document.getElementById('autoTapperDesc').innerText = `Скорость: 1 удар в ${curSec}с (След: ${nextSec}с)`;
                 tapperBtn.innerText = `${nextTapCost.toLocaleString('ru-RU')} 🔥`;
-                tapperBtn.disabled = false;
+                tapperBtn.disabled = sessionDiamonds < nextTapCost;
+                tapperMaxBtn.disabled = sessionDiamonds < nextTapCost;
             } else {
                 document.getElementById('autoTapperDesc').innerText = `Макс. скорость: 1 удар в 0.05 сек!`;
                 tapperBtn.innerText = `МАКС (10/10)`;
                 tapperBtn.disabled = true;
+                tapperMaxBtn.disabled = true;
             }
 
-            // Навыки (каждые 10 зомби)
+            // Навыки
             const reqKills = 10;
             document.getElementById('charLevel').innerText = charLevel;
             document.getElementById('skillPoints').innerText = skillPoints;
             document.getElementById('levelProgressFill').style.width = `${Math.min(100, (zombieKillsForCurrentLevel / reqKills) * 100)}%`;
             document.getElementById('levelProgressText').innerText = `Зомби до уровня: ${zombieKillsForCurrentLevel} / ${reqKills}`;
 
-            document.getElementById('skillCritText').innerText = `Уровень: ${skills.crit} (Шанс: ${(skills.crit * 0.5).toFixed(1)}%)`;
-            document.getElementById('skillMarathonText').innerText = `Уровень: ${skills.marathon} (Пополнение: ${regenSpeed} ⚡/сек)`;
+            document.getElementById('skillCritText').innerText = `Уровень: ${skills.crit} (Шанс: ${critChance.toFixed(1)}%)`;
+            document.getElementById('skillMarathonText').innerText = `Уровень: ${skills.marathon} (Пополнение: ${regenSpeed.toFixed(1)} ⚡/сек)`;
             document.getElementById('skillEnduranceText').innerText = `Уровень: ${skills.endurance} (Макс: ${maxEnergy} ⚡)`;
+
+            const noSp = skillPoints <= 0;
+            ['btnSkillCrit', 'btnSkillCritMax', 'btnSkillMarathon', 'btnSkillMarathonMax', 'btnSkillEndurance', 'btnSkillEnduranceMax'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = noSp;
+            });
 
             if (activeBoss) {
                 document.getElementById('bossHpFill').style.width = `${Math.max(0, (activeBoss.hp / activeBoss.maxHp) * 100)}%`;
                 document.getElementById('bossHpText').innerText = `❤️ ${Math.max(0, activeBoss.hp).toLocaleString('ru-RU')} / ${activeBoss.maxHp.toLocaleString('ru-RU')} HP`;
-            }
-
-            if (document.getElementById('screen-shop').classList.contains('active')) {
-                renderExchanger();
             }
         }
 
@@ -3118,9 +3426,9 @@
                 maxStorage, storedDiamonds, storageCost,
                 clickCost, passiveCost, autoCost,
                 consumables, weaponLevels, activeBoss, bossKeys, bossKillCounts, bossDailyKills,
-                boxOpenCounts, claimedAchievements,
+                boxOpenCounts, claimedAchievements, notifiedAchievements,
                 lastDailyReset, activeDailyQuests,
-                soundEnabled, musicEnabled, theme: currentTheme, lastExitTime: Date.now()
+                soundEnabled, musicEnabled, currentMusicTrack, theme: currentTheme, lastExitTime: Date.now()
             }));
         }
 
@@ -3139,6 +3447,7 @@
         const musicBtn = document.getElementById('musicToggleBtn');
         musicBtn.innerText = musicEnabled ? '🎵 Вкл' : '🔇 Выкл';
         musicBtn.style.background = musicEnabled ? '#22c55e' : '#57534e';
+        document.getElementById('musicTrackBtn').innerText = (musicTracks[currentMusicTrack] || musicTracks[0]).name;
 
         checkDailyReset();
         restartAutoTapperLoop();
