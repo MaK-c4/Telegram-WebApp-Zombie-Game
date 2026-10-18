@@ -571,13 +571,6 @@
             color: #000;
         }
 
-        /* Сетка Менялы на Базе */
-        .exchanger-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
-        }
-
         /* Модальные окна */
         #settingsModal, #caseModal, #contrabandModal, #statsModal, #withdrawModal {
             display: none;
@@ -924,6 +917,10 @@
                 <button class="shop-btn" id="soundToggleBtn" onclick="toggleSound()">🔊 Вкл</button>
             </div>
             <div class="settings-row">
+                <span>Фоновая мелодия</span>
+                <button class="shop-btn" id="musicToggleBtn" style="background: #22c55e;" onclick="toggleMusic()">🎵 Вкл</button>
+            </div>
+            <div class="settings-row">
                 <span>Полный сброс прогресса</span>
                 <button class="shop-btn" style="background: #ef4444; color: #fff;" onclick="resetGameData()">🗑️ Сбросить в 0</button>
             </div>
@@ -1101,33 +1098,33 @@
             <div class="lucky-box-card box-basic">
                 <div class="shop-info">
                     <h4 style="color: #e4e4e7; font-size: 13px;">📦 ОБЫЧНЫЙ БОКС</h4>
-                    <p style="color: #a1a1aa;">Заточка, Молотов, Граната • Изолента: 1, 5, 10 🟦 • Спички: 0..2000 🔥</p>
+                    <p style="color: #a1a1aa;">0, 100, 500 🔥 • 10 🟦 Изоленты • Заточка, Молотов, Граната • 1 🥫 Провизия</p>
                 </div>
-                <button class="shop-btn" style="background: #facc15; padding: 8px 11px;" onclick="openCaseModal('basic')">25 🔥</button>
+                <button class="shop-btn" style="background: #facc15; padding: 8px 11px;" onclick="openCaseModal('basic')">50 🔥</button>
             </div>
 
             <div class="lucky-box-card box-super">
                 <div class="shop-info">
                     <h4 style="color: #60a5fa; font-size: 13px;">⚡ СУПЕР БОКС</h4>
-                    <p style="color: #bfdbfe;">Граната, Динамит • Изолента: 10, 50, 100 🟦 • Провизия: 1 🥫 • 0..5000 🔥</p>
+                    <p style="color: #bfdbfe;">0, 1000, 2000, 5000, 10000 🔥 • 100 🟦 Изоленты • Граната, РПГ • 5 🥫 Провизии</p>
                 </div>
-                <button class="shop-btn" style="background: #38bdf8; padding: 8px 11px;" onclick="openCaseModal('super')">250 🔥</button>
+                <button class="shop-btn" style="background: #38bdf8; padding: 8px 11px;" onclick="openCaseModal('super')">500 🔥</button>
             </div>
 
             <div class="lucky-box-card box-vip">
                 <div class="shop-info">
                     <h4 style="color: #facc15; font-size: 13px;">👑 ВИП БОКС</h4>
-                    <p style="color: #fed7aa;">Динамит, РПГ • Изолента: 100, 500, 1000 🟦 • Провизия: 2, 5 🥫 • 0..25000 🔥</p>
+                    <p style="color: #fed7aa;">0, 10000, 20000, 50000 🔥 • 1000 🟦 Изоленты • РПГ, Танк • 50 🥫 Провизии</p>
                 </div>
-                <button class="shop-btn" style="background: #f97316; padding: 8px 11px;" onclick="openCaseModal('vip')">2500 🔥</button>
+                <button class="shop-btn" style="background: #f97316; padding: 8px 11px;" onclick="openCaseModal('vip')">5000 🔥</button>
             </div>
 
             <div class="lucky-box-card box-premium">
                 <div class="shop-info">
                     <h4 style="color: #f472b6; font-size: 13px;">💎 ПРЕМИУМ БОКС</h4>
-                    <p style="color: #fbcfe8;">Танк, Шторм, Авиаудар • 1000..10000 🟦 • 2, 5, 10 🥫 • 0..100000 🔥</p>
+                    <p style="color: #fbcfe8;">0, 100к, 200к, 500к, 1 млн 🔥 • Огненный обстрел, Авиаудар • 5000 🥫 Провизии</p>
                 </div>
-                <button class="shop-btn" style="background: #ec4899; color: #fff; padding: 8px 11px;" onclick="openCaseModal('premium')">25000 🔥</button>
+                <button class="shop-btn" style="background: #ec4899; color: #fff; padding: 8px 11px;" onclick="openCaseModal('premium')">50000 🔥</button>
             </div>
 
             <h4 style="margin-top: 4px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🔫 Оружейные Боксы (Без проигрыша!)</h4>
@@ -1151,7 +1148,7 @@
             <div class="lucky-box-card box-weapon-premium">
                 <div class="shop-info">
                     <h4 style="color: #fde047; font-size: 13px;">✈️ ПРЕМИУМ ОРУЖЕЙНЫЙ БОКС</h4>
-                    <p style="color: #fef08a;">Только оружие: Выстрел с РПГ, Выстрел с танка, Огненный шторм, Авиаудар!</p>
+                    <p style="color: #fef08a;">Только оружие: Выстрел с РПГ, Выстрел с танка, Огненный обстрел, Авиаудар!</p>
                 </div>
                 <button class="shop-btn" style="background: #facc15; padding: 8px 11px;" onclick="openCaseModal('weapon_premium')">50000 🔥</button>
             </div>
@@ -1207,10 +1204,10 @@
         <div class="shop-container">
             <div style="background: var(--card-bg); border: 3px solid #000; border-radius: 14px; padding: 10px; text-align: center; box-shadow: 0 3px 0 #000;">
                 <h3 style="font-size: 14px; font-weight: 900; color: #fb923c;">Уровень выжившего: <span id="charLevel">1</span></h3>
-                <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">Очков навыков: <span id="skillPoints" style="color: #22c55e; font-weight: 900;">0</span> (Каждый 20-й зомби = +1 Ур. и +1 Очко)</p>
+                <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">Очков навыков: <span id="skillPoints" style="color: #22c55e; font-weight: 900;">0</span> (Каждый 10-й зомби = +1 Ур. и +1 Очко)</p>
                 <div class="hp-bar-wrap" style="margin-top: 6px; height: 16px;">
                     <div class="hp-fill" id="levelProgressFill" style="background: linear-gradient(90deg, #38bdf8, #818cf8);"></div>
-                    <div class="hp-text" id="levelProgressText" style="font-size: 9px;">Зомби до уровня: 0 / 20</div>
+                    <div class="hp-text" id="levelProgressText" style="font-size: 9px;">Зомби до уровня: 0 / 10</div>
                 </div>
             </div>
 
@@ -1243,7 +1240,7 @@
     <!-- Экран 8: База (Постройки + Меняла + Автокликер + Мастерская оружия) -->
     <div class="screen" id="screen-shop">
         <div class="shop-container">
-            <h4 style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🏗️ Улучшения Базы</h4>
+            <h4 style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🏗️ Улучшения Базы (Линейная стоимость)</h4>
 
             <div class="shop-card">
                 <div class="shop-info">
@@ -1281,7 +1278,7 @@
                 <button class="shop-btn" id="buyAutoTapperBtn" onclick="buyUpgrade('autotapper')">500 🔥</button>
             </div>
 
-            <!-- НОВЫЙ РАЗДЕЛ: МЕНЯЛА НА БАЗЕ -->
+            <!-- РАЗДЕЛ: МЕНЯЛА НА БАЗЕ -->
             <h4 style="margin-top: 6px; font-size: 11px; color: #facc15; text-transform: uppercase;">🤝 Меняла (Обмен спичек на Изоленту 🟦 и Провизию 🥫)</h4>
             <div id="exchangerList" style="display: flex; flex-direction: column; gap: 6px;"></div>
 
@@ -1322,7 +1319,8 @@
 
         let zombiesKilled = savedData.zombiesKilled || 0;
         let charLevel = savedData.charLevel || 1;
-        let zombieKillsForCurrentLevel = savedData.zombieKillsForCurrentLevel !== undefined ? (savedData.zombieKillsForCurrentLevel % 20) : 0;
+        // Каждый 10-й зомби повышает уровень и дает 1 очко навыка
+        let zombieKillsForCurrentLevel = savedData.zombieKillsForCurrentLevel !== undefined ? (savedData.zombieKillsForCurrentLevel % 10) : 0;
         let skillPoints = savedData.skillPoints || 0;
 
         let totalDamageDealt = savedData.totalDamageDealt || 0;
@@ -1356,10 +1354,16 @@
         let maxStorage = savedData.maxStorage || 100;
         let storedDiamonds = savedData.storedDiamonds || 0;
 
-        let storageCost = savedData.storageCost || 200;
-        let clickCost = savedData.clickCost || 50;
-        let passiveCost = savedData.passiveCost || 1000;
-        let autoCost = savedData.autoCost || 5000;
+        // АРИФМЕТИЧЕСКАЯ ПРОГРЕССИЯ СТОИМОСТИ УЛУЧШЕНИЙ БАЗЫ (+50, +200, +1000, +5000 за каждый уровень)
+        let storageUpgCount = Math.max(0, Math.round((maxStorage - 100) / 150));
+        let clickUpgCount = Math.max(0, clickPower - 1);
+        let passiveUpgCount = Math.max(0, Math.round(passiveRate / 50));
+        let autoUpgCount = Math.max(0, autoClicker);
+
+        let storageCost = (storageUpgCount + 1) * 200;
+        let clickCost = (clickUpgCount + 1) * 50;
+        let passiveCost = (passiveUpgCount + 1) * 1000;
+        let autoCost = (autoUpgCount + 1) * 5000;
 
         // ОФЛАЙН ПОПОЛНЕНИЕ ЭНЕРГИИ И ПАССИВНОГО ДОХОДА В СХРОН
         if (savedData.lastExitTime) {
@@ -1385,14 +1389,12 @@
 
         // ПРЕДЛОЖЕНИЯ МЕНЯЛЫ НА БАЗЕ
         const exchangerCatalog = [
-            // Обмен на Изоленту
             { id: 'ex_tape_1_fast', type: 'tape', cost: 10, reward: 1, title: '🟦 1 шт. Изоленты (Быстрый лот)', desc: 'Обмен: 10 🔥 спичек → 1 🟦 изолента' },
             { id: 'ex_tape_1', type: 'tape', cost: 100, reward: 1, title: '🟦 1 шт. Изоленты', desc: 'Стандартный курс: 100 🔥 спичек → 1 🟦 изолента' },
             { id: 'ex_tape_10', type: 'tape', cost: 1000, reward: 10, title: '🟦 10 шт. Изоленты', desc: 'Обмен: 1,000 🔥 спичек → 10 🟦 изоленты' },
             { id: 'ex_tape_100', type: 'tape', cost: 10000, reward: 100, title: '🟦 100 шт. Изоленты', desc: 'Обмен: 10,000 🔥 спичек → 100 🟦 изоленты' },
             { id: 'ex_tape_1000', type: 'tape', cost: 100000, reward: 1000, title: '🟦 1,000 шт. Изоленты', desc: 'Обмен: 100,000 🔥 спичек → 1,000 🟦 изоленты' },
             { id: 'ex_tape_10000', type: 'tape', cost: 1000000, reward: 10000, title: '🟦 10,000 шт. Изоленты', desc: 'Оптовый обмен: 1,000,000 🔥 спичек → 10,000 🟦 изоленты' },
-            // Обмен на Провизию (10000 спичек = 1 банка, 50000 спичек = 5 банок)
             { id: 'ex_prov_1', type: 'provision', cost: 10000, reward: 1, title: '🥫 1 банка Провизии', desc: 'Курс: 10,000 🔥 спичек → 1 🥫 банка провизии' },
             { id: 'ex_prov_5', type: 'provision', cost: 50000, reward: 5, title: '🥫 5 банок Провизии', desc: 'Курс: 50,000 🔥 спичек → 5 🥫 банок провизии' }
         ];
@@ -1404,7 +1406,7 @@
             { id: 'dynamite', name: '🧨 Связка динамита', shortName: 'Связка динамита', baseDmg: 2500, cost: 2500, icon: '🧨', upgTape: 500, upgMatches: 5000, upgBonus: 500 },
             { id: 'rpg', name: '🚀 Выстрел с РПГ-7', shortName: 'Выстрел с РПГ-7', baseDmg: 10000, cost: 10000, icon: '🚀', upgTape: 2500, upgMatches: 25000, upgBonus: 2500 },
             { id: 'tank', name: '🚜 Выстрел с танка', shortName: 'Выстрел с танка', baseDmg: 25000, cost: 25000, icon: '🚜', upgTape: 5000, upgMatches: 50000, upgBonus: 5000 },
-            { id: 'firestorm', name: '🔥 Огненный выстрел', shortName: 'Огненный выстрел', baseDmg: 100000, cost: 100000, icon: '🔥', upgTape: 25000, upgMatches: 250000, upgBonus: 25000 },
+            { id: 'firestorm', name: '🔥 Огненный обстрел', shortName: 'Огненный обстрел', baseDmg: 100000, cost: 100000, icon: '🔥', upgTape: 25000, upgMatches: 250000, upgBonus: 25000 },
             { id: 'airstrike', name: '✈️ Авиаудар', shortName: 'Авиаудар', baseDmg: 250000, cost: 250000, icon: '✈️', upgTape: 50000, upgMatches: 500000, upgBonus: 50000 }
         ];
 
@@ -1454,84 +1456,67 @@
             weapon_basic: 0, weapon_vip: 0, weapon_premium: 0
         };
 
-        // Конфигурация 7 боксов с рулеткой
+        // ================= ОБНОВЛЕННАЯ КОНФИГУРАЦИЯ БОКСОВ =================
         const boxesConfig = {
             basic: {
                 title: '📦 ОБЫЧНЫЙ БОКС',
-                cost: 25,
-                desc: 'Оружие, Спички (0..2000 🔥) или Изолента (1, 5, 10 🟦)',
+                cost: 50,
+                desc: 'Выигрыши: 0, 100, 500 🔥 • 10 🟦 Изоленты • Заточка, Молотов, Граната • 1 🥫 Провизия',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 22 },
-                    { type: 'matches', val: 25, name: '25 🔥 Спичек', icon: '🔥', rarity: 'rarity-common', weight: 22 },
-                    { type: 'tape', val: 1, name: '1 🟦 Изолента', icon: '🟦', rarity: 'rarity-common', weight: 14 },
-                    { type: 'weapon', id: 'shiv', name: 'Заточка', icon: '🔪', rarity: 'rarity-blue', weight: 10 },
-                    { type: 'matches', val: 100, name: '100 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 9 },
-                    { type: 'tape', val: 5, name: '5 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 7 },
-                    { type: 'matches', val: 250, name: '250 🔥 Спичек', icon: '🔥', rarity: 'rarity-purple', weight: 5 },
-                    { type: 'tape', val: 10, name: '10 🟦 Изоленты', icon: '🟦', rarity: 'rarity-purple', weight: 4 },
-                    { type: 'weapon', id: 'molotov', name: 'Молотов', icon: '🍾', rarity: 'rarity-purple', weight: 3 },
-                    { type: 'matches', val: 500, name: '500 🔥 Спичек', icon: '🔥', rarity: 'rarity-pink', weight: 1.8 },
-                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-pink', weight: 1.2 },
-                    { type: 'matches', val: 1000, name: '1000 🔥 Спичек', icon: '💰', rarity: 'rarity-red', weight: 0.7 },
-                    { type: 'matches', val: 2000, name: '2000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 0.3 }
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 28 },
+                    { type: 'matches', val: 100, name: '100 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 24 },
+                    { type: 'tape', val: 10, name: '10 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 16 },
+                    { type: 'weapon', id: 'shiv', name: 'Заточка', icon: '🔪', rarity: 'rarity-purple', weight: 12 },
+                    { type: 'weapon', id: 'molotov', name: 'Молотов', icon: '🍾', rarity: 'rarity-purple', weight: 8 },
+                    { type: 'matches', val: 500, name: '500 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 5 },
+                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-red', weight: 4 },
+                    { type: 'provision', val: 1, name: '1 🥫 Провизия', icon: '🥫', rarity: 'rarity-gold', weight: 3 }
                 ]
             },
             super: {
                 title: '⚡ СУПЕР БОКС',
-                cost: 250,
-                desc: 'Граната, Динамит, Изолента (10, 50, 100 🟦), Провизия (1 🥫) или 0..5000 🔥',
+                cost: 500,
+                desc: 'Выигрыши: 0, 1000, 2000, 5000, 10000 🔥 • 100 🟦 Изоленты • Граната, РПГ • 5 🥫 Провизии',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 22 },
-                    { type: 'matches', val: 250, name: '250 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 20 },
-                    { type: 'tape', val: 10, name: '10 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 14 },
-                    { type: 'matches', val: 500, name: '500 🔥 Спичек', icon: '🔥', rarity: 'rarity-purple', weight: 11 },
-                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-purple', weight: 9 },
-                    { type: 'tape', val: 50, name: '50 🟦 Изоленты', icon: '🟦', rarity: 'rarity-purple', weight: 7 },
-                    { type: 'matches', val: 1000, name: '1000 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 5 },
-                    { type: 'tape', val: 100, name: '100 🟦 Изоленты', icon: '🟦', rarity: 'rarity-pink', weight: 4 },
-                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-pink', weight: 3.5 },
-                    { type: 'provision', val: 1, name: '1 🥫 Провизия', icon: '🥫', rarity: 'rarity-red', weight: 2.5 },
-                    { type: 'matches', val: 2500, name: '2500 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 1.5 },
-                    { type: 'matches', val: 5000, name: '5000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 0.5 }
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 26 },
+                    { type: 'matches', val: 1000, name: '1000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 22 },
+                    { type: 'tape', val: 100, name: '100 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 15 },
+                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-purple', weight: 12 },
+                    { type: 'matches', val: 2000, name: '2000 🔥 Спичек', icon: '💰', rarity: 'rarity-purple', weight: 10 },
+                    { type: 'matches', val: 5000, name: '5000 🔥 Спичек', icon: '💎', rarity: 'rarity-pink', weight: 6 },
+                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-red', weight: 4 },
+                    { type: 'provision', val: 5, name: '5 🥫 Провизии', icon: '🥫', rarity: 'rarity-red', weight: 3 },
+                    { type: 'matches', val: 10000, name: '10000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 2 }
                 ]
             },
             vip: {
                 title: '👑 ВИП БОКС',
-                cost: 2500,
-                desc: 'Динамит, РПГ, Изолента (100, 500, 1000 🟦), Провизия (2, 5 🥫) или 0..25000 🔥',
+                cost: 5000,
+                desc: 'Выигрыши: 0, 10000, 20000, 50000 🔥 • 1000 🟦 Изоленты • РПГ, Танк • 50 🥫 Провизии',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 22 },
-                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-blue', weight: 16 },
-                    { type: 'matches', val: 2500, name: '2500 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 16 },
-                    { type: 'tape', val: 100, name: '100 🟦 Изоленты', icon: '🟦', rarity: 'rarity-purple', weight: 13 },
-                    { type: 'matches', val: 5000, name: '5000 🔥 Спичек', icon: '💰', rarity: 'rarity-purple', weight: 9 },
-                    { type: 'tape', val: 500, name: '500 🟦 Изоленты', icon: '🟦', rarity: 'rarity-pink', weight: 7 },
-                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-pink', weight: 6 },
-                    { type: 'provision', val: 2, name: '2 🥫 Провизии', icon: '🥫', rarity: 'rarity-pink', weight: 4 },
-                    { type: 'tape', val: 1000, name: '1000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-red', weight: 3 },
-                    { type: 'matches', val: 10000, name: '10000 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 2 },
-                    { type: 'provision', val: 5, name: '5 🥫 Провизии', icon: '🥫', rarity: 'rarity-gold', weight: 1.2 },
-                    { type: 'matches', val: 25000, name: '25000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 0.8 }
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 26 },
+                    { type: 'matches', val: 10000, name: '10000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 24 },
+                    { type: 'tape', val: 1000, name: '1000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-purple', weight: 16 },
+                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-purple', weight: 12 },
+                    { type: 'matches', val: 20000, name: '20000 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 10 },
+                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-red', weight: 5 },
+                    { type: 'matches', val: 50000, name: '50000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 4 },
+                    { type: 'provision', val: 50, name: '50 🥫 Провизии', icon: '🥫', rarity: 'rarity-gold', weight: 3 }
                 ]
             },
             premium: {
                 title: '💎 ПРЕМИУМ БОКС',
-                cost: 25000,
-                desc: 'Танк, Шторм, Авиаудар, Изолента (1000..10000 🟦), Провизия (2..10 🥫) или 0..100000 🔥',
+                cost: 50000,
+                desc: 'Выигрыши: 0, 100к, 200к, 500к, 1 млн 🔥 • Огненный обстрел, Авиаудар • 5000 🥫 Провизии',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 22 },
-                    { type: 'matches', val: 25000, name: '25000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 18 },
-                    { type: 'tape', val: 1000, name: '1000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 14 },
-                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-purple', weight: 12 },
-                    { type: 'matches', val: 50000, name: '50000 🔥 Спичек', icon: '💰', rarity: 'rarity-purple', weight: 8 },
-                    { type: 'tape', val: 5000, name: '5000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-pink', weight: 6 },
-                    { type: 'provision', val: 2, name: '2 🥫 Провизии', icon: '🥫', rarity: 'rarity-pink', weight: 5 },
-                    { type: 'matches', val: 100000, name: '100000 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 4 },
-                    { type: 'weapon', id: 'firestorm', name: 'Огненный выстрел', icon: '🔥', rarity: 'rarity-red', weight: 3.5 },
-                    { type: 'tape', val: 10000, name: '10000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-red', weight: 3 },
-                    { type: 'provision', val: 5, name: '5 🥫 Провизии', icon: '🥫', rarity: 'rarity-gold', weight: 2 },
-                    { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-gold', weight: 1.5 },
-                    { type: 'provision', val: 10, name: '10 🥫 Провизии!', icon: '🥫', rarity: 'rarity-gold', weight: 1 }
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 26 },
+                    { type: 'matches', val: 100000, name: '100000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 25 },
+                    { type: 'matches', val: 200000, name: '200000 🔥 Спичек', icon: '💰', rarity: 'rarity-purple', weight: 17 },
+                    { type: 'weapon', id: 'firestorm', name: 'Огненный обстрел', icon: '🔥', rarity: 'rarity-pink', weight: 12 },
+                    { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-red', weight: 9 },
+                    { type: 'matches', val: 500000, name: '500000 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 6 },
+                    { type: 'provision', val: 5000, name: '5000 🥫 Провизии!', icon: '🥫', rarity: 'rarity-gold', weight: 3 },
+                    { type: 'matches', val: 1000000, name: '1 000 000 🔥 ДЖЕКПОТ!', icon: '👑', rarity: 'rarity-gold', weight: 2 }
                 ]
             },
             weapon_basic: {
@@ -1559,11 +1544,11 @@
             weapon_premium: {
                 title: '✈️ ПРЕМИУМ ОРУЖЕЙНЫЙ БОКС',
                 cost: 50000,
-                desc: '100% гарантия оружия: Выстрел с РПГ, Выстрел с танка, Огненный выстрел или Авиаудар!',
+                desc: '100% гарантия оружия: Выстрел с РПГ, Выстрел с танка, Огненный обстрел или Авиаудар!',
                 pool: [
                     { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-purple', weight: 44 },
                     { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-pink', weight: 32 },
-                    { type: 'weapon', id: 'firestorm', name: 'Огненный выстрел', icon: '🔥', rarity: 'rarity-red', weight: 16 },
+                    { type: 'weapon', id: 'firestorm', name: 'Огненный обстрел', icon: '🔥', rarity: 'rarity-red', weight: 16 },
                     { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-gold', weight: 8 }
                 ]
             }
@@ -1572,6 +1557,7 @@
         let currentBoxKey = 'basic';
         let activeBoss = savedData.activeBoss || null;
         let soundEnabled = savedData.soundEnabled !== undefined ? savedData.soundEnabled : true;
+        let musicEnabled = savedData.musicEnabled !== undefined ? savedData.musicEnabled : true;
         let currentTheme = savedData.theme || 'dark';
         let isSpinningCase = false;
 
@@ -1628,7 +1614,6 @@
         // ================= ДОСТИЖЕНИЯ С ПРОГРЕССИВНОЙ НАГРАДОЙ ПРОВИЗИИ =================
         const achievementsCatalog = [];
 
-        // 1. Зомби: 100 -> 1, 500 -> 5, 1000 -> 10, 5000 -> 50, 10000 -> 100, 50000 -> 500, 100000 -> 1000, 500000 -> 5000
         const zMilestones = [100, 500, 1000, 5000, 10000, 50000, 100000, 500000];
         const zTitles = ['Первая зачистка', 'Охотник окраин', 'Истребитель стаи', 'Мясник карантина', 'Гроза мертвецов', 'Чистильщик пустоши', 'Легенда руин', 'Бог апокалипсиса'];
         zMilestones.forEach((m, i) => {
@@ -1642,7 +1627,6 @@
             });
         });
 
-        // 2. Урон: прогрессивная награда от 1 до 5000 провизии
         const dMilestones = [100, 500, 1000, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000, 5000000];
         const dRewards    = [1,   5,   10,   25,   50,    100,   200,   400,    800,    1500,   2500,    3500,    5000];
         const dTitles = ['Разминка кулаков', 'Крепкий удар', 'Костолом', 'Тяжелая рука', 'Сокрушитель черепов', 'Стальной напор', 'Мясорубка', 'Разрушитель плоти', 'Ураганный огонь', 'Аннигилятор', 'Катастрофа', 'Апокалипсис во плоти', 'Абсолютное разрушение'];
@@ -1657,7 +1641,6 @@
             });
         });
 
-        // 3. Боссы: 10 -> 1 🥫, 50 -> 5 🥫, 100 -> 10 🥫
         const bMilestones = [10, 50, 100];
         const bRewards    = [1,  5,  10];
         const bRanks = ['Охотник', 'Палач', 'Покоритель'];
@@ -1674,7 +1657,6 @@
             });
         });
 
-        // 4. Боксы: 10 -> 1 🥫, 50 -> 5 🥫, 100 -> 10 🥫
         const boxNames = {
             basic: 'Обычный бокс',
             super: 'Супер бокс',
@@ -1698,7 +1680,6 @@
             });
         });
 
-        // 5. Потрачено спичек: 1000 -> 1 🥫, 10000 -> 10 🥫, 50000 -> 50 🥫 ... 5000000 -> 5000 🥫
         const sMilestones = [1000, 10000, 50000, 100000, 500000, 1000000, 2500000, 5000000];
         const sTitles = ['Мелкий скупщик', 'Торговец с базы', 'Щедрый выживший', 'Оптовик пустоши', 'Военный спонсор', 'Оружейный барон', 'Властелин спичек', 'Император экономики'];
         sMilestones.forEach((m, i) => {
@@ -1712,7 +1693,6 @@
             });
         });
 
-        // 6. Арсенал оружия: 25 -> 1, 50 -> 2, 100 -> 4, 250 -> 10, 500 -> 20, 1000 -> 40, 2500 -> 100, 5000 -> 200
         const wMilestones = [25, 50, 100, 250, 500, 1000, 2500, 5000];
         const wRewards    = [1,  2,  4,   10,  20,  40,   100,  200];
         const wRanks = ['Запас', 'Ящик', 'Склад', 'Арсенал', 'Бункер', 'Бастион', 'Дивизия', 'Гегемония'];
@@ -1729,7 +1709,6 @@
             });
         });
 
-        // 7. Очки навыков: 10 -> 1, 25 -> 3, 50 -> 5, 100 -> 10, 250 -> 25, 500 -> 50
         const skMilestones = [10, 25, 50, 100, 250, 500];
         const skRewards    = [1,  3,  5,  10,  25,  50];
         const skTitles = ['Новичок зоны', 'Следопыт', 'Ветеран выживания', 'Мастер пустоши', 'Сверхчеловек', 'Легенда эволюции'];
@@ -1753,14 +1732,100 @@
             addDailyQuestProgress('spend_matches', amount);
         }
 
-        // Звуковой движок
+        // ================= ЗВУКОВОЙ ДВИЖОК И ФОНОВАЯ МЕЛОДИЯ =================
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         let audioCtx = null;
+        let bgmInterval = null;
+        let bgmStep = 0;
+
+        // Атмосферная постапокалиптическая мелодия в миноре (DayZ / Stalker vibe)
+        const bgmMelodyNotes = [
+            146.83, 220.00, 261.63, 220.00, // Dm: D3, A3, C4, A3
+            174.61, 220.00, 293.66, 261.63, // F:  F3, A3, D4, C4
+            130.81, 196.00, 246.94, 196.00, // C:  C3, G3, B3, G3
+            110.00, 164.81, 220.00, 174.61  // Am: A2, E3, A3, F3
+        ];
 
         function initAudio() {
             if (!audioCtx) audioCtx = new AudioCtx();
             if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (musicEnabled && !bgmInterval) {
+                startBackgroundMusic();
+            }
         }
+
+        function playBgmNote() {
+            if (!musicEnabled || !audioCtx || audioCtx.state !== 'running') return;
+            const now = audioCtx.currentTime;
+
+            const freq = bgmMelodyNotes[bgmStep % bgmMelodyNotes.length];
+
+            // Мягкий атмосферный синт-арпеджио
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.055, now + 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.52);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.55);
+
+            // Глубокий бас на сильную долю каждого такта
+            if (bgmStep % 4 === 0) {
+                const bassOsc = audioCtx.createOscillator();
+                const bassGain = audioCtx.createGain();
+                bassOsc.type = 'sine';
+                bassOsc.frequency.setValueAtTime(freq / 2, now);
+
+                bassGain.gain.setValueAtTime(0.001, now);
+                bassGain.gain.linearRampToValueAtTime(0.075, now + 0.15);
+                bassGain.gain.exponentialRampToValueAtTime(0.0008, now + 2.1);
+
+                bassOsc.connect(bassGain);
+                bassGain.connect(audioCtx.destination);
+                bassOsc.start(now);
+                bassOsc.stop(now + 2.15);
+            }
+
+            bgmStep++;
+        }
+
+        function startBackgroundMusic() {
+            if (bgmInterval) clearInterval(bgmInterval);
+            if (!musicEnabled) return;
+            bgmInterval = setInterval(playBgmNote, 550);
+        }
+
+        function stopBackgroundMusic() {
+            if (bgmInterval) {
+                clearInterval(bgmInterval);
+                bgmInterval = null;
+            }
+        }
+
+        function toggleMusic() {
+            musicEnabled = !musicEnabled;
+            const btn = document.getElementById('musicToggleBtn');
+            btn.innerText = musicEnabled ? '🎵 Вкл' : '🔇 Выкл';
+            btn.style.background = musicEnabled ? '#22c55e' : '#57534e';
+            if (musicEnabled) {
+                initAudio();
+                startBackgroundMusic();
+            } else {
+                stopBackgroundMusic();
+            }
+            saveProgress();
+        }
+
+        // Автозапуск аудио и мелодии при первом касании экрана
+        document.addEventListener('pointerdown', () => {
+            initAudio();
+        }, { once: true });
 
         function playHitSound(isKill) {
             if (!soundEnabled) return;
@@ -2141,7 +2206,7 @@
                     playWinFanfare(true);
                 } else if (winningItem.type === 'provision') {
                     provision += winningItem.val;
-                    winTitle.innerText = `🥫 +${winningItem.val} Провизии!`;
+                    winTitle.innerText = `🥫 +${winningItem.val.toLocaleString('ru-RU')} Провизии!`;
                     playWinFanfare(true);
                 }
 
@@ -2781,7 +2846,7 @@
             }
         }
 
-        // КАЖДЫЙ 20-Й УБИТЫЙ ЗОМБИ ПОВЫШАЕТ УРОВЕНЬ И ДАЕТ +1 ОЧКО НАВЫКА
+        // КАЖДЫЙ 10-Й УБИТЫЙ ЗОМБИ ПОВЫШАЕТ УРОВЕНЬ И ДАЕТ +1 ОЧКО НАВЫКА
         function handleNormalZombieKill(x, y) {
             let rewardMatches = getZombieLootDrop();
             sessionDiamonds += rewardMatches;
@@ -2789,7 +2854,7 @@
             zombieKillsForCurrentLevel++;
             addDailyQuestProgress('zombies', 1);
 
-            const reqKills = 20;
+            const reqKills = 10;
             if (zombieKillsForCurrentLevel >= reqKills) {
                 zombieKillsForCurrentLevel -= reqKills;
                 charLevel++;
@@ -2841,23 +2906,24 @@
             saveProgress();
         }
 
+        // УЛУЧШЕНИЯ БАЗЫ В АРИФМЕТИЧЕСКОЙ ПРОГРЕССИИ (+200, +50, +1000, +5000)
         function buyUpgrade(type) {
             if (type === 'storage' && sessionDiamonds >= storageCost) {
                 spendMatches(storageCost);
                 maxStorage += 150;
-                storageCost *= 2;
+                storageCost += 200;
             } else if (type === 'click' && sessionDiamonds >= clickCost) {
                 spendMatches(clickCost);
                 clickPower++;
-                clickCost *= 2;
+                clickCost += 50;
             } else if (type === 'passive' && sessionDiamonds >= passiveCost) {
                 spendMatches(passiveCost);
                 passiveRate += 50;
-                passiveCost *= 2;
+                passiveCost += 1000;
             } else if (type === 'auto' && sessionDiamonds >= autoCost) {
                 spendMatches(autoCost);
                 autoClicker++;
-                autoCost *= 2;
+                autoCost += 5000;
             } else if (type === 'autotapper' && autoTapperLevel < 10) {
                 const nextCost = getNextAutoTapperCost();
                 if (sessionDiamonds < nextCost) {
@@ -2975,8 +3041,8 @@
                 tapperBtn.disabled = true;
             }
 
-            // Навыки (каждые 20 зомби)
-            const reqKills = 20;
+            // Навыки (каждые 10 зомби)
+            const reqKills = 10;
             document.getElementById('charLevel').innerText = charLevel;
             document.getElementById('skillPoints').innerText = skillPoints;
             document.getElementById('levelProgressFill').style.width = `${Math.min(100, (zombieKillsForCurrentLevel / reqKills) * 100)}%`;
@@ -3032,6 +3098,7 @@
             if (confirm('Внимание! Весь прогресс, спички, провизия, изолента, уровень, навыки, оружие, трофеи и база будут ПОЛНОСТЬЮ обнулены. Вы уверены?')) {
                 isResetting = true;
                 if (autoTapperTimer) clearInterval(autoTapperTimer);
+                stopBackgroundMusic();
                 localStorage.removeItem('diamond_save');
                 localStorage.clear();
                 location.reload();
@@ -3053,7 +3120,7 @@
                 consumables, weaponLevels, activeBoss, bossKeys, bossKillCounts, bossDailyKills,
                 boxOpenCounts, claimedAchievements,
                 lastDailyReset, activeDailyQuests,
-                soundEnabled, theme: currentTheme, lastExitTime: Date.now()
+                soundEnabled, musicEnabled, theme: currentTheme, lastExitTime: Date.now()
             }));
         }
 
@@ -3069,6 +3136,9 @@
             document.getElementById('themeToggleBtn').innerText = '☀️ Светлая';
         }
         document.getElementById('soundToggleBtn').innerText = soundEnabled ? '🔊 Вкл' : '🔇 Выкл';
+        const musicBtn = document.getElementById('musicToggleBtn');
+        musicBtn.innerText = musicEnabled ? '🎵 Вкл' : '🔇 Выкл';
+        musicBtn.style.background = musicEnabled ? '#22c55e' : '#57534e';
 
         checkDailyReset();
         restartAutoTapperLoop();
