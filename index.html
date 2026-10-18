@@ -45,9 +45,18 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             padding: 8px;
             transition: background 0.2s, color 0.2s;
+        }
+
+        .top-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .header {
@@ -59,16 +68,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10;
             width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
         }
 
         .currencies-wrap {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .balance-box {
@@ -79,33 +86,52 @@
         .balance-label {
             font-size: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             color: var(--text-sub);
             font-weight: 800;
         }
 
         .balance-val {
-            font-size: 17px;
+            font-size: 14px;
             font-weight: 900;
             color: #fb923c;
             text-shadow: 1.5px 1.5px 0 #000;
         }
 
         .provision-val {
-            font-size: 17px;
+            font-size: 14px;
             font-weight: 900;
             color: #38bdf8;
+            text-shadow: 1.5px 1.5px 0 #000;
+        }
+
+        .tape-val {
+            font-size: 14px;
+            font-weight: 900;
+            color: #60a5fa;
             text-shadow: 1.5px 1.5px 0 #000;
         }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .byn-badge {
             background: #10b981;
+            color: #000;
+            font-weight: 900;
+            padding: 5px 7px;
+            border-radius: 8px;
+            border: 2.5px solid #000;
+            box-shadow: 0 2px 0 #000;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .withdraw-btn {
+            background: #facc15;
             color: #000;
             font-weight: 900;
             padding: 5px 8px;
@@ -113,6 +139,13 @@
             border: 2.5px solid #000;
             box-shadow: 0 2px 0 #000;
             font-size: 10px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .withdraw-btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
         }
 
         .settings-btn {
@@ -120,37 +153,33 @@
             color: var(--text-main);
             border: 2.5px solid #000;
             border-radius: 8px;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 14px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
         }
 
+        /* Крупные кнопки навигации в 2 ряда (4x2 = 8 вкладок) */
         .tabs {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
-            margin-top: 6px;
-            z-index: 10;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
             width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .tab-btn {
             background: var(--tab-bg);
             color: var(--text-main);
-            border: 2px solid #000;
-            border-radius: 8px;
-            padding: 6px 1px;
+            border: 2.5px solid #000;
+            border-radius: 10px;
+            padding: 9px 4px;
             font-weight: 900;
-            font-size: 9px;
-            box-shadow: 0 2px 0 #000;
+            font-size: 11px;
+            box-shadow: 0 3px 0 #000;
             cursor: pointer;
             transition: transform 0.1s, background 0.2s;
             white-space: nowrap;
@@ -167,6 +196,38 @@
             box-shadow: 0 0px 0 #000;
         }
 
+        /* Показатель энергии сразу под навигацией */
+        .energy-bar-wrap {
+            background: var(--energy-bg);
+            border: 3px solid #000;
+            border-radius: 10px;
+            height: 22px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 0 #000;
+            width: 100%;
+        }
+
+        .energy-fill {
+            background: linear-gradient(90deg, #eab308, #fde047);
+            height: 100%;
+            width: 100%;
+            border-right: 2px solid #000;
+            transition: width 0.2s;
+        }
+
+        .energy-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 11px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+        }
+
         .screen {
             display: none;
             flex: 1;
@@ -176,7 +237,7 @@
             position: relative;
             width: 100%;
             max-width: 600px;
-            margin: 6px auto;
+            margin: 6px auto 0 auto;
             overflow: hidden;
         }
 
@@ -189,7 +250,7 @@
             color: #000;
             border: 2px solid #000;
             border-radius: 8px;
-            padding: 4px 8px;
+            padding: 4px 7px;
             font-weight: 900;
             font-size: 9px;
             box-shadow: 0 2px 0 #000;
@@ -248,8 +309,8 @@
         /* Зомби / Босс */
         .zombie-wrapper {
             position: relative;
-            width: 175px;
-            height: 175px;
+            width: 165px;
+            height: 165px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -262,8 +323,8 @@
         }
 
         .zombie-svg {
-            width: 170px;
-            height: 170px;
+            width: 160px;
+            height: 160px;
             filter: drop-shadow(0 6px 0 #000000);
         }
 
@@ -376,6 +437,7 @@
             flex-direction: column;
             gap: 8px;
             padding-right: 4px;
+            padding-bottom: 12px;
         }
 
         .shop-card {
@@ -442,6 +504,9 @@
         .box-super { background: linear-gradient(135deg, #1e3a8a, #172554); }
         .box-vip { background: linear-gradient(135deg, #7c2d12, #431407); }
         .box-premium { background: linear-gradient(135deg, #701a75, #3b0764); }
+        .box-weapon-basic { background: linear-gradient(135deg, #4b5563, #1f2937); }
+        .box-weapon-vip { background: linear-gradient(135deg, #991b1b, #450a0a); }
+        .box-weapon-premium { background: linear-gradient(135deg, #854d0e, #422006); }
 
         .boss-timer-badge {
             background: #dc2626;
@@ -483,7 +548,7 @@
         }
 
         /* Модальные окна */
-        #settingsModal, #caseModal, #contrabandModal, #statsModal {
+        #settingsModal, #caseModal, #contrabandModal, #statsModal, #withdrawModal {
             display: none;
             position: fixed;
             inset: 0;
@@ -501,7 +566,7 @@
             border-radius: 20px;
             padding: 16px;
             width: 100%;
-            max-width: 390px;
+            max-width: 400px;
             max-height: 85vh;
             box-shadow: 0 6px 0 #000;
             display: flex;
@@ -749,65 +814,11 @@
             0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
             100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3); }
         }
-
-        .footer {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            z-index: 10;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .energy-bar-wrap {
-            background: var(--energy-bg);
-            border: 3px solid #000;
-            border-radius: 12px;
-            height: 22px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 2px 0 #000;
-        }
-
-        .energy-fill {
-            background: linear-gradient(90deg, #eab308, #fde047);
-            height: 100%;
-            width: 100%;
-            border-right: 2px solid #000;
-            transition: width 0.2s;
-        }
-
-        .energy-text {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 11px;
-            color: #fff;
-            text-shadow: 1px 1px 0 #000;
-        }
-
-        .main-btn {
-            background: #22c55e;
-            color: #000;
-            border: 3px solid #000;
-            border-radius: 14px;
-            padding: 9px;
-            font-size: 12px;
-            font-weight: 900;
-            text-transform: uppercase;
-            box-shadow: 0 3px 0 #000;
-            cursor: pointer;
-            width: 100%;
-        }
     </style>
 </head>
 <body>
 
-    <div>
+    <div class="top-container">
         <div class="header">
             <div class="currencies-wrap">
                 <div class="balance-box">
@@ -818,21 +829,50 @@
                     <span class="balance-label">Провизия</span>
                     <span class="provision-val" id="provisionDisplay">0 🥫</span>
                 </div>
+                <div class="balance-box">
+                    <span class="balance-label">Изолента</span>
+                    <span class="tape-val" id="tapeDisplay">0 🟦</span>
+                </div>
             </div>
             <div class="header-right">
                 <div class="byn-badge" id="bynDisplay">0.000 BYN</div>
+                <button class="withdraw-btn" onclick="openWithdrawModal()">💸 Вывод</button>
                 <button class="settings-btn" onclick="openSettings()">⚙️</button>
             </div>
         </div>
 
+        <!-- 8 вкладок в 2 ряда (по 4 в ряду) -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('tap', this)">🧟 Охота</button>
             <button class="tab-btn" onclick="switchTab('bosses', this)">💀 Боссы</button>
-            <button class="tab-btn" onclick="switchTab('market', this)">🔫 Лавка</button>
+            <button class="tab-btn" onclick="switchTab('boxes', this)">🎁 Боксы</button>
+            <button class="tab-btn" onclick="switchTab('market', this)">🔫 Оружие</button>
             <button class="tab-btn" onclick="switchTab('quests', this)">📋 Задания</button>
             <button class="tab-btn" onclick="switchTab('achievements', this)">🏆 Трофеи</button>
             <button class="tab-btn" onclick="switchTab('skills', this)">📈 Навыки</button>
             <button class="tab-btn" onclick="switchTab('shop', this)">🚀 База</button>
+        </div>
+
+        <!-- Шкала энергии сразу под навигацией -->
+        <div class="energy-bar-wrap">
+            <div class="energy-fill" id="energyFill"></div>
+            <div class="energy-text" id="energyText">⚡ 100 / 100</div>
+        </div>
+    </div>
+
+    <!-- Модальное окно ВЫВОДА -->
+    <div id="withdrawModal">
+        <div class="settings-card">
+            <div class="modal-title" style="color: #10b981;">💸 Вывод средств (BYN)</div>
+            <div style="background: var(--tab-bg); border: 2.5px solid #000; border-radius: 12px; padding: 8px; font-size: 11px; font-weight: 800;">
+                <p style="color: var(--text-sub);">Официальный курс обмена:</p>
+                <p style="color: #facc15; font-size: 13px; margin-top: 2px;">100,000 🔥 = 1.00 BYN</p>
+                <p style="margin-top: 4px;">Ваш баланс: <span id="withdrawBalanceText" style="color: #fb923c;">0 🔥</span> (<span id="withdrawBynText" style="color: #10b981;">0.000 BYN</span>)</p>
+            </div>
+
+            <div class="shop-container" style="max-height: 48vh; text-align: left;" id="withdrawOptionsList"></div>
+
+            <button class="close-modal" onclick="closeWithdrawModal()">Закрыть</button>
         </div>
     </div>
 
@@ -869,7 +909,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно Обычных Боксов (Рулетка) -->
+    <!-- Модальное окно Рулетки Боксов -->
     <div id="caseModal">
         <div class="settings-card case-modal-card">
             <div class="modal-title" id="caseModalTitle">🎁 БОКС</div>
@@ -915,9 +955,10 @@
 
     <!-- Экран 1: Охота на обычных Зомби -->
     <div class="screen active" id="screen-tap">
-        <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+        <div style="display: flex; gap: 5px; margin-bottom: 6px; flex-wrap: wrap; justify-content: center;">
             <button class="test-cheat-btn" onclick="addTestMatches()">⚡ +10,000 🔥</button>
             <button class="test-cheat-btn" style="background: #10b981;" onclick="addTestProvision()">🥫 +5 Провизии</button>
+            <button class="test-cheat-btn" style="background: #60a5fa;" onclick="addTestTape()">🟦 +100 Изоленты</button>
         </div>
 
         <div class="zombie-status-box">
@@ -958,7 +999,7 @@
             <div class="storage-left">
                 <div class="storage-header-line">
                     <span>📦 СХРОН СПИЧЕК</span>
-                    <span id="storageRateInfo">Добыча: 0/сек</span>
+                    <span id="storageRateInfo">Добыча: 0/мин</span>
                 </div>
                 <div class="storage-bar-wrap">
                     <div class="storage-fill" id="storageFill"></div>
@@ -969,7 +1010,7 @@
         </div>
     </div>
 
-    <!-- Экран 2: БОССЫ (15 Боссов, Ключи и Лимиты 10/день) -->
+    <!-- Экран 2: БОССЫ (15 Боссов, Ключи, Изолента, Провизия и Лимиты 10/день) -->
     <div class="screen" id="screen-bosses">
         <div class="shop-container" id="bossSelectionList"></div>
 
@@ -1010,27 +1051,26 @@
         </div>
     </div>
 
-    <!-- Экран 3: Лавка (Контрабанда, 4 Бокса и Оружие) -->
-    <div class="screen" id="screen-market">
+    <!-- Экран 3: ОТДЕЛЬНАЯ ВКЛАДКА БОКСЫ (Контрабанда, 4 Бокса и 3 Оружейных Бокса) -->
+    <div class="screen" id="screen-boxes">
         <div class="shop-container">
             <h4 style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🕵️ Особый груз за Провизию</h4>
 
-            <!-- Бокс Контрабанда -->
             <div class="lucky-box-card box-contraband">
                 <div class="shop-info">
                     <h4 style="color: #34d399; font-size: 13px;">🕵️ КОНТРАБАНДА</h4>
-                    <p style="color: #a7f3d0;">1 очко навыка, 1–5 ключей боссов, спички по уровню + шанс на провизию!</p>
+                    <p style="color: #a7f3d0;">1 очко навыка, 1–5 ключей боссов, спички по уровню + 0–1 провизия!</p>
                 </div>
                 <button class="shop-btn" id="contrabandShopBtn" style="background: #10b981; color: #000; padding: 9px 12px;" onclick="openContrabandModal()">1 🥫</button>
             </div>
 
-            <h4 style="margin-top: 4px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🎁 Боксы за Спички</h4>
+            <h4 style="margin-top: 4px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🎁 Боксы со снаряжением и ресурсами</h4>
 
             <!-- 1. Обычный Бокс (25 спичек) -->
             <div class="lucky-box-card box-basic">
                 <div class="shop-info">
                     <h4 style="color: #e4e4e7; font-size: 13px;">📦 ОБЫЧНЫЙ БОКС</h4>
-                    <p style="color: #a1a1aa;">Заточка, Молотов, Граната или 0, 25, 100, 250, 500, 1000, 2000 🔥</p>
+                    <p style="color: #a1a1aa;">Заточка, Молотов, Граната • Изолента: 1, 5, 10 🟦 • Спички: 0..2000 🔥</p>
                 </div>
                 <button class="shop-btn" style="background: #facc15; padding: 8px 11px;" onclick="openCaseModal('basic')">25 🔥</button>
             </div>
@@ -1039,7 +1079,7 @@
             <div class="lucky-box-card box-super">
                 <div class="shop-info">
                     <h4 style="color: #60a5fa; font-size: 13px;">⚡ СУПЕР БОКС</h4>
-                    <p style="color: #bfdbfe;">Граната, Связка динамита или 0, 250, 500, 1000, 2500, 5000 🔥</p>
+                    <p style="color: #bfdbfe;">Граната, Динамит • Изолента: 10, 50, 100 🟦 • Провизия: 1 🥫 • 0..5000 🔥</p>
                 </div>
                 <button class="shop-btn" style="background: #38bdf8; padding: 8px 11px;" onclick="openCaseModal('super')">250 🔥</button>
             </div>
@@ -1048,7 +1088,7 @@
             <div class="lucky-box-card box-vip">
                 <div class="shop-info">
                     <h4 style="color: #facc15; font-size: 13px;">👑 ВИП БОКС</h4>
-                    <p style="color: #fed7aa;">Связка динамита, Выстрел с РПГ или 0, 2500, 5000, 10000, 25000 🔥</p>
+                    <p style="color: #fed7aa;">Динамит, РПГ • Изолента: 100, 500, 1000 🟦 • Провизия: 2, 5 🥫 • 0..25000 🔥</p>
                 </div>
                 <button class="shop-btn" style="background: #f97316; padding: 8px 11px;" onclick="openCaseModal('vip')">2500 🔥</button>
             </div>
@@ -1057,17 +1097,51 @@
             <div class="lucky-box-card box-premium">
                 <div class="shop-info">
                     <h4 style="color: #f472b6; font-size: 13px;">💎 ПРЕМИУМ БОКС</h4>
-                    <p style="color: #fbcfe8;">Танк, Огненный шторм, Авиаудар или 0, 25000, 50000, 100000 🔥!</p>
+                    <p style="color: #fbcfe8;">Танк, Шторм, Авиаудар • 1000..10000 🟦 • 2, 5, 10 🥫 • 0..100000 🔥</p>
                 </div>
                 <button class="shop-btn" style="background: #ec4899; color: #fff; padding: 8px 11px;" onclick="openCaseModal('premium')">25000 🔥</button>
             </div>
 
-            <h4 style="margin-top: 4px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">💣 Одноразовое оружие</h4>
+            <h4 style="margin-top: 4px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🔫 Оружейные Боксы (Без проигрыша!)</h4>
+
+            <!-- 5. Обычный Оружейный Бокс (250 спичек) -->
+            <div class="lucky-box-card box-weapon-basic">
+                <div class="shop-info">
+                    <h4 style="color: #f3f4f6; font-size: 13px;">🔪 ОБЫЧНЫЙ ОРУЖЕЙНЫЙ БОКС</h4>
+                    <p style="color: #d1d5db;">Только оружие: Заточка, Молотов, Граната Ф-1, Связка динамита!</p>
+                </div>
+                <button class="shop-btn" style="background: #22c55e; padding: 8px 11px;" onclick="openCaseModal('weapon_basic')">250 🔥</button>
+            </div>
+
+            <!-- 6. ВИП Оружейный Бокс (5000 спичек) -->
+            <div class="lucky-box-card box-weapon-vip">
+                <div class="shop-info">
+                    <h4 style="color: #fca5a5; font-size: 13px;">🚀 ВИП ОРУЖЕЙНЫЙ БОКС</h4>
+                    <p style="color: #fecaca;">Только оружие: Граната Ф-1, Связка динамита, Выстрел с РПГ, Танк!</p>
+                </div>
+                <button class="shop-btn" style="background: #ef4444; color: #fff; padding: 8px 11px;" onclick="openCaseModal('weapon_vip')">5000 🔥</button>
+            </div>
+
+            <!-- 7. Премиум Оружейный Бокс (50000 спичек) -->
+            <div class="lucky-box-card box-weapon-premium">
+                <div class="shop-info">
+                    <h4 style="color: #fde047; font-size: 13px;">✈️ ПРЕМИУМ ОРУЖЕЙНЫЙ БОКС</h4>
+                    <p style="color: #fef08a;">Только оружие: Выстрел с РПГ, Выстрел с танка, Огненный шторм, Авиаудар!</p>
+                </div>
+                <button class="shop-btn" style="background: #facc15; padding: 8px 11px;" onclick="openCaseModal('weapon_premium')">50000 🔥</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран 4: Оружие (Покупка расходников) -->
+    <div class="screen" id="screen-market">
+        <div class="shop-container">
+            <h4 style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">💣 Покупка одноразового оружия</h4>
             <div id="weaponsShopList" style="display: flex; flex-direction: column; gap: 8px;"></div>
         </div>
     </div>
 
-    <!-- Экран 4: Ежедневные Задания -->
+    <!-- Экран 5: Ежедневные Задания -->
     <div class="screen" id="screen-quests">
         <div class="shop-container">
             <div style="background: var(--card-bg); border: 3px solid #000; border-radius: 14px; padding: 10px; text-align: center; box-shadow: 0 3px 0 #000;">
@@ -1080,7 +1154,7 @@
         </div>
     </div>
 
-    <!-- Экран 5: Достижения -->
+    <!-- Экран 6: Достижения -->
     <div class="screen" id="screen-achievements">
         <div style="width: 100%; margin-bottom: 6px; background: var(--card-bg); border: 3px solid #000; border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 0 #000;">
             <div>
@@ -1103,7 +1177,7 @@
         <div class="shop-container" id="achievementsList"></div>
     </div>
 
-    <!-- Экран 6: Навыки -->
+    <!-- Экран 7: Навыки -->
     <div class="screen" id="screen-skills">
         <div class="shop-container">
             <div style="background: var(--card-bg); border: 3px solid #000; border-radius: 14px; padding: 10px; text-align: center; box-shadow: 0 3px 0 #000;">
@@ -1141,9 +1215,11 @@
         </div>
     </div>
 
-    <!-- Экран 7: База -->
+    <!-- Экран 8: База (Постройки + Мастерская оружия за Изоленту и Спички) -->
     <div class="screen" id="screen-shop">
         <div class="shop-container">
+            <h4 style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🏗️ Улучшения Базы</h4>
+
             <div class="shop-card">
                 <div class="shop-info">
                     <h4>📦 Расширить Схрон (+150 мест)</h4>
@@ -1153,7 +1229,7 @@
             </div>
             <div class="shop-card">
                 <div class="shop-info">
-                    <h4>👊 Удар (+1 урон)</h4>
+                    <h4>👊 Удар (+1 урон с руки)</h4>
                     <p id="clickLevelText">Урон с руки: 1</p>
                 </div>
                 <button class="shop-btn" id="buyClickBtn" onclick="buyUpgrade('click')">50 🔥</button>
@@ -1163,24 +1239,19 @@
                     <h4>🪤 Сборщики добычи (+50 🔥/час)</h4>
                     <p id="passiveLevelText">Уровень: 0</p>
                 </div>
-                <button class="shop-btn" id="buyPassiveBtn" onclick="buyUpgrade('passive')">500 🔥</button>
+                <button class="shop-btn" id="buyPassiveBtn" onclick="buyUpgrade('passive')">1000 🔥</button>
             </div>
             <div class="shop-card">
                 <div class="shop-info">
-                    <h4>🔫 Напарник (+1 🔥/сек)</h4>
+                    <h4>🔫 Напарник (+1 🔥/мин)</h4>
                     <p id="autoLevelText">Уровень: 0</p>
                 </div>
-                <button class="shop-btn" id="buyAutoBtn" onclick="buyUpgrade('auto')">1000 🔥</button>
+                <button class="shop-btn" id="buyAutoBtn" onclick="buyUpgrade('auto')">5000 🔥</button>
             </div>
-        </div>
-    </div>
 
-    <div class="footer">
-        <div class="energy-bar-wrap">
-            <div class="energy-fill" id="energyFill"></div>
-            <div class="energy-text" id="energyText">⚡ 100 / 100</div>
+            <h4 style="margin-top: 6px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🛠️ Мастерская оружия (Прокачка урона за Изоленту 🟦)</h4>
+            <div id="weaponUpgradesBaseList" style="display: flex; flex-direction: column; gap: 8px;"></div>
         </div>
-        <button class="main-btn" onclick="saveAndExit()">📥 Отправить спички в бота</button>
     </div>
 
     <script>
@@ -1191,18 +1262,18 @@
 
         let sessionDiamonds = savedData.sessionDiamonds || 0;
         let provision = savedData.provision || 0;
+        let ductTape = savedData.ductTape || 0;
         let contrabandOpened = savedData.contrabandOpened || 0;
 
         let clickPower = savedData.clickPower || 1;
         let passiveRate = savedData.passiveRate || 0;
-        let autoClicker = savedData.autoClicker || 0;
+        let autoClicker = savedData.autoClicker || 0; // теперь дает +1 спичку в минуту за уровень
 
         let zombiesKilled = savedData.zombiesKilled || 0;
         let charLevel = savedData.charLevel || 1;
         let zombieKillsForCurrentLevel = savedData.zombieKillsForCurrentLevel || 0;
         let skillPoints = savedData.skillPoints || 0;
 
-        // Глобальная статистика для достижений и окна Статистики
         let totalDamageDealt = savedData.totalDamageDealt || 0;
         let totalMatchesSpent = savedData.totalMatchesSpent || 0;
         let totalSkillPointsSpent = savedData.totalSkillPointsSpent || 0;
@@ -1234,45 +1305,54 @@
         let maxStorage = savedData.maxStorage || 100;
         let storedDiamonds = savedData.storedDiamonds || 0;
 
+        // Стартовые цены прокачки Базы (сборщик 1000, напарник 5000)
         let storageCost = savedData.storageCost || 200;
         let clickCost = savedData.clickCost || 50;
-        let passiveCost = savedData.passiveCost || 500;
-        let autoCost = savedData.autoCost || 1000;
+        let passiveCost = savedData.passiveCost || 1000;
+        let autoCost = savedData.autoCost || 5000;
 
-        // Каталог оружия
+        // Каталог одноразового оружия и параметры его прокачки на Базе за Изоленту и Спички
         const consumableCatalog = [
-            { id: 'shiv', name: '🔪 Острая заточка', shortName: 'Заточка', dmg: 35, cost: 35, icon: '🔪' },
-            { id: 'molotov', name: '🍾 Коктейль Молотова', shortName: 'Молотов', dmg: 150, cost: 150, icon: '🍾' },
-            { id: 'grenade', name: '💣 Граната Ф-1', shortName: 'Граната Ф-1', dmg: 450, cost: 450, icon: '💣' },
-            { id: 'dynamite', name: '🧨 Связка динамита', shortName: 'Связка динамита', dmg: 2500, cost: 2500, icon: '🧨' },
-            { id: 'rpg', name: '🚀 Выстрел с РПГ-7', shortName: 'Выстрел с РПГ-7', dmg: 10000, cost: 10000, icon: '🚀' },
-            { id: 'tank', name: '🚜 Выстрел с танка', shortName: 'Выстрел с танка', dmg: 25000, cost: 25000, icon: '🚜' },
-            { id: 'firestorm', name: '🔥 Огненный шторм', shortName: 'Огненный шторм', dmg: 100000, cost: 100000, icon: '🔥' },
-            { id: 'airstrike', name: '✈️ Авиаудар', shortName: 'Авиаудар', dmg: 250000, cost: 250000, icon: '✈️' }
+            { id: 'shiv', name: '🔪 Острая заточка', shortName: 'Острая заточка', baseDmg: 35, cost: 35, icon: '🔪', upgTape: 1, upgMatches: 10, upgBonus: 1 },
+            { id: 'molotov', name: '🍾 Коктейль Молотова', shortName: 'Молотов', baseDmg: 150, cost: 150, icon: '🍾', upgTape: 5, upgMatches: 50, upgBonus: 5 },
+            { id: 'grenade', name: '💣 Граната Ф-1', shortName: 'Граната Ф-1', baseDmg: 450, cost: 450, icon: '💣', upgTape: 50, upgMatches: 500, upgBonus: 50 },
+            { id: 'dynamite', name: '🧨 Связка динамита', shortName: 'Связка динамита', baseDmg: 2500, cost: 2500, icon: '🧨', upgTape: 500, upgMatches: 5000, upgBonus: 500 },
+            { id: 'rpg', name: '🚀 Выстрел с РПГ-7', shortName: 'Выстрел с РПГ-7', baseDmg: 10000, cost: 10000, icon: '🚀', upgTape: 2500, upgMatches: 25000, upgBonus: 2500 },
+            { id: 'tank', name: '🚜 Выстрел с танка', shortName: 'Выстрел с танка', baseDmg: 25000, cost: 25000, icon: '🚜', upgTape: 5000, upgMatches: 50000, upgBonus: 5000 },
+            { id: 'firestorm', name: '🔥 Огненный выстрел', shortName: 'Огненный выстрел', baseDmg: 100000, cost: 100000, icon: '🔥', upgTape: 25000, upgMatches: 250000, upgBonus: 25000 },
+            { id: 'airstrike', name: '✈️ Авиаудар', shortName: 'Авиаудар', baseDmg: 250000, cost: 250000, icon: '✈️', upgTape: 50000, upgMatches: 500000, upgBonus: 50000 }
         ];
 
         let consumables = savedData.consumables || {};
+        let weaponLevels = savedData.weaponLevels || {};
         consumableCatalog.forEach(w => {
             if (consumables[w.id] === undefined) consumables[w.id] = 0;
+            if (weaponLevels[w.id] === undefined) weaponLevels[w.id] = 0;
         });
 
-        // 15 НОВЫХ БОССОВ
+        function getWeaponDamage(id) {
+            const w = consumableCatalog.find(x => x.id === id);
+            if (!w) return 0;
+            return w.baseDmg + (weaponLevels[id] || 0) * w.upgBonus;
+        }
+
+        // 15 БОССОВ с выпадением Изоленты и Провизии
         const bossesCatalog = [
-            { id: 'boss_1', idx: 1, name: '🧟‍♂️ Трупный Колосс', cleanName: 'Трупный Колосс', maxHp: 250, reward: 25 },
-            { id: 'boss_2', idx: 2, name: '☣️ Некропат', cleanName: 'Некропат', maxHp: 2500, reward: 250 },
-            { id: 'boss_3', idx: 3, name: '🦴 Костегрыз', cleanName: 'Костегрыз', maxHp: 5000, reward: 500 },
-            { id: 'boss_4', idx: 4, name: '🧬 Кадавр-Альфа', cleanName: 'Кадавр-Альфа', maxHp: 15000, reward: 1500 },
-            { id: 'boss_5', idx: 5, name: '🩸 Раздиратель', cleanName: 'Раздиратель', maxHp: 25000, reward: 2500 },
-            { id: 'boss_6', idx: 6, name: '👻 Пожиратель Душ', cleanName: 'Пожиратель Душ', maxHp: 50000, reward: 5000 },
-            { id: 'boss_7', idx: 7, name: '🪓 Архи-Палач', cleanName: 'Архи-Палач', maxHp: 100000, reward: 10000 },
-            { id: 'boss_8', idx: 8, name: '🗿 Костяной Монолит', cleanName: 'Костяной Монолит', maxHp: 250000, reward: 25000 },
-            { id: 'boss_9', idx: 9, name: '🧛 Кровожад', cleanName: 'Кровожад', maxHp: 500000, reward: 50000 },
-            { id: 'boss_10', idx: 10, name: '👹 Мертвый Исполин', cleanName: 'Мертвый Исполин', maxHp: 1000000, reward: 100000 },
-            { id: 'boss_11', idx: 11, name: '☣️ Владыка Мора', cleanName: 'Владыка Мора', maxHp: 2500000, reward: 250000 },
-            { id: 'boss_12', idx: 12, name: '🐙 Кровавый Левиафан', cleanName: 'Кровавый Левиафан', maxHp: 5000000, reward: 50000 },
-            { id: 'boss_13', idx: 13, name: '💀 Вестник Погибели', cleanName: 'Вестник Погибели', maxHp: 10000000, reward: 100000 },
-            { id: 'boss_14', idx: 14, name: '👑 Царь Праха', cleanName: 'Царь Праха', maxHp: 50000000, reward: 500000 },
-            { id: 'boss_15', idx: 15, name: '👁️ Первородный Ужас', cleanName: 'Первородный Ужас', maxHp: 100000000, reward: 1000000 }
+            { id: 'boss_1', idx: 1, name: '🧟‍♂️ Трупный Колосс', cleanName: 'Трупный Колосс', maxHp: 250, reward: 25, tapeMin: 0, tapeMax: 0, provMin: 0, provMax: 0 },
+            { id: 'boss_2', idx: 2, name: '☣️ Некропат', cleanName: 'Некропат', maxHp: 2500, reward: 250, tapeMin: 0, tapeMax: 0, provMin: 0, provMax: 0 },
+            { id: 'boss_3', idx: 3, name: '🦴 Костегрыз', cleanName: 'Костегрыз', maxHp: 5000, reward: 500, tapeMin: 0, tapeMax: 0, provMin: 0, provMax: 0 },
+            { id: 'boss_4', idx: 4, name: '🧬 Кадавр-Альфа', cleanName: 'Кадавр-Альфа', maxHp: 15000, reward: 1500, tapeMin: 5, tapeMax: 10, provMin: 0, provMax: 0 },
+            { id: 'boss_5', idx: 5, name: '🩸 Раздиратель', cleanName: 'Раздиратель', maxHp: 25000, reward: 2500, tapeMin: 10, tapeMax: 25, provMin: 0, provMax: 1 },
+            { id: 'boss_6', idx: 6, name: '👻 Пожиратель Душ', cleanName: 'Пожиратель Душ', maxHp: 50000, reward: 5000, tapeMin: 20, tapeMax: 50, provMin: 0, provMax: 2 },
+            { id: 'boss_7', idx: 7, name: '🪓 Архи-Палач', cleanName: 'Архи-Палач', maxHp: 100000, reward: 10000, tapeMin: 50, tapeMax: 100, provMin: 0, provMax: 3 },
+            { id: 'boss_8', idx: 8, name: '🗿 Костяной Монолит', cleanName: 'Костяной Монолит', maxHp: 250000, reward: 25000, tapeMin: 100, tapeMax: 200, provMin: 0, provMax: 4 },
+            { id: 'boss_9', idx: 9, name: '🧛 Кровожад', cleanName: 'Кровожад', maxHp: 500000, reward: 50000, tapeMin: 200, tapeMax: 500, provMin: 1, provMax: 5 },
+            { id: 'boss_10', idx: 10, name: '👹 Мертвый Исполин', cleanName: 'Мертвый Исполин', maxHp: 1000000, reward: 100000, tapeMin: 500, tapeMax: 1000, provMin: 2, provMax: 5 },
+            { id: 'boss_11', idx: 11, name: '☣️ Владыка Мора', cleanName: 'Владыка Мора', maxHp: 2500000, reward: 250000, tapeMin: 1000, tapeMax: 2000, provMin: 3, provMax: 5 },
+            { id: 'boss_12', idx: 12, name: '🐙 Кровавый Левиафан', cleanName: 'Кровавый Левиафан', maxHp: 5000000, reward: 50000, tapeMin: 2000, tapeMax: 3000, provMin: 4, provMax: 6 },
+            { id: 'boss_13', idx: 13, name: '💀 Вестник Погибели', cleanName: 'Вестник Погибели', maxHp: 10000000, reward: 100000, tapeMin: 3000, tapeMax: 5000, provMin: 5, provMax: 8 },
+            { id: 'boss_14', idx: 14, name: '👑 Царь Праха', cleanName: 'Царь Праха', maxHp: 50000000, reward: 500000, tapeMin: 5000, tapeMax: 10000, provMin: 5, provMax: 10 },
+            { id: 'boss_15', idx: 15, name: '👁️ Первородный Ужас', cleanName: 'Первородный Ужас', maxHp: 100000000, reward: 1000000, tapeMin: 10000, tapeMax: 20000, provMin: 10, provMax: 10 }
         ];
 
         let bossKeys = savedData.bossKeys || {};
@@ -1284,68 +1364,122 @@
             if (bossDailyKills[b.id] === undefined) bossDailyKills[b.id] = 0;
         });
 
-        let boxOpenCounts = savedData.boxOpenCounts || { basic: 0, super: 0, vip: 0, premium: 0 };
+        let boxOpenCounts = savedData.boxOpenCounts || {
+            basic: 0, super: 0, vip: 0, premium: 0,
+            weapon_basic: 0, weapon_vip: 0, weapon_premium: 0
+        };
 
-        // Конфигурация 4 боксов за спички
+        // Конфигурация всех 7 боксов с рулеткой (4 стандартных + 3 оружейных)
         const boxesConfig = {
             basic: {
                 title: '📦 ОБЫЧНЫЙ БОКС',
                 cost: 25,
-                desc: 'Выигрыши: Заточка, Молотов, Граната или 0, 25, 100, 250, 500, 1000, 2000 🔥',
+                desc: 'Оружие, Спички (0..2000 🔥) или Изолента (1, 5, 10 🟦)',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 28 },
-                    { type: 'matches', val: 25, name: '25 🔥 Спичек', icon: '🔥', rarity: 'rarity-common', weight: 28 },
-                    { type: 'weapon', id: 'shiv', name: 'Заточка', icon: '🔪', rarity: 'rarity-blue', weight: 14 },
-                    { type: 'matches', val: 100, name: '100 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 12 },
-                    { type: 'matches', val: 250, name: '250 🔥 Спичек', icon: '🔥', rarity: 'rarity-purple', weight: 7 },
-                    { type: 'weapon', id: 'molotov', name: 'Молотов', icon: '🍾', rarity: 'rarity-purple', weight: 5 },
-                    { type: 'matches', val: 500, name: '500 🔥 Спичек', icon: '🔥', rarity: 'rarity-pink', weight: 3 },
-                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-pink', weight: 1.8 },
-                    { type: 'matches', val: 1000, name: '1000 🔥 Спичек', icon: '💰', rarity: 'rarity-red', weight: 0.9 },
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 22 },
+                    { type: 'matches', val: 25, name: '25 🔥 Спичек', icon: '🔥', rarity: 'rarity-common', weight: 22 },
+                    { type: 'tape', val: 1, name: '1 🟦 Изолента', icon: '🟦', rarity: 'rarity-common', weight: 14 },
+                    { type: 'weapon', id: 'shiv', name: 'Заточка', icon: '🔪', rarity: 'rarity-blue', weight: 10 },
+                    { type: 'matches', val: 100, name: '100 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 9 },
+                    { type: 'tape', val: 5, name: '5 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 7 },
+                    { type: 'matches', val: 250, name: '250 🔥 Спичек', icon: '🔥', rarity: 'rarity-purple', weight: 5 },
+                    { type: 'tape', val: 10, name: '10 🟦 Изоленты', icon: '🟦', rarity: 'rarity-purple', weight: 4 },
+                    { type: 'weapon', id: 'molotov', name: 'Молотов', icon: '🍾', rarity: 'rarity-purple', weight: 3 },
+                    { type: 'matches', val: 500, name: '500 🔥 Спичек', icon: '🔥', rarity: 'rarity-pink', weight: 1.8 },
+                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-pink', weight: 1.2 },
+                    { type: 'matches', val: 1000, name: '1000 🔥 Спичек', icon: '💰', rarity: 'rarity-red', weight: 0.7 },
                     { type: 'matches', val: 2000, name: '2000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 0.3 }
                 ]
             },
             super: {
                 title: '⚡ СУПЕР БОКС',
                 cost: 250,
-                desc: 'Выигрыши: Граната, Связка динамита или 0, 250, 500, 1000, 2500, 5000 🔥',
+                desc: 'Граната, Динамит, Изолента (10, 50, 100 🟦), Провизия (1 🥫) или 0..5000 🔥',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 30 },
-                    { type: 'matches', val: 250, name: '250 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 28 },
-                    { type: 'matches', val: 500, name: '500 🔥 Спичек', icon: '🔥', rarity: 'rarity-purple', weight: 16 },
-                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-purple', weight: 12 },
-                    { type: 'matches', val: 1000, name: '1000 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 7 },
-                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-pink', weight: 4.5 },
-                    { type: 'matches', val: 2500, name: '2500 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 2 },
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 22 },
+                    { type: 'matches', val: 250, name: '250 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 20 },
+                    { type: 'tape', val: 10, name: '10 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 14 },
+                    { type: 'matches', val: 500, name: '500 🔥 Спичек', icon: '🔥', rarity: 'rarity-purple', weight: 11 },
+                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-purple', weight: 9 },
+                    { type: 'tape', val: 50, name: '50 🟦 Изоленты', icon: '🟦', rarity: 'rarity-purple', weight: 7 },
+                    { type: 'matches', val: 1000, name: '1000 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 5 },
+                    { type: 'tape', val: 100, name: '100 🟦 Изоленты', icon: '🟦', rarity: 'rarity-pink', weight: 4 },
+                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-pink', weight: 3.5 },
+                    { type: 'provision', val: 1, name: '1 🥫 Провизия', icon: '🥫', rarity: 'rarity-red', weight: 2.5 },
+                    { type: 'matches', val: 2500, name: '2500 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 1.5 },
                     { type: 'matches', val: 5000, name: '5000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 0.5 }
                 ]
             },
             vip: {
                 title: '👑 ВИП БОКС',
                 cost: 2500,
-                desc: 'Выигрыши: Связка динамита, Выстрел с РПГ или 0, 2500, 5000, 10000, 25000 🔥',
+                desc: 'Динамит, РПГ, Изолента (100, 500, 1000 🟦), Провизия (2, 5 🥫) или 0..25000 🔥',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 32 },
-                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-blue', weight: 22 },
-                    { type: 'matches', val: 2500, name: '2500 🔥 Спичек', icon: '🔥', rarity: 'rarity-purple', weight: 22 },
-                    { type: 'matches', val: 5000, name: '5000 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 11 },
-                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-pink', weight: 8 },
-                    { type: 'matches', val: 10000, name: '10000 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 4 },
-                    { type: 'matches', val: 25000, name: '25000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 1 }
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 22 },
+                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-blue', weight: 16 },
+                    { type: 'matches', val: 2500, name: '2500 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 16 },
+                    { type: 'tape', val: 100, name: '100 🟦 Изоленты', icon: '🟦', rarity: 'rarity-purple', weight: 13 },
+                    { type: 'matches', val: 5000, name: '5000 🔥 Спичек', icon: '💰', rarity: 'rarity-purple', weight: 9 },
+                    { type: 'tape', val: 500, name: '500 🟦 Изоленты', icon: '🟦', rarity: 'rarity-pink', weight: 7 },
+                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-pink', weight: 6 },
+                    { type: 'provision', val: 2, name: '2 🥫 Провизии', icon: '🥫', rarity: 'rarity-pink', weight: 4 },
+                    { type: 'tape', val: 1000, name: '1000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-red', weight: 3 },
+                    { type: 'matches', val: 10000, name: '10000 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 2 },
+                    { type: 'provision', val: 5, name: '5 🥫 Провизии', icon: '🥫', rarity: 'rarity-gold', weight: 1.2 },
+                    { type: 'matches', val: 25000, name: '25000 🔥 КУШ!', icon: '👑', rarity: 'rarity-gold', weight: 0.8 }
                 ]
             },
             premium: {
                 title: '💎 ПРЕМИУМ БОКС',
                 cost: 25000,
-                desc: 'Выигрыши: Танк, Огненный шторм, Авиаудар или 0, 25000, 50000, 100000 🔥!',
+                desc: 'Танк, Шторм, Авиаудар, Изолента (1000..10000 🟦), Провизия (2..10 🥫) или 0..100000 🔥',
                 pool: [
-                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 32 },
-                    { type: 'matches', val: 25000, name: '25000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 24 },
-                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-purple', weight: 18 },
-                    { type: 'matches', val: 50000, name: '50000 🔥 Спичек', icon: '💰', rarity: 'rarity-pink', weight: 12 },
-                    { type: 'matches', val: 100000, name: '100000 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 6 },
-                    { type: 'weapon', id: 'firestorm', name: 'Огненный шторм', icon: '🔥', rarity: 'rarity-red', weight: 5.5 },
-                    { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-gold', weight: 2.5 }
+                    { type: 'matches', val: 0, name: '0 🔥 Пусто', icon: '💨', rarity: 'rarity-common', weight: 22 },
+                    { type: 'matches', val: 25000, name: '25000 🔥 Спичек', icon: '🔥', rarity: 'rarity-blue', weight: 18 },
+                    { type: 'tape', val: 1000, name: '1000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-blue', weight: 14 },
+                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-purple', weight: 12 },
+                    { type: 'matches', val: 50000, name: '50000 🔥 Спичек', icon: '💰', rarity: 'rarity-purple', weight: 8 },
+                    { type: 'tape', val: 5000, name: '5000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-pink', weight: 6 },
+                    { type: 'provision', val: 2, name: '2 🥫 Провизии', icon: '🥫', rarity: 'rarity-pink', weight: 5 },
+                    { type: 'matches', val: 100000, name: '100000 🔥 Спичек', icon: '💎', rarity: 'rarity-red', weight: 4 },
+                    { type: 'weapon', id: 'firestorm', name: 'Огненный выстрел', icon: '🔥', rarity: 'rarity-red', weight: 3.5 },
+                    { type: 'tape', val: 10000, name: '10000 🟦 Изоленты', icon: '🟦', rarity: 'rarity-red', weight: 3 },
+                    { type: 'provision', val: 5, name: '5 🥫 Провизии', icon: '🥫', rarity: 'rarity-gold', weight: 2 },
+                    { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-gold', weight: 1.5 },
+                    { type: 'provision', val: 10, name: '10 🥫 Провизии!', icon: '🥫', rarity: 'rarity-gold', weight: 1 }
+                ]
+            },
+            weapon_basic: {
+                title: '🔪 ОБЫЧНЫЙ ОРУЖЕЙНЫЙ БОКС',
+                cost: 250,
+                desc: '100% гарантия оружия: Острая заточка, Молотов, Граната Ф-1 или Связка динамита!',
+                pool: [
+                    { type: 'weapon', id: 'shiv', name: 'Заточка', icon: '🔪', rarity: 'rarity-blue', weight: 45 },
+                    { type: 'weapon', id: 'molotov', name: 'Молотов', icon: '🍾', rarity: 'rarity-purple', weight: 30 },
+                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-pink', weight: 18 },
+                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-red', weight: 7 }
+                ]
+            },
+            weapon_vip: {
+                title: '🚀 ВИП ОРУЖЕЙНЫЙ БОКС',
+                cost: 5000,
+                desc: '100% гарантия оружия: Граната Ф-1, Связка динамита, Выстрел с РПГ или Выстрел с танка!',
+                pool: [
+                    { type: 'weapon', id: 'grenade', name: 'Граната Ф-1', icon: '💣', rarity: 'rarity-blue', weight: 42 },
+                    { type: 'weapon', id: 'dynamite', name: 'Связка динамита', icon: '🧨', rarity: 'rarity-purple', weight: 32 },
+                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-pink', weight: 18 },
+                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-gold', weight: 8 }
+                ]
+            },
+            weapon_premium: {
+                title: '✈️ ПРЕМИУМ ОРУЖЕЙНЫЙ БОКС',
+                cost: 50000,
+                desc: '100% гарантия оружия: Выстрел с РПГ, Выстрел с танка, Огненный выстрел или Авиаудар!',
+                pool: [
+                    { type: 'weapon', id: 'rpg', name: 'Выстрел с РПГ', icon: '🚀', rarity: 'rarity-purple', weight: 44 },
+                    { type: 'weapon', id: 'tank', name: 'Выстрел с танка', icon: '🚜', rarity: 'rarity-pink', weight: 32 },
+                    { type: 'weapon', id: 'firestorm', name: 'Огненный выстрел', icon: '🔥', rarity: 'rarity-red', weight: 16 },
+                    { type: 'weapon', id: 'airstrike', name: 'Авиаудар', icon: '✈️', rarity: 'rarity-gold', weight: 8 }
                 ]
             }
         };
@@ -1370,8 +1504,8 @@
             { id: 'dq_10', title: 'Использовать любое оружие 3 раза', metric: 'use_weapon', target: 3 },
             { id: 'dq_11', title: 'Нанести 15 критических ударов', metric: 'crits', target: 15 },
             { id: 'dq_12', title: 'Потратить 500 спичек', metric: 'spend_matches', target: 500 },
-            { id: 'dq_13', title: 'Купить любое оружие в Лавке 3 раза', metric: 'buy_weapon', target: 3 },
-            { id: 'dq_14', title: 'Улучшить Базу 1 раз', metric: 'upgrade_base', target: 1 },
+            { id: 'dq_13', title: 'Купить любое оружие в Оружейной 3 раза', metric: 'buy_weapon', target: 3 },
+            { id: 'dq_14', title: 'Улучшить Базу или Оружие 1 раз', metric: 'upgrade_base', target: 1 },
             { id: 'dq_15', title: 'Сделать 150 ударов в охоте', metric: 'taps', target: 150 }
         ];
 
@@ -1382,9 +1516,7 @@
             const today = new Date().toISOString().slice(0, 10);
             if (lastDailyReset !== today) {
                 lastDailyReset = today;
-                // Сброс дневных лимитов боссов (10 в день на каждого)
                 bossesCatalog.forEach(b => bossDailyKills[b.id] = 0);
-                // Генерация 3 случайных легких заданий на день
                 const shuffled = [...dailyQuestTemplates].sort(() => 0.5 - Math.random());
                 activeDailyQuests = shuffled.slice(0, 3).map(q => ({
                     ...q,
@@ -1408,10 +1540,9 @@
             }
         }
 
-        // ГЕНЕРАЦИЯ ВСЕХ ДОСТИЖЕНИЙ С УНИКАЛЬНЫМИ НАЗВАНИЯМИ
+        // ДОСТИЖЕНИЯ
         const achievementsCatalog = [];
 
-        // 1. Убийство зомби
         const zMilestones = [100, 500, 1000, 5000, 10000, 50000, 100000, 500000];
         const zTitles = ['Первая зачистка', 'Охотник окраин', 'Истребитель стаи', 'Мясник карантина', 'Гроза мертвецов', 'Чистильщик пустоши', 'Легенда руин', 'Бог апокалипсиса'];
         zMilestones.forEach((m, i) => {
@@ -1423,7 +1554,6 @@
             });
         });
 
-        // 2. Нанесение урона
         const dMilestones = [100, 500, 1000, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000, 5000000];
         const dTitles = ['Разминка кулаков', 'Крепкий удар', 'Костолом', 'Тяжелая рука', 'Сокрушитель черепов', 'Стальной напор', 'Мясорубка', 'Разрушитель плоти', 'Ураганный огонь', 'Аннигилятор', 'Катастрофа', 'Апокалипсис во плоти', 'Абсолютное разрушение'];
         dMilestones.forEach((m, i) => {
@@ -1435,7 +1565,6 @@
             });
         });
 
-        // 3. Боссы (10, 50, 100 для каждого из 15 боссов)
         const bMilestones = [10, 50, 100];
         const bRanks = ['Охотник', 'Палач', 'Покоритель'];
         bossesCatalog.forEach(b => {
@@ -1449,33 +1578,38 @@
             });
         });
 
-        // 4. Открытие боксов (10, 50, 100 кроме Контрабанды)
-        const boxNames = { basic: 'Обычный бокс', super: 'Супер бокс', vip: 'ВИП бокс', premium: 'Премиум бокс' };
+        const boxNames = {
+            basic: 'Обычный бокс',
+            super: 'Супер бокс',
+            vip: 'ВИП бокс',
+            premium: 'Премиум бокс',
+            weapon_basic: 'Обычный оружейный бокс',
+            weapon_vip: 'ВИП оружейный бокс',
+            weapon_premium: 'Премиум оружейный бокс'
+        };
         const boxRanks = ['Любитель', 'Искатель', 'Магнат'];
-        ['basic', 'super', 'vip', 'premium'].forEach(k => {
+        Object.keys(boxNames).forEach(k => {
             bMilestones.forEach((m, i) => {
                 achievementsCatalog.push({
                     id: `ach_box_${k}_${m}`, cat: 'boxes',
                     title: `🎁 ${boxRanks[i]}: ${boxNames[k]}`,
-                    desc: `Открыть ${boxNames[k]} ${m} раз`,
+                    desc: `Открыть «${boxNames[k]}» ${m} раз`,
                     target: m, getVal: () => (boxOpenCounts[k] || 0)
                 });
             });
         });
 
-        // 5. Потратить спички кроме вывода
         const sMilestones = [1000, 10000, 50000, 100000, 500000, 1000000, 2500000, 5000000];
         const sTitles = ['Мелкий скупщик', 'Торговец с базы', 'Щедрый выживший', 'Оптовик пустоши', 'Военный спонсор', 'Оружейный барон', 'Властелин спичек', 'Император экономики'];
         sMilestones.forEach((m, i) => {
             achievementsCatalog.push({
                 id: `ach_sp_${m}`, cat: 'economy',
                 title: `🔥 ${sTitles[i]}`,
-                desc: `Потратить ${m.toLocaleString('ru-RU')} спичек в игре`,
+                desc: `Потратить ${m.toLocaleString('ru-RU')} спичек в игре (кроме вывода)`,
                 target: m, getVal: () => totalMatchesSpent
             });
         });
 
-        // 6. Накопить каждое оружие (25, 50, 100, 250, 500, 1000, 2500, 5000)
         const wMilestones = [25, 50, 100, 250, 500, 1000, 2500, 5000];
         const wRanks = ['Запас', 'Ящик', 'Склад', 'Арсенал', 'Бункер', 'Бастион', 'Дивизия', 'Гегемония'];
         consumableCatalog.forEach(w => {
@@ -1489,7 +1623,6 @@
             });
         });
 
-        // 7. Потратить очки навыков (10, 25, 50, 100, 250, 500)
         const skMilestones = [10, 25, 50, 100, 250, 500];
         const skTitles = ['Новичок зоны', 'Следопыт', 'Ветеран выживания', 'Мастер пустоши', 'Сверхчеловек', 'Легенда эволюции'];
         skMilestones.forEach((m, i) => {
@@ -1504,7 +1637,6 @@
         let claimedAchievements = savedData.claimedAchievements || {};
         let currentAchFilter = 'all';
 
-        // Вспомогательная функция траты спичек (учитывает достижения и задания)
         function spendMatches(amount) {
             sessionDiamonds -= amount;
             totalMatchesSpent += amount;
@@ -1573,6 +1705,69 @@
             });
         }
 
+        // МОДАЛЬНОЕ ОКНО ВЫВОДА (BYN)
+        const withdrawTiers = [
+            { matches: 500000, byn: 5 },
+            { matches: 1000000, byn: 10 },
+            { matches: 2000000, byn: 20 },
+            { matches: 5000000, byn: 50 },
+            { matches: 100000000, byn: 100 }
+        ];
+
+        function openWithdrawModal() {
+            renderWithdrawModal();
+            document.getElementById('withdrawModal').style.display = 'flex';
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdrawModal').style.display = 'none';
+        }
+
+        function renderWithdrawModal() {
+            document.getElementById('withdrawBalanceText').innerText = `${sessionDiamonds.toLocaleString('ru-RU')} 🔥`;
+            document.getElementById('withdrawBynText').innerText = `${(sessionDiamonds / 100000).toFixed(3)} BYN`;
+
+            const list = document.getElementById('withdrawOptionsList');
+            list.innerHTML = '';
+
+            withdrawTiers.forEach(t => {
+                const canAfford = sessionDiamonds >= t.matches;
+                const card = document.createElement('div');
+                card.className = 'shop-card';
+                card.innerHTML = `
+                    <div class="shop-info">
+                        <h4 style="color: #10b981;">💵 Вывод ${t.byn} BYN</h4>
+                        <p>Стоимость: <b style="color: #fb923c;">${t.matches.toLocaleString('ru-RU')} 🔥</b> спичек</p>
+                    </div>
+                    <button class="shop-btn" style="background: #10b981; color: #000;" ${!canAfford ? 'disabled' : ''} onclick="executeWithdraw(${t.matches}, ${t.byn})">
+                        Вывести ${t.byn} BYN
+                    </button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function executeWithdraw(matchesAmount, bynAmount) {
+            if (sessionDiamonds < matchesAmount) {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                return;
+            }
+            if (!confirm(`Вы уверены, что хотите обменять ${matchesAmount.toLocaleString('ru-RU')} 🔥 на вывод ${bynAmount} BYN?`)) return;
+
+            // Списываем спички без учета в достижении "Потратить спички кроме вывода"
+            sessionDiamonds -= matchesAmount;
+            saveProgress();
+            updateUI();
+            renderWithdrawModal();
+            playWinFanfare(true);
+
+            tg.sendData(JSON.stringify({
+                action: "webapp_withdraw",
+                withdraw_matches: matchesAmount,
+                withdraw_byn: bynAmount
+            }));
+        }
+
         // ЯЩИК КОНТРАБАНДЫ (за Провизию)
         function getContrabandCost() {
             return 1 + contrabandOpened;
@@ -1597,7 +1792,7 @@
             const cost = getContrabandCost();
             if (provision < cost) {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-                alert(`Недостаточно провизии! Нужно ${cost} 🥫 (Выполняйте достижения во вкладке Трофеи)`);
+                alert(`Недостаточно провизии! Нужно ${cost} 🥫`);
                 return;
             }
 
@@ -1616,7 +1811,6 @@
             crateIcon.innerText = '📦';
             crateIcon.className = 'crate-visual shaking';
 
-            // Звук взлома ящика
             let tickTimer = setInterval(() => playTickSound(), 140);
 
             setTimeout(() => {
@@ -1626,22 +1820,17 @@
                 playWinFanfare(true);
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
-                // Вычисление наград Контрабанды:
-                // 1. +1 очко навыка
                 skillPoints += 1;
 
-                // 2. Рандомные ключи для боссов (от 1 до 5 шт.)
                 const keysAmount = getRandomInt(1, 5);
-                const randomBoss = bossesCatalog[getRandomInt(1, bossesCatalog.length - 1)]; // со 2 по 15 босса
+                const randomBoss = bossesCatalog[getRandomInt(1, bossesCatalog.length - 1)];
                 bossKeys[randomBoss.id] = (bossKeys[randomBoss.id] || 0) + keysAmount;
 
-                // 3. Спички по уровню игрока (Уровень 1: 10..100, Уровень 2: 20..200 и т.д.)
                 const minMatches = charLevel * 10;
                 const maxMatches = charLevel * 100;
                 const wonMatches = getRandomInt(minMatches, maxMatches);
                 sessionDiamonds += wonMatches;
 
-                // 4. От 0 до 1 провизии
                 const wonProvision = getRandomInt(0, 1);
                 provision += wonProvision;
 
@@ -1659,12 +1848,11 @@
                 closeBtn.disabled = false;
 
                 updateUI();
-                renderMarket();
                 saveProgress();
             }, 1200);
         }
 
-        // ВЫБОР ПРЕДМЕТА ПО ВЕСАМ ДЛЯ РУЛЕТКИ БОКСА
+        // РУЛЕТКА БОКСОВ
         function pickWeightedLoot(boxKey) {
             const pool = boxesConfig[boxKey].pool;
             const totalWeight = pool.reduce((acc, item) => acc + item.weight, 0);
@@ -1683,7 +1871,7 @@
 
             document.getElementById('caseModalTitle').innerText = cfg.title;
             document.getElementById('caseModalDesc').innerText = cfg.desc;
-            document.getElementById('spinCaseBtn').innerText = `Крутить (${cfg.cost} 🔥)`;
+            document.getElementById('spinCaseBtn').innerText = `Крутить (${cfg.cost.toLocaleString('ru-RU')} 🔥)`;
             document.getElementById('caseWinBanner').style.display = 'none';
             document.getElementById('caseModal').style.display = 'flex';
 
@@ -1721,7 +1909,7 @@
 
             if (sessionDiamonds < cfg.cost) {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-                alert(`Недостаточно спичек! Для открытия нужно ${cfg.cost} 🔥`);
+                alert(`Недостаточно спичек! Для открытия нужно ${cfg.cost.toLocaleString('ru-RU')} 🔥`);
                 return;
             }
 
@@ -1804,37 +1992,48 @@
                         winTitle.innerText = `💨 Пусто (0 🔥)`;
                         playHitSound(false);
                     } else {
-                        winTitle.innerText = `${winningItem.icon} +${winningItem.val} 🔥 Спичек!`;
+                        winTitle.innerText = `${winningItem.icon} +${winningItem.val.toLocaleString('ru-RU')} 🔥 Спичек!`;
                         playWinFanfare(winningItem.val >= cfg.cost * 2);
                     }
                 } else if (winningItem.type === 'weapon') {
                     consumables[winningItem.id] = (consumables[winningItem.id] || 0) + 1;
                     winTitle.innerText = `${winningItem.icon} ${winningItem.name} (x1)!`;
                     playWinFanfare(true);
+                } else if (winningItem.type === 'tape') {
+                    ductTape += winningItem.val;
+                    winTitle.innerText = `🟦 +${winningItem.val.toLocaleString('ru-RU')} Изоленты!`;
+                    playWinFanfare(true);
+                } else if (winningItem.type === 'provision') {
+                    provision += winningItem.val;
+                    winTitle.innerText = `🥫 +${winningItem.val} Провизии!`;
+                    playWinFanfare(true);
                 }
 
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
                 updateUI();
                 renderMarket();
+                renderBaseWeaponUpgrades();
                 saveProgress();
             }, spinDurationMs + 80);
         }
 
         // МАГАЗИН ОРУЖИЯ
         function renderMarket() {
-            document.getElementById('contrabandShopBtn').innerText = `${getContrabandCost()} 🥫`;
+            const cbBtn = document.getElementById('contrabandShopBtn');
+            if (cbBtn) cbBtn.innerText = `${getContrabandCost()} 🥫`;
 
             const list = document.getElementById('weaponsShopList');
             list.innerHTML = '';
 
             consumableCatalog.forEach(w => {
                 const count = consumables[w.id] || 0;
+                const currentDmg = getWeaponDamage(w.id);
                 const card = document.createElement('div');
                 card.className = 'shop-card';
                 card.innerHTML = `
                     <div class="shop-info">
                         <h4>${w.name} <span style="color:#facc15;">(В наличии: ${count})</span></h4>
-                        <p>Разовый урон: 💥 ${w.dmg.toLocaleString('ru-RU')} HP</p>
+                        <p>Разовый урон: 💥 <b style="color:#ef4444;">${currentDmg.toLocaleString('ru-RU')} HP</b> (Ур. +${weaponLevels[w.id] || 0})</p>
                     </div>
                     <button class="shop-btn" onclick="buyConsumable('${w.id}')">${w.cost.toLocaleString('ru-RU')} 🔥</button>
                 `;
@@ -1842,6 +2041,52 @@
             });
 
             renderQuickWeaponsBars();
+        }
+
+        // ПРОКАЧКА ОРУЖИЯ НА БАЗЕ ЗА ИЗОЛЕНТУ И СПИЧКИ
+        function renderBaseWeaponUpgrades() {
+            const list = document.getElementById('weaponUpgradesBaseList');
+            if (!list) return;
+            list.innerHTML = '';
+
+            consumableCatalog.forEach(w => {
+                const lvl = weaponLevels[w.id] || 0;
+                const curDmg = getWeaponDamage(w.id);
+                const canAfford = ductTape >= w.upgTape && sessionDiamonds >= w.upgMatches;
+
+                const card = document.createElement('div');
+                card.className = 'shop-card';
+                card.innerHTML = `
+                    <div class="shop-info">
+                        <h4>${w.name} <span style="color:#38bdf8;">[Ур. ${lvl}]</span></h4>
+                        <p>Урон: <b style="color:#ef4444;">${curDmg.toLocaleString('ru-RU')} HP</b> (+${w.upgBonus.toLocaleString('ru-RU')} за ур.)</p>
+                    </div>
+                    <button class="shop-btn" style="background:${canAfford ? '#38bdf8' : '#57534e'};" ${!canAfford ? 'disabled' : ''} onclick="upgradeWeaponOnBase('${w.id}')">
+                        ${w.upgTape.toLocaleString('ru-RU')} 🟦 + ${w.upgMatches.toLocaleString('ru-RU')} 🔥
+                    </button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function upgradeWeaponOnBase(id) {
+            const w = consumableCatalog.find(x => x.id === id);
+            if (!w) return;
+            if (ductTape < w.upgTape || sessionDiamonds < w.upgMatches) {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                return;
+            }
+
+            ductTape -= w.upgTape;
+            spendMatches(w.upgMatches);
+            weaponLevels[id] = (weaponLevels[id] || 0) + 1;
+
+            addDailyQuestProgress('upgrade_base', 1);
+            playWinFanfare(false);
+            updateUI();
+            renderBaseWeaponUpgrades();
+            renderMarket();
+            saveProgress();
         }
 
         function buyConsumable(id) {
@@ -1867,16 +2112,17 @@
 
             consumableCatalog.forEach(w => {
                 const count = consumables[w.id] || 0;
+                const curDmg = getWeaponDamage(w.id);
                 if (count > 0) {
                     const btn1 = document.createElement('button');
                     btn1.className = 'weapon-use-btn';
-                    btn1.innerText = `${w.icon} -${w.dmg} HP (${count})`;
+                    btn1.innerText = `${w.icon} -${curDmg} HP (${count})`;
                     btn1.onclick = (e) => useConsumableInFight(w.id, 'normal', e);
                     tapBar.appendChild(btn1);
 
                     const btn2 = document.createElement('button');
                     btn2.className = 'weapon-use-btn';
-                    btn2.innerText = `${w.icon} -${w.dmg} HP (${count})`;
+                    btn2.innerText = `${w.icon} -${curDmg} HP (${count})`;
                     btn2.onclick = (e) => useConsumableInFight(w.id, 'boss', e);
                     bossBar.appendChild(btn2);
                 }
@@ -1886,10 +2132,11 @@
         function useConsumableInFight(id, targetType, event) {
             if (!consumables[id] || consumables[id] <= 0) return;
             const w = consumableCatalog.find(x => x.id === id);
+            const curDmg = getWeaponDamage(id);
             consumables[id]--;
 
-            totalDamageDealt += w.dmg;
-            addDailyQuestProgress('damage', w.dmg);
+            totalDamageDealt += curDmg;
+            addDailyQuestProgress('damage', curDmg);
             addDailyQuestProgress('use_weapon', 1);
 
             const x = event ? event.clientX : window.innerWidth / 2;
@@ -1898,12 +2145,12 @@
             playHitSound(true);
 
             if (targetType === 'normal') {
-                zombieHp -= w.dmg;
-                spawnFloatingNumber(x, y, `${w.icon} -${w.dmg} HP!`, true);
+                zombieHp -= curDmg;
+                spawnFloatingNumber(x, y, `${w.icon} -${curDmg} HP!`, true);
                 if (zombieHp <= 0) handleNormalZombieKill(x, y);
             } else if (targetType === 'boss' && activeBoss) {
-                activeBoss.hp -= w.dmg;
-                spawnFloatingNumber(x, y, `${w.icon} -${w.dmg} HP!`, true);
+                activeBoss.hp -= curDmg;
+                spawnFloatingNumber(x, y, `${w.icon} -${curDmg} HP!`, true);
                 if (activeBoss.hp <= 0) handleBossKill(x, y);
             }
 
@@ -1912,7 +2159,7 @@
             saveProgress();
         }
 
-        // СИСТЕМА 15 БОССОВ С КЛЮЧАМИ И ЛИМИТАМИ
+        // СИСТЕМА 15 БОССОВ
         function renderBossesTab() {
             checkDailyReset();
             const listEl = document.getElementById('bossSelectionList');
@@ -1941,14 +2188,18 @@
                         : `<span style="color:${keysHave >= 3 ? '#22c55e' : '#facc15'};">🔑 Ключи: ${keysHave} / 3</span>`;
 
                     const nextBoss = bossesCatalog[index + 1];
-                    const dropKeyText = nextBoss ? ` + 1 🔑 к «${nextBoss.cleanName}»` : '';
+                    const dropKeyText = nextBoss ? ` • +1 🔑` : '';
+                    const tapeText = b.tapeMax > 0 ? ` • <span style="color:#60a5fa;">${b.tapeMin}–${b.tapeMax} 🟦</span>` : '';
+                    const provText = b.provMax > 0
+                        ? ` • <span style="color:#38bdf8;">${b.provMin === b.provMax ? b.provMax : b.provMin + '–' + b.provMax} 🥫</span>`
+                        : '';
 
                     const card = document.createElement('div');
                     card.className = 'shop-card';
                     card.innerHTML = `
                         <div class="shop-info">
                             <h4>${b.idx}. ${b.name} ${keyBadge}</h4>
-                            <p>❤️ ${b.maxHp.toLocaleString('ru-RU')} HP • Награда: <b style="color:#fb923c;">${b.reward.toLocaleString('ru-RU')} 🔥</b>${dropKeyText}</p>
+                            <p>❤️ ${b.maxHp.toLocaleString('ru-RU')} HP • Награда: <b style="color:#fb923c;">${b.reward.toLocaleString('ru-RU')} 🔥</b>${tapeText}${provText}${dropKeyText}</p>
                             <p style="color: ${limitReached ? '#ef4444' : '#a8a29e'}; margin-top: 2px;">
                                 Лимит сегодня: ${dailyDone} / 10 • Убито всего: ${bossKillCounts[b.id] || 0}
                             </p>
@@ -1978,7 +2229,6 @@
                     alert(`Недостаточно ключей! Нужно 3 🔑 (Победите предыдущего босса «${bossesCatalog[bIndex - 1].cleanName}»).`);
                     return;
                 }
-                // Тратим 3 ключа при нападении
                 bossKeys[b.id] -= 3;
             }
 
@@ -1991,6 +2241,10 @@
                 hp: b.maxHp,
                 maxHp: b.maxHp,
                 reward: b.reward,
+                tapeMin: b.tapeMin,
+                tapeMax: b.tapeMax,
+                provMin: b.provMin,
+                provMax: b.provMax,
                 endTime: Date.now() + twoHoursMs
             };
 
@@ -2036,6 +2290,7 @@
         }
 
         function handleBossKill(x, y) {
+            const bConf = bossesCatalog[activeBoss.index];
             const reward = activeBoss.reward;
             const bossId = activeBoss.id;
             const bossName = activeBoss.name;
@@ -2047,12 +2302,31 @@
             totalBossesKilledCount++;
             addDailyQuestProgress('bosses', 1);
 
-            // Выдача 1 ключа для следующего босса
-            let keyDropMsg = '';
+            let extraDropsMsg = '';
+
+            // Дроп Изоленты с босса
+            if (bConf && bConf.tapeMax > 0) {
+                const wonTape = getRandomInt(bConf.tapeMin, bConf.tapeMax);
+                if (wonTape > 0) {
+                    ductTape += wonTape;
+                    extraDropsMsg += `\n🟦 Изолента: +${wonTape} шт.`;
+                }
+            }
+
+            // Дроп Провизии с босса
+            if (bConf && bConf.provMax > 0) {
+                const wonProv = getRandomInt(bConf.provMin, bConf.provMax);
+                if (wonProv > 0) {
+                    provision += wonProv;
+                    extraDropsMsg += `\n🥫 Провизия: +${wonProv} шт.`;
+                }
+            }
+
+            // Дроп ключа к следующему боссу
             if (bIndex + 1 < bossesCatalog.length) {
                 const nextBoss = bossesCatalog[bIndex + 1];
                 bossKeys[nextBoss.id] = (bossKeys[nextBoss.id] || 0) + 1;
-                keyDropMsg = `\n🔑 Получен 1 ключ для босса «${nextBoss.cleanName}» (${bossKeys[nextBoss.id]}/3)!`;
+                extraDropsMsg += `\n🔑 Ключ к «${nextBoss.cleanName}» (${bossKeys[nextBoss.id]}/3)!`;
             }
 
             activeBoss = null;
@@ -2061,7 +2335,7 @@
             spawnFloatingNumber(x, y, `🏆 ПОБЕДА! +${reward} 🔥`, true);
 
             setTimeout(() => {
-                alert(`💀 Босс ${bossName} повержен!\nНаграда: +${reward} 🔥 спичек!${keyDropMsg}`);
+                alert(`💀 Босс ${bossName} повержен!\n🔥 Спички: +${reward.toLocaleString('ru-RU')}${extraDropsMsg}`);
                 renderBossesTab();
                 updateUI();
                 saveProgress();
@@ -2133,7 +2407,6 @@
 
             const filtered = achievementsCatalog.filter(a => currentAchFilter === 'all' || a.cat === currentAchFilter);
 
-            // Сортируем: сначала готовые к получению, затем в процессе, в конце уже полученные
             filtered.sort((a, b) => {
                 const aClaimed = !!claimedAchievements[a.id];
                 const bClaimed = !!claimedAchievements[b.id];
@@ -2180,11 +2453,11 @@
             saveProgress();
         }
 
-        // СТАТИСТИКА ИГРОКА В НАСТРОЙКАХ
+        // СТАТИСТИКА ИГРОКА
         function openStatsModal() {
             const content = document.getElementById('statsListContent');
             let totalAchievementsClaimed = Object.keys(claimedAchievements).length;
-            let totalBoxes = (boxOpenCounts.basic || 0) + (boxOpenCounts.super || 0) + (boxOpenCounts.vip || 0) + (boxOpenCounts.premium || 0);
+            let totalBoxes = Object.values(boxOpenCounts).reduce((a, b) => a + b, 0);
 
             const rows = [
                 ['Уровень выжившего', charLevel],
@@ -2192,9 +2465,10 @@
                 ['Убито боссов всего', totalBossesKilledCount.toLocaleString('ru-RU')],
                 ['Нанесено всего урона', `${totalDamageDealt.toLocaleString('ru-RU')} HP`],
                 ['Урон с руки / Шанс крита', `${clickPower} HP / ${(skills.crit * 0.5).toFixed(1)}%`],
+                ['Баланс Изоленты', `${ductTape.toLocaleString('ru-RU')} 🟦`],
                 ['Потрачено спичек в игре', `${totalMatchesSpent.toLocaleString('ru-RU')} 🔥`],
                 ['Потрачено очков навыков', totalSkillPointsSpent],
-                ['Открыто обычных боксов (всех)', totalBoxes],
+                ['Открыто боксов (всех)', totalBoxes],
                 ['Вскрыто Контрабанды', contrabandOpened],
                 ['Выполнено достижений', `${totalAchievementsClaimed} / ${achievementsCatalog.length}`]
             ];
@@ -2209,7 +2483,7 @@
             document.getElementById('statsModal').style.display = 'flex';
         }
 
-        // Таймер каждую секунду
+        // Таймер каждую секунду (Напарник теперь дает 1 спичку в минуту = autoClicker / 60 в сек.)
         setInterval(() => {
             if (activeBoss) {
                 let remainingMs = activeBoss.endTime - Date.now();
@@ -2228,7 +2502,7 @@
                 }
             }
 
-            let incomePerSec = autoClicker + (passiveRate / 3600);
+            let incomePerSec = (autoClicker / 60) + (passiveRate / 3600);
             if (incomePerSec > 0 && storedDiamonds < maxStorage) {
                 storedDiamonds = Math.min(maxStorage, storedDiamonds + incomePerSec);
             }
@@ -2240,7 +2514,7 @@
             updateUI();
         }, 1000);
 
-        // Обычная охота на зомби: сколько урона наносишь, столько энергии и тратится
+        // Обычная охота на зомби
         const zombieBtn = document.getElementById('zombieBtn');
         zombieBtn.addEventListener('pointerdown', (e) => {
             let dmg = clickPower;
@@ -2376,6 +2650,14 @@
             saveProgress();
         }
 
+        function addTestTape() {
+            ductTape += 100;
+            playWinFanfare(false);
+            updateUI();
+            renderBaseWeaponUpgrades();
+            saveProgress();
+        }
+
         function spawnFloatingNumber(x, y, text, isLoot) {
             const el = document.createElement('div');
             el.className = isLoot ? 'floating-number loot' : 'floating-number';
@@ -2405,7 +2687,8 @@
 
         function updateUI() {
             document.getElementById('scoreDisplay').innerText = `${sessionDiamonds.toLocaleString('ru-RU')} 🔥`;
-            document.getElementById('provisionDisplay').innerText = `${provision} 🥫`;
+            document.getElementById('provisionDisplay').innerText = `${provision.toLocaleString('ru-RU')} 🥫`;
+            document.getElementById('tapeDisplay').innerText = `${ductTape.toLocaleString('ru-RU')} 🟦`;
             document.getElementById('bynDisplay').innerText = `${(sessionDiamonds / 100000).toFixed(3)} BYN`;
             document.getElementById('energyFill').style.width = `${(energy / maxEnergy) * 100}%`;
             document.getElementById('energyText').innerText = `⚡ ${Math.floor(energy)} / ${maxEnergy}`;
@@ -2419,18 +2702,18 @@
             document.getElementById('storageFill').style.width = `${Math.min(100, (storedDiamonds / maxStorage) * 100)}%`;
             document.getElementById('storageText').innerText = `${displayStored} / ${maxStorage} 🔥`;
 
-            let ratePerSec = (autoClicker + (passiveRate / 3600)).toFixed(2);
-            document.getElementById('storageRateInfo').innerText = `Добыча: ${ratePerSec}/сек`;
+            let ratePerMin = (autoClicker + (passiveRate / 60)).toFixed(1);
+            document.getElementById('storageRateInfo').innerText = `Добыча: ${ratePerMin}/мин`;
 
             // База
             document.getElementById('storageLevelText').innerText = `Вместимость: ${maxStorage} 🔥`;
-            document.getElementById('buyStorageBtn').innerText = `${storageCost} 🔥`;
+            document.getElementById('buyStorageBtn').innerText = `${storageCost.toLocaleString('ru-RU')} 🔥`;
             document.getElementById('clickLevelText').innerText = `Урон с руки: ${clickPower}`;
-            document.getElementById('buyClickBtn').innerText = `${clickCost} 🔥`;
+            document.getElementById('buyClickBtn').innerText = `${clickCost.toLocaleString('ru-RU')} 🔥`;
             document.getElementById('passiveLevelText').innerText = `Уровень: ${passiveRate / 50}`;
-            document.getElementById('buyPassiveBtn').innerText = `${passiveCost} 🔥`;
-            document.getElementById('autoLevelText').innerText = `Уровень: ${autoClicker}`;
-            document.getElementById('buyAutoBtn').innerText = `${autoCost} 🔥`;
+            document.getElementById('buyPassiveBtn').innerText = `${passiveCost.toLocaleString('ru-RU')} 🔥`;
+            document.getElementById('autoLevelText').innerText = `Уровень: ${autoClicker} (${autoClicker} 🔥/мин)`;
+            document.getElementById('buyAutoBtn').innerText = `${autoCost.toLocaleString('ru-RU')} 🔥`;
 
             // Навыки
             let reqKills = 10 * Math.pow(2, charLevel - 1);
@@ -2452,13 +2735,18 @@
         function switchTab(tab, btn) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            ['tap', 'bosses', 'market', 'quests', 'achievements', 'skills', 'shop'].forEach(id => {
+            ['tap', 'bosses', 'boxes', 'market', 'quests', 'achievements', 'skills', 'shop'].forEach(id => {
                 document.getElementById(`screen-${id}`).classList.toggle('active', tab === id);
             });
             if (tab === 'bosses') renderBossesTab();
+            if (tab === 'boxes') {
+                const cbBtn = document.getElementById('contrabandShopBtn');
+                if (cbBtn) cbBtn.innerText = `${getContrabandCost()} 🥫`;
+            }
             if (tab === 'market') renderMarket();
             if (tab === 'quests') renderDailyQuests();
             if (tab === 'achievements') renderAchievements();
+            if (tab === 'shop') renderBaseWeaponUpgrades();
         }
 
         function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
@@ -2475,7 +2763,7 @@
             saveProgress();
         }
         function resetGameData() {
-            if (confirm('Внимание! Весь прогресс, спички, провизия, достижения и база будут полностью удалены. Начать сначала?')) {
+            if (confirm('Внимание! Весь прогресс, спички, провизия, изолента, достижения и база будут полностью удалены. Начать сначала?')) {
                 localStorage.removeItem('diamond_save');
                 location.reload();
             }
@@ -2483,7 +2771,7 @@
 
         function saveProgress() {
             localStorage.setItem('diamond_save', JSON.stringify({
-                sessionDiamonds, provision, contrabandOpened,
+                sessionDiamonds, provision, ductTape, contrabandOpened,
                 clickPower, energy, maxEnergy,
                 passiveRate, autoClicker, regenSpeed, critChance,
                 zombiesKilled, zombieMaxHp, zombieHp,
@@ -2491,19 +2779,11 @@
                 totalDamageDealt, totalMatchesSpent, totalSkillPointsSpent, totalBossesKilledCount,
                 maxStorage, storedDiamonds, storageCost,
                 clickCost, passiveCost, autoCost,
-                consumables, activeBoss, bossKeys, bossKillCounts, bossDailyKills,
+                consumables, weaponLevels, activeBoss, bossKeys, bossKillCounts, bossDailyKills,
                 boxOpenCounts, claimedAchievements,
                 lastDailyReset, activeDailyQuests,
                 soundEnabled, theme: currentTheme, lastExitTime: Date.now()
             }));
-        }
-
-        function saveAndExit() {
-            playWinFanfare(true);
-            tg.sendData(JSON.stringify({ action: "webapp_sync", earned_diamonds: sessionDiamonds }));
-            sessionDiamonds = 0;
-            saveProgress();
-            updateUI();
         }
 
         if (currentTheme === 'light') {
@@ -2514,6 +2794,7 @@
 
         checkDailyReset();
         renderMarket();
+        renderBaseWeaponUpgrades();
         renderBossesTab();
         updateUI();
     </script>
