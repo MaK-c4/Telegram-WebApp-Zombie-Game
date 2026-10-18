@@ -42,10 +42,11 @@
             background: radial-gradient(circle at top, var(--bg-grad-top), var(--bg-grad-bot) 70%);
             color: var(--text-main);
             height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            padding: 8px;
+            padding: 8px 8px calc(12px + env(safe-area-inset-bottom, 0px)) 8px;
             transition: background 0.2s, color 0.2s;
         }
 
@@ -56,14 +57,15 @@
             z-index: 10;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
+            flex-shrink: 0;
         }
 
         .header {
             background: var(--card-bg);
             border: 3.5px solid #000000;
             border-radius: 14px;
-            padding: 8px 12px;
+            padding: 6px 10px;
             box-shadow: 0 4px 0 #000000;
             display: flex;
             justify-content: space-between;
@@ -74,7 +76,7 @@
         .currencies-wrap {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
@@ -84,7 +86,7 @@
         }
 
         .balance-label {
-            font-size: 9px;
+            font-size: 8px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
             color: var(--text-sub);
@@ -92,21 +94,21 @@
         }
 
         .balance-val {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
             color: #fb923c;
             text-shadow: 1.5px 1.5px 0 #000;
         }
 
         .provision-val {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
             color: #38bdf8;
             text-shadow: 1.5px 1.5px 0 #000;
         }
 
         .tape-val {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
             color: #60a5fa;
             text-shadow: 1.5px 1.5px 0 #000;
@@ -115,18 +117,18 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .byn-badge {
             background: #10b981;
             color: #000;
             font-weight: 900;
-            padding: 6px 8px;
+            padding: 5px 7px;
             border-radius: 8px;
             border: 2.5px solid #000;
             box-shadow: 0 2px 0 #000;
-            font-size: 11px;
+            font-size: 10px;
             white-space: nowrap;
         }
 
@@ -134,11 +136,11 @@
             background: #facc15;
             color: #000;
             font-weight: 900;
-            padding: 6px 9px;
+            padding: 5px 8px;
             border-radius: 8px;
             border: 2.5px solid #000;
             box-shadow: 0 2px 0 #000;
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
             white-space: nowrap;
         }
@@ -153,12 +155,12 @@
             color: var(--text-main);
             border: 2.5px solid #000;
             border-radius: 8px;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 14px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
         }
@@ -167,7 +169,7 @@
         .tabs {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 5px;
             width: 100%;
         }
 
@@ -176,9 +178,9 @@
             color: var(--text-main);
             border: 2.5px solid #000;
             border-radius: 10px;
-            padding: 10px 4px;
+            padding: 8px 4px;
             font-weight: 900;
-            font-size: 12px;
+            font-size: 11px;
             box-shadow: 0 3px 0 #000;
             cursor: pointer;
             transition: transform 0.1s, background 0.2s;
@@ -201,7 +203,7 @@
             background: var(--energy-bg);
             border: 3px solid #000;
             border-radius: 10px;
-            height: 26px;
+            height: 22px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 2px 0 #000;
@@ -223,23 +225,23 @@
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 12px;
+            font-size: 11px;
             color: #fff;
             text-shadow: 1px 1px 0 #000;
         }
 
-        /* Экраны вкладок растянуты на всю оставшуюся высоту */
+        /* Возвращено компактное центрирование, чтобы нижняя панель смартфона ничего не перекрывала */
         .screen {
             display: none;
             flex: 1;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 6px;
             position: relative;
             width: 100%;
             max-width: 600px;
-            margin: 10px auto 4px auto;
-            padding: 4px 0;
+            margin: 4px auto 0 auto;
             overflow: hidden;
         }
 
@@ -250,49 +252,48 @@
         .test-cheat-btn {
             background: #38bdf8;
             color: #000;
-            border: 2.5px solid #000;
-            border-radius: 10px;
-            padding: 6px 10px;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 4px 7px;
             font-weight: 900;
-            font-size: 11px;
+            font-size: 9px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
             text-transform: uppercase;
         }
 
-        /* Крупная полоска ХП на всю ширину */
+        /* Полоска ХП */
         .zombie-status-box {
             width: 100%;
-            margin-bottom: 4px;
+            max-width: 420px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .zombie-info-row {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 900;
-            text-shadow: 1.5px 1.5px 0 #000;
-            padding: 0 4px;
+            text-shadow: 1px 1px 0 #000;
         }
 
         .hp-bar-wrap {
             background: var(--energy-bg);
-            border: 3.5px solid #000;
-            border-radius: 12px;
-            height: 32px;
+            border: 3px solid #000;
+            border-radius: 10px;
+            height: 24px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 3px 0 #000;
+            box-shadow: 0 2px 0 #000;
         }
 
         .hp-fill {
             background: linear-gradient(90deg, #dc2626, #ef4444);
             height: 100%;
             width: 100%;
-            border-right: 2.5px solid #000;
+            border-right: 2px solid #000;
             transition: width 0.12s ease-out;
         }
 
@@ -303,60 +304,78 @@
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 14px;
+            font-size: 11px;
             color: #fff;
-            text-shadow: 1.5px 1.5px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
         }
 
-        /* Большой Зомби / Босс по центру экрана */
+        /* Увеличенный Зомби / Босс */
         .zombie-wrapper {
             position: relative;
-            flex: 1;
-            width: 100%;
-            max-height: 320px;
+            width: 225px;
+            height: 225px;
+            max-height: 31vh;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: transform 0.05s cubic-bezier(0.25, 1, 0.5, 1);
-            margin: 6px 0;
         }
 
         .zombie-wrapper.pressed {
-            transform: scale(0.92) rotate(-4deg);
+            transform: scale(0.91) rotate(-4deg);
         }
 
         .zombie-svg {
-            width: 265px;
-            height: 265px;
-            max-width: 75vw;
-            max-height: 36vh;
-            filter: drop-shadow(0 8px 0 #000000);
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 6px 0 #000000);
         }
 
-        /* Крупная панель одноразового оружия в бою */
+        /* Кнопка включения/выключения Автокликера */
+        .autoclicker-toggle-btn {
+            background: #44403c;
+            color: #fff;
+            border: 2.5px solid #000;
+            border-radius: 10px;
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 900;
+            box-shadow: 0 2px 0 #000;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.15s;
+        }
+
+        .autoclicker-toggle-btn.active-on {
+            background: #22c55e;
+            color: #000;
+        }
+
+        /* Панель одноразового оружия в бою */
         .weapons-quick-bar {
             display: flex;
-            gap: 6px;
-            margin: 4px 0;
+            gap: 5px;
             flex-wrap: wrap;
             justify-content: center;
-            width: 100%;
+            max-width: 420px;
         }
 
         .weapon-use-btn {
             background: #dc2626;
             color: #fff;
-            border: 2.5px solid #000;
-            border-radius: 10px;
-            padding: 7px 11px;
-            font-size: 12px;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 4px 8px;
+            font-size: 10px;
             font-weight: 900;
-            box-shadow: 0 3px 0 #000;
+            box-shadow: 0 2px 0 #000;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         .weapon-use-btn:active {
@@ -364,39 +383,40 @@
             box-shadow: none;
         }
 
-        /* Крупный блок Схрона внизу */
+        /* Блок Схрона */
         .storage-widget {
             background: var(--card-bg);
-            border: 3.5px solid #000;
-            border-radius: 16px;
-            padding: 12px 14px;
+            border: 3px solid #000;
+            border-radius: 12px;
+            padding: 8px 12px;
             width: 100%;
-            box-shadow: 0 4px 0 #000;
+            max-width: 420px;
+            box-shadow: 0 3px 0 #000;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .storage-left {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .storage-header-line {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 900;
             color: var(--text-sub);
         }
 
         .storage-bar-wrap {
             background: var(--energy-bg);
-            border: 2.5px solid #000;
-            border-radius: 8px;
-            height: 24px;
+            border: 2px solid #000;
+            border-radius: 6px;
+            height: 18px;
             position: relative;
             overflow: hidden;
         }
@@ -415,7 +435,7 @@
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 12px;
+            font-size: 10px;
             color: #fff;
             text-shadow: 1px 1px 0 #000;
         }
@@ -423,12 +443,12 @@
         .collect-storage-btn {
             background: #f97316;
             color: #000;
-            border: 3px solid #000;
-            border-radius: 12px;
-            padding: 12px 16px;
+            border: 2.5px solid #000;
+            border-radius: 8px;
+            padding: 8px 12px;
             font-weight: 900;
-            font-size: 13px;
-            box-shadow: 0 3px 0 #000;
+            font-size: 11px;
+            box-shadow: 0 2px 0 #000;
             cursor: pointer;
         }
 
@@ -448,7 +468,7 @@
             background: var(--card-bg);
             border: 3px solid #000;
             border-radius: 14px;
-            padding: 10px 12px;
+            padding: 9px 11px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -461,13 +481,13 @@
         }
 
         .shop-info h4 {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 900;
             color: var(--text-main);
         }
 
         .shop-info p {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-sub);
             font-weight: 700;
             margin-top: 2px;
@@ -478,9 +498,9 @@
             color: #000;
             border: 2.5px solid #000;
             border-radius: 10px;
-            padding: 8px 11px;
+            padding: 7px 10px;
             font-weight: 900;
-            font-size: 11px;
+            font-size: 10px;
             box-shadow: 0 2px 0 #000;
             cursor: pointer;
             white-space: nowrap;
@@ -495,7 +515,7 @@
         .lucky-box-card {
             border: 3.5px solid #000;
             border-radius: 16px;
-            padding: 12px 14px;
+            padding: 11px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -526,7 +546,7 @@
         /* Фильтры категорий достижений */
         .ach-filter-bar {
             display: flex;
-            gap: 5px;
+            gap: 4px;
             overflow-x: auto;
             width: 100%;
             padding-bottom: 4px;
@@ -539,8 +559,8 @@
             color: var(--text-main);
             border: 2px solid #000;
             border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 10px;
+            padding: 5px 8px;
+            font-size: 9px;
             font-weight: 900;
             cursor: pointer;
             white-space: nowrap;
@@ -782,7 +802,7 @@
         /* Всплывающий текст и частицы */
         .floating-number {
             position: fixed;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 900;
             color: #ef4444;
             -webkit-text-stroke: 1.5px #000;
@@ -793,7 +813,7 @@
         }
 
         .floating-number.loot {
-            font-size: 27px;
+            font-size: 25px;
             color: #facc15;
         }
 
@@ -959,22 +979,20 @@
 
     <!-- Экран 1: Охота на обычных Зомби -->
     <div class="screen active" id="screen-tap">
-        <div style="width: 100%; display: flex; flex-direction: column; gap: 8px;">
-            <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;">
-                <button class="test-cheat-btn" onclick="addTestMatches()">⚡ +10,000 🔥</button>
-                <button class="test-cheat-btn" style="background: #10b981;" onclick="addTestProvision()">🥫 +5 Провизии</button>
-                <button class="test-cheat-btn" style="background: #60a5fa;" onclick="addTestTape()">🟦 +100 Изоленты</button>
-            </div>
+        <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;">
+            <button class="test-cheat-btn" onclick="addTestMatches()">⚡ +10,000 🔥</button>
+            <button class="test-cheat-btn" style="background: #10b981;" onclick="addTestProvision()">🥫 +5 Провизии</button>
+            <button class="test-cheat-btn" style="background: #60a5fa;" onclick="addTestTape()">🟦 +100 Изоленты</button>
+        </div>
 
-            <div class="zombie-status-box">
-                <div class="zombie-info-row">
-                    <span>🧟 ЗОМБИ-ХОДЯЧИЙ</span>
-                    <span id="killCountText">💀 Убито: 0 (Дроп: 1 🔥)</span>
-                </div>
-                <div class="hp-bar-wrap">
-                    <div class="hp-fill" id="zombieHpFill"></div>
-                    <div class="hp-text" id="zombieHpText">❤️ 12 / 12 HP</div>
-                </div>
+        <div class="zombie-status-box">
+            <div class="zombie-info-row">
+                <span>🧟 ЗОМБИ-ХОДЯЧИЙ</span>
+                <span id="killCountText">💀 Убито: 0 (Дроп: 1 🔥)</span>
+            </div>
+            <div class="hp-bar-wrap">
+                <div class="hp-fill" id="zombieHpFill"></div>
+                <div class="hp-text" id="zombieHpText">❤️ 12 / 12 HP</div>
             </div>
         </div>
 
@@ -999,36 +1017,37 @@
             </svg>
         </div>
 
-        <div style="width: 100%; display: flex; flex-direction: column; gap: 6px;">
-            <div class="weapons-quick-bar" id="tapWeaponsBar"></div>
+        <!-- Кнопка управления Автокликером в Охоте -->
+        <button class="autoclicker-toggle-btn" id="autoTapToggleNormal" onclick="toggleAutoTapper()">🤖 Автокликер: ВЫКЛ</button>
 
-            <div class="storage-widget">
-                <div class="storage-left">
-                    <div class="storage-header-line">
-                        <span>📦 СХРОН СПИЧЕК</span>
-                        <span id="storageRateInfo">Добыча: 0/мин</span>
-                    </div>
-                    <div class="storage-bar-wrap">
-                        <div class="storage-fill" id="storageFill"></div>
-                        <div class="storage-text" id="storageText">0 / 100 🔥</div>
-                    </div>
+        <div class="weapons-quick-bar" id="tapWeaponsBar"></div>
+
+        <div class="storage-widget">
+            <div class="storage-left">
+                <div class="storage-header-line">
+                    <span>📦 СХРОН СПИЧЕК</span>
+                    <span id="storageRateInfo">Добыча: 0/мин</span>
                 </div>
-                <button class="collect-storage-btn" id="collectStorageBtn" onclick="collectFromStorage()">Забрать</button>
+                <div class="storage-bar-wrap">
+                    <div class="storage-fill" id="storageFill"></div>
+                    <div class="storage-text" id="storageText">0 / 100 🔥</div>
+                </div>
             </div>
+            <button class="collect-storage-btn" id="collectStorageBtn" onclick="collectFromStorage()">Забрать</button>
         </div>
     </div>
 
-    <!-- Экран 2: БОССЫ (15 Боссов, Ключи, Изолента, Провизия и Лимиты 10/день) -->
+    <!-- Экран 2: БОССЫ -->
     <div class="screen" id="screen-bosses">
         <div class="shop-container" id="bossSelectionList"></div>
 
-        <div id="bossArena" style="display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; justify-content: space-between;">
+        <div id="bossArena" style="display: none; width: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 6px;">
             <div class="zombie-status-box">
                 <div class="zombie-info-row">
-                    <span id="activeBossName" style="color: #facc15; font-size: 14px;">БОСС</span>
+                    <span id="activeBossName" style="color: #facc15; font-size: 13px;">БОСС</span>
                     <span class="boss-timer-badge" id="bossTimerDisplay">⏳ 02:00:00</span>
                 </div>
-                <div class="hp-bar-wrap">
+                <div class="hp-bar-wrap" style="height: 26px;">
                     <div class="hp-fill" id="bossHpFill" style="background: linear-gradient(90deg, #7f1d1d, #ef4444);"></div>
                     <div class="hp-text" id="bossHpText">❤️ 250 / 250 HP</div>
                 </div>
@@ -1053,10 +1072,12 @@
                 </svg>
             </div>
 
-            <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                <div class="weapons-quick-bar" id="bossWeaponsBar"></div>
-                <button class="shop-btn" style="width: 100%; padding: 12px; font-size: 13px; background: #ef4444; color: #fff;" onclick="surrenderBoss()">🏳️ Сдаться (Сбросить бой)</button>
-            </div>
+            <!-- Кнопка управления Автокликером в бою с Боссом -->
+            <button class="autoclicker-toggle-btn" id="autoTapToggleBoss" onclick="toggleAutoTapper()">🤖 Автокликер: ВЫКЛ</button>
+
+            <div class="weapons-quick-bar" id="bossWeaponsBar"></div>
+
+            <button class="shop-btn" style="margin-top: 4px; background: #ef4444; color: #fff;" onclick="surrenderBoss()">🏳️ Сдаться (Сбросить бой)</button>
         </div>
     </div>
 
@@ -1075,7 +1096,6 @@
 
             <h4 style="margin-top: 4px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🎁 Боксы со снаряжением и ресурсами</h4>
 
-            <!-- 1. Обычный Бокс (25 спичек) -->
             <div class="lucky-box-card box-basic">
                 <div class="shop-info">
                     <h4 style="color: #e4e4e7; font-size: 13px;">📦 ОБЫЧНЫЙ БОКС</h4>
@@ -1084,7 +1104,6 @@
                 <button class="shop-btn" style="background: #facc15; padding: 8px 11px;" onclick="openCaseModal('basic')">25 🔥</button>
             </div>
 
-            <!-- 2. Супер Бокс (250 спичек) -->
             <div class="lucky-box-card box-super">
                 <div class="shop-info">
                     <h4 style="color: #60a5fa; font-size: 13px;">⚡ СУПЕР БОКС</h4>
@@ -1093,7 +1112,6 @@
                 <button class="shop-btn" style="background: #38bdf8; padding: 8px 11px;" onclick="openCaseModal('super')">250 🔥</button>
             </div>
 
-            <!-- 3. ВИП Бокс (2500 спичек) -->
             <div class="lucky-box-card box-vip">
                 <div class="shop-info">
                     <h4 style="color: #facc15; font-size: 13px;">👑 ВИП БОКС</h4>
@@ -1102,7 +1120,6 @@
                 <button class="shop-btn" style="background: #f97316; padding: 8px 11px;" onclick="openCaseModal('vip')">2500 🔥</button>
             </div>
 
-            <!-- 4. Премиум Бокс (25000 спичек) -->
             <div class="lucky-box-card box-premium">
                 <div class="shop-info">
                     <h4 style="color: #f472b6; font-size: 13px;">💎 ПРЕМИУМ БОКС</h4>
@@ -1113,7 +1130,6 @@
 
             <h4 style="margin-top: 4px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🔫 Оружейные Боксы (Без проигрыша!)</h4>
 
-            <!-- 5. Обычный Оружейный Бокс (250 спичек) -->
             <div class="lucky-box-card box-weapon-basic">
                 <div class="shop-info">
                     <h4 style="color: #f3f4f6; font-size: 13px;">🔪 ОБЫЧНЫЙ ОРУЖЕЙНЫЙ БОКС</h4>
@@ -1122,7 +1138,6 @@
                 <button class="shop-btn" style="background: #22c55e; padding: 8px 11px;" onclick="openCaseModal('weapon_basic')">250 🔥</button>
             </div>
 
-            <!-- 6. ВИП Оружейный Бокс (5000 спичек) -->
             <div class="lucky-box-card box-weapon-vip">
                 <div class="shop-info">
                     <h4 style="color: #fca5a5; font-size: 13px;">🚀 ВИП ОРУЖЕЙНЫЙ БОКС</h4>
@@ -1131,7 +1146,6 @@
                 <button class="shop-btn" style="background: #ef4444; color: #fff; padding: 8px 11px;" onclick="openCaseModal('weapon_vip')">5000 🔥</button>
             </div>
 
-            <!-- 7. Премиум Оружейный Бокс (50000 спичек) -->
             <div class="lucky-box-card box-weapon-premium">
                 <div class="shop-info">
                     <h4 style="color: #fde047; font-size: 13px;">✈️ ПРЕМИУМ ОРУЖЕЙНЫЙ БОКС</h4>
@@ -1155,7 +1169,7 @@
         <div class="shop-container">
             <div style="background: var(--card-bg); border: 3px solid #000; border-radius: 14px; padding: 10px; text-align: center; box-shadow: 0 3px 0 #000;">
                 <h3 style="font-size: 14px; font-weight: 900; color: #fb923c;">📋 Ежедневные Задания</h3>
-                <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">
+                <p style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">
                     Обновляются каждый день! Награда зависит от вашего уровня (<span id="questRewardRate">10</span> 🔥 за задание).
                 </p>
             </div>
@@ -1165,7 +1179,7 @@
 
     <!-- Экран 6: Достижения -->
     <div class="screen" id="screen-achievements">
-        <div style="width: 100%; margin-bottom: 6px; background: var(--card-bg); border: 3px solid #000; border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 0 #000;">
+        <div style="width: 100%; margin-bottom: 4px; background: var(--card-bg); border: 3px solid #000; border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 0 #000;">
             <div>
                 <h4 style="font-size: 13px; font-weight: 900; color: #facc15;">🏆 Достижения выжившего</h4>
                 <p style="font-size: 10px; color: var(--text-sub);">Награда за каждое: <b style="color:#38bdf8;">+1 🥫 Провизия</b></p>
@@ -1192,9 +1206,9 @@
             <div style="background: var(--card-bg); border: 3px solid #000; border-radius: 14px; padding: 10px; text-align: center; box-shadow: 0 3px 0 #000;">
                 <h3 style="font-size: 14px; font-weight: 900; color: #fb923c;">Уровень выжившего: <span id="charLevel">1</span></h3>
                 <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">Очков навыков: <span id="skillPoints" style="color: #22c55e; font-weight: 900;">0</span></p>
-                <div class="hp-bar-wrap" style="margin-top: 6px; height: 18px;">
+                <div class="hp-bar-wrap" style="margin-top: 6px; height: 16px;">
                     <div class="hp-fill" id="levelProgressFill" style="background: linear-gradient(90deg, #38bdf8, #818cf8);"></div>
-                    <div class="hp-text" id="levelProgressText" style="font-size: 10px;">Зомби: 0 / 10</div>
+                    <div class="hp-text" id="levelProgressText" style="font-size: 9px;">Зомби: 0 / 10</div>
                 </div>
             </div>
 
@@ -1224,7 +1238,7 @@
         </div>
     </div>
 
-    <!-- Экран 8: База (Постройки + Мастерская оружия за Изоленту и Спички) -->
+    <!-- Экран 8: База (Постройки + Автокликер + Мастерская оружия) -->
     <div class="screen" id="screen-shop">
         <div class="shop-container">
             <h4 style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🏗️ Улучшения Базы</h4>
@@ -1257,6 +1271,13 @@
                 </div>
                 <button class="shop-btn" id="buyAutoBtn" onclick="buyUpgrade('auto')">5000 🔥</button>
             </div>
+            <div class="shop-card">
+                <div class="shop-info">
+                    <h4>🤖 Автокликер (Ур. <span id="autoTapperLvl">0</span> / 10)</h4>
+                    <p id="autoTapperDesc">Не открыт (На 10 ур. бьет раз в 0.5 сек)</p>
+                </div>
+                <button class="shop-btn" id="buyAutoTapperBtn" onclick="buyUpgrade('autotapper')">50,000 🔥</button>
+            </div>
 
             <h4 style="margin-top: 6px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🛠️ Мастерская оружия (Прокачка урона за Изоленту 🟦)</h4>
             <div id="weaponUpgradesBaseList" style="display: flex; flex-direction: column; gap: 8px;"></div>
@@ -1276,7 +1297,13 @@
 
         let clickPower = savedData.clickPower || 1;
         let passiveRate = savedData.passiveRate || 0;
-        let autoClicker = savedData.autoClicker || 0;
+        let autoClicker = savedData.autoClicker || 0; // Напарник (+1/мин)
+
+        // Автокликер (10 уровней, старт открытия 50,000 спичек, на 10 ур = 1 удар в 0.5 сек)
+        let autoTapperLevel = savedData.autoTapperLevel || 0;
+        let autoTapperCost = savedData.autoTapperCost || 5000;
+        let autoTapperEnabled = savedData.autoTapperEnabled || false;
+        let autoTapperTimer = null;
 
         let zombiesKilled = savedData.zombiesKilled || 0;
         let charLevel = savedData.charLevel || 1;
@@ -1318,6 +1345,26 @@
         let clickCost = savedData.clickCost || 50;
         let passiveCost = savedData.passiveCost || 1000;
         let autoCost = savedData.autoCost || 5000;
+
+        // ОФЛАЙН ПОПОЛНЕНИЕ ЭНЕРГИИ И ПАССИВНОГО ДОХОДА В СХРОН
+        if (savedData.lastExitTime) {
+            const elapsedSec = Math.max(0, Math.floor((Date.now() - savedData.lastExitTime) / 1000));
+            if (elapsedSec > 0) {
+                // Пополнение энергии офлайн
+                energy = Math.min(maxEnergy, energy + elapsedSec * regenSpeed);
+                // Пополнение пассивной добычи в Схрон офлайн
+                const incomePerSec = (autoClicker / 60) + (passiveRate / 3600);
+                if (incomePerSec > 0 && storedDiamonds < maxStorage) {
+                    storedDiamonds = Math.min(maxStorage, storedDiamonds + elapsedSec * incomePerSec);
+                }
+            }
+        }
+
+        // Расчет интервала Автокликера (Ур. 1 = 2.3 сек ... Ур. 10 = 0.5 сек)
+        function getAutoTapperIntervalMs(lvl) {
+            if (lvl <= 0) return 0;
+            return Math.round((2.3 - (lvl - 1) * 0.2) * 1000);
+        }
 
         const consumableCatalog = [
             { id: 'shiv', name: '🔪 Острая заточка', shortName: 'Острая заточка', baseDmg: 35, cost: 35, icon: '🔪', upgTape: 1, upgMatches: 10, upgBonus: 1 },
@@ -2257,6 +2304,7 @@
             playWinFanfare(false);
             renderBossesTab();
             renderQuickWeaponsBars();
+            updateUI();
             saveProgress();
         }
 
@@ -2267,7 +2315,7 @@
             if (isCrit) dmg *= 3;
 
             if (energy < dmg) {
-                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                if (e && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
 
@@ -2282,13 +2330,17 @@
             btn.classList.add('pressed');
             setTimeout(() => btn.classList.remove('pressed'), 120);
 
-            spawnShards(e.clientX, e.clientY);
+            const rect = btn.getBoundingClientRect();
+            const x = (e && e.clientX) ? e.clientX : (rect.left + rect.width / 2);
+            const y = (e && e.clientY) ? e.clientY : (rect.top + rect.height / 2);
+
+            spawnShards(x, y);
 
             if (activeBoss.hp <= 0) {
-                handleBossKill(e.clientX, e.clientY);
+                handleBossKill(x, y);
             } else {
                 playHitSound(false);
-                spawnFloatingNumber(e.clientX, e.clientY, isCrit ? `💥 КРИТ -${dmg}` : `-${dmg} HP`, false);
+                spawnFloatingNumber(x, y, isCrit ? `💥 КРИТ -${dmg}` : `-${dmg} HP`, false);
             }
 
             updateUI();
@@ -2468,6 +2520,7 @@
                 ['Убито боссов всего', totalBossesKilledCount.toLocaleString('ru-RU')],
                 ['Нанесено всего урона', `${totalDamageDealt.toLocaleString('ru-RU')} HP`],
                 ['Урон с руки / Шанс крита', `${clickPower} HP / ${(skills.crit * 0.5).toFixed(1)}%`],
+                ['Уровень Автокликера', `${autoTapperLevel} / 10`],
                 ['Баланс Изоленты', `${ductTape.toLocaleString('ru-RU')} 🟦`],
                 ['Потрачено спичек в игре', `${totalMatchesSpent.toLocaleString('ru-RU')} 🔥`],
                 ['Потрачено очков навыков', totalSkillPointsSpent],
@@ -2515,17 +2568,19 @@
             }
 
             updateUI();
+            saveProgress();
         }, 1000);
 
         // Обычная охота на зомби
         const zombieBtn = document.getElementById('zombieBtn');
-        zombieBtn.addEventListener('pointerdown', (e) => {
+
+        function hitNormalZombie(clientX, clientY, isManual) {
             let dmg = clickPower;
             let isCrit = Math.random() * 100 < critChance;
             if (isCrit) dmg *= 3;
 
             if (energy < dmg) {
-                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                if (isManual && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
 
@@ -2538,19 +2593,58 @@
             if (isCrit) addDailyQuestProgress('crits', 1);
 
             zombieBtn.classList.add('pressed');
-            setTimeout(() => zombieBtn.classList.remove('pressed'), 120);
-            spawnShards(e.clientX, e.clientY);
+            setTimeout(() => zombieBtn.classList.remove('pressed'), 110);
+
+            const rect = zombieBtn.getBoundingClientRect();
+            const x = clientX || (rect.left + rect.width / 2);
+            const y = clientY || (rect.top + rect.height / 2);
+
+            spawnShards(x, y);
 
             if (zombieHp <= 0) {
-                handleNormalZombieKill(e.clientX, e.clientY);
+                handleNormalZombieKill(x, y);
             } else {
                 playHitSound(false);
-                spawnFloatingNumber(e.clientX, e.clientY, isCrit ? `💥 КРИТ -${dmg}` : `-${dmg} HP`, false);
+                spawnFloatingNumber(x, y, isCrit ? `💥 КРИТ -${dmg}` : `-${dmg} HP`, false);
             }
 
             updateUI();
             saveProgress();
+        }
+
+        zombieBtn.addEventListener('pointerdown', (e) => {
+            hitNormalZombie(e.clientX, e.clientY, true);
         });
+
+        // СИСТЕМА УПРАВЛЕНИЯ АВТОКЛИКЕРОМ
+        function toggleAutoTapper() {
+            if (autoTapperLevel <= 0) return;
+            autoTapperEnabled = !autoTapperEnabled;
+            restartAutoTapperLoop();
+            updateUI();
+            saveProgress();
+        }
+
+        function restartAutoTapperLoop() {
+            if (autoTapperTimer) {
+                clearInterval(autoTapperTimer);
+                autoTapperTimer = null;
+            }
+            if (autoTapperLevel > 0 && autoTapperEnabled) {
+                const intervalMs = getAutoTapperIntervalMs(autoTapperLevel);
+                autoTapperTimer = setInterval(() => {
+                    if (!autoTapperEnabled) return;
+                    const onTapScreen = document.getElementById('screen-tap').classList.contains('active');
+                    const onBossScreen = document.getElementById('screen-bosses').classList.contains('active');
+
+                    if (onTapScreen) {
+                        hitNormalZombie(null, null, false);
+                    } else if (onBossScreen && activeBoss) {
+                        hitBoss(null);
+                    }
+                }, intervalMs);
+            }
+        }
 
         function handleNormalZombieKill(x, y) {
             let rewardMatches = getZombieLootDrop();
@@ -2628,6 +2722,12 @@
                 spendMatches(autoCost);
                 autoClicker++;
                 autoCost *= 2;
+            } else if (type === 'autotapper' && autoTapperLevel < 10 && sessionDiamonds >= autoTapperCost) {
+                spendMatches(autoTapperCost);
+                autoTapperLevel++;
+                autoTapperCost *= 2;
+                if (autoTapperLevel === 1) autoTapperEnabled = true;
+                restartAutoTapperLoop();
             } else {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
@@ -2708,6 +2808,24 @@
             let ratePerMin = (autoClicker + (passiveRate / 60)).toFixed(1);
             document.getElementById('storageRateInfo').innerText = `Добыча: ${ratePerMin}/мин`;
 
+            // Кнопки переключения Автокликера в Охоте и у Боссов
+            const normalToggle = document.getElementById('autoTapToggleNormal');
+            const bossToggle = document.getElementById('autoTapToggleBoss');
+            if (autoTapperLevel > 0) {
+                const sec = (getAutoTapperIntervalMs(autoTapperLevel) / 1000).toFixed(1);
+                const btnText = autoTapperEnabled ? `🤖 Автокликер: ВКЛ (${sec}с)` : `🤖 Автокликер: ВЫКЛ (${sec}с)`;
+                normalToggle.style.display = 'flex';
+                normalToggle.innerText = btnText;
+                normalToggle.classList.toggle('active-on', autoTapperEnabled);
+
+                bossToggle.style.display = 'flex';
+                bossToggle.innerText = btnText;
+                bossToggle.classList.toggle('active-on', autoTapperEnabled);
+            } else {
+                normalToggle.style.display = 'none';
+                bossToggle.style.display = 'none';
+            }
+
             // База
             document.getElementById('storageLevelText').innerText = `Вместимость: ${maxStorage} 🔥`;
             document.getElementById('buyStorageBtn').innerText = `${storageCost.toLocaleString('ru-RU')} 🔥`;
@@ -2717,6 +2835,25 @@
             document.getElementById('buyPassiveBtn').innerText = `${passiveCost.toLocaleString('ru-RU')} 🔥`;
             document.getElementById('autoLevelText').innerText = `Уровень: ${autoClicker} (${autoClicker} 🔥/мин)`;
             document.getElementById('buyAutoBtn').innerText = `${autoCost.toLocaleString('ru-RU')} 🔥`;
+
+            // Карточка Автокликера на Базе
+            document.getElementById('autoTapperLvl').innerText = autoTapperLevel;
+            const tapperBtn = document.getElementById('buyAutoTapperBtn');
+            if (autoTapperLevel === 0) {
+                document.getElementById('autoTapperDesc').innerText = `Не открыт (На 10 ур. бьет раз в 0.5 сек)`;
+                tapperBtn.innerText = `Открыть: ${autoTapperCost.toLocaleString('ru-RU')} 🔥`;
+                tapperBtn.disabled = false;
+            } else if (autoTapperLevel < 10) {
+                const curSec = (getAutoTapperIntervalMs(autoTapperLevel) / 1000).toFixed(1);
+                const nextSec = (getAutoTapperIntervalMs(autoTapperLevel + 1) / 1000).toFixed(1);
+                document.getElementById('autoTapperDesc').innerText = `Скорость: 1 удар в ${curSec}с (След: ${nextSec}с)`;
+                tapperBtn.innerText = `${autoTapperCost.toLocaleString('ru-RU')} 🔥`;
+                tapperBtn.disabled = false;
+            } else {
+                document.getElementById('autoTapperDesc').innerText = `Макс. скорость: 1 удар в 0.5 сек!`;
+                tapperBtn.innerText = `МАКС (10/10)`;
+                tapperBtn.disabled = true;
+            }
 
             // Навыки
             let reqKills = 10 * Math.pow(2, charLevel - 1);
@@ -2777,6 +2914,7 @@
                 sessionDiamonds, provision, ductTape, contrabandOpened,
                 clickPower, energy, maxEnergy,
                 passiveRate, autoClicker, regenSpeed, critChance,
+                autoTapperLevel, autoTapperCost, autoTapperEnabled,
                 zombiesKilled, zombieMaxHp, zombieHp,
                 charLevel, zombieKillsForCurrentLevel, skillPoints, skills,
                 totalDamageDealt, totalMatchesSpent, totalSkillPointsSpent, totalBossesKilledCount,
@@ -2789,6 +2927,11 @@
             }));
         }
 
+        window.addEventListener('beforeunload', () => saveProgress());
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') saveProgress();
+        });
+
         if (currentTheme === 'light') {
             document.body.classList.add('light-theme');
             document.getElementById('themeToggleBtn').innerText = '☀️ Светлая';
@@ -2796,6 +2939,7 @@
         document.getElementById('soundToggleBtn').innerText = soundEnabled ? '🔊 Вкл' : '🔇 Выкл';
 
         checkDailyReset();
+        restartAutoTapperLoop();
         renderMarket();
         renderBaseWeaponUpgrades();
         renderBossesTab();
