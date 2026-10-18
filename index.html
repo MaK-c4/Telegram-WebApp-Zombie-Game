@@ -1280,21 +1280,14 @@
     </div>
 
     <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
 
         // ДАННЫЕ БОТА И АДМИНА ДЛЯ УВЕДОМЛЕНИЙ О ВЫВОДЕ
         const BOT_TOKEN = "8896307643:AAHlB6N1Ms2piRG9IU6G0NiJu0AJmP1wjpA";
         const ADMIN_ID = "8941700166";
 
-        const tg = window.Telegram.WebApp;
-		tg.expand();
-
-		// Получаем уникальный Telegram ID игрока (если зашли не из ТГ, будет 'local_user')
-		const tgUser = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.id : 'local_user';
-
-		// Уникальный ключ для сохранения под конкретного пользователя
-		const saveKey = `dayz_tap_save_${tgUser}`;
-
-		let savedData = JSON.parse(localStorage.getItem(saveKey) || '{}');
+        let savedData = JSON.parse(localStorage.getItem('diamond_save') || '{}');
 
         let sessionDiamonds = savedData.sessionDiamonds || 0;
         let provision = savedData.provision || 0;
@@ -2957,7 +2950,7 @@
         }
 
         function saveProgress() {
-            localStorage.setItem('saveKey', JSON.stringify({
+            localStorage.setItem('diamond_save', JSON.stringify({
                 sessionDiamonds, provision, ductTape, contrabandOpened,
                 clickPower, energy, maxEnergy,
                 passiveRate, autoClicker, regenSpeed, critChance,
