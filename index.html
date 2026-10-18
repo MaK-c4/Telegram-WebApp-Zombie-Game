@@ -1301,7 +1301,7 @@
 
         // Автокликер (10 уровней, старт открытия 50,000 спичек, на 10 ур = 1 удар в 0.5 сек)
         let autoTapperLevel = savedData.autoTapperLevel || 0;
-        let autoTapperCost = savedData.autoTapperCost || 5000;
+        let autoTapperCost = savedData.autoTapperCost || 50;
         let autoTapperEnabled = savedData.autoTapperEnabled || false;
         let autoTapperTimer = null;
 
@@ -1363,7 +1363,7 @@
         // Расчет интервала Автокликера (Ур. 1 = 2.3 сек ... Ур. 10 = 0.5 сек)
         function getAutoTapperIntervalMs(lvl) {
             if (lvl <= 0) return 0;
-            return Math.round((2.3 - (lvl - 1) * 0.2) * 1000);
+            return Math.round((2.2 - (lvl - 1) * 0.222) * 1000);
         }
 
         const consumableCatalog = [
