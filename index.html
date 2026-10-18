@@ -1348,7 +1348,7 @@
         let zombieHp = savedData.zombieHp !== undefined ? savedData.zombieHp : zombieMaxHp;
 
         function getZombieLootDrop() {
-            return 1 + Math.floor(zombiesKilled / 10);
+            return 1 + Math.floor(zombiesKilled / 5);
         }
 
         let maxStorage = savedData.maxStorage || 100;
@@ -1425,21 +1425,21 @@
 
         // 15 БОССОВ
         const bossesCatalog = [
-            { id: 'boss_1', idx: 1, name: '🧟‍♂️ Трупный Колосс', cleanName: 'Трупный Колосс', maxHp: 250, reward: 25, tapeMin: 0, tapeMax: 0, provMin: 0, provMax: 0 },
-            { id: 'boss_2', idx: 2, name: '☣️ Некропат', cleanName: 'Некропат', maxHp: 2500, reward: 250, tapeMin: 0, tapeMax: 0, provMin: 0, provMax: 0 },
-            { id: 'boss_3', idx: 3, name: '🦴 Костегрыз', cleanName: 'Костегрыз', maxHp: 5000, reward: 500, tapeMin: 0, tapeMax: 0, provMin: 0, provMax: 0 },
-            { id: 'boss_4', idx: 4, name: '🧬 Кадавр-Альфа', cleanName: 'Кадавр-Альфа', maxHp: 15000, reward: 1500, tapeMin: 5, tapeMax: 10, provMin: 0, provMax: 0 },
-            { id: 'boss_5', idx: 5, name: '🩸 Раздиратель', cleanName: 'Раздиратель', maxHp: 25000, reward: 2500, tapeMin: 10, tapeMax: 25, provMin: 0, provMax: 1 },
-            { id: 'boss_6', idx: 6, name: '👻 Пожиратель Душ', cleanName: 'Пожиратель Душ', maxHp: 50000, reward: 5000, tapeMin: 20, tapeMax: 50, provMin: 0, provMax: 2 },
-            { id: 'boss_7', idx: 7, name: '🪓 Архи-Палач', cleanName: 'Архи-Палач', maxHp: 100000, reward: 10000, tapeMin: 50, tapeMax: 100, provMin: 0, provMax: 3 },
-            { id: 'boss_8', idx: 8, name: '🗿 Костяной Монолит', cleanName: 'Костяной Монолит', maxHp: 250000, reward: 25000, tapeMin: 100, tapeMax: 200, provMin: 0, provMax: 4 },
-            { id: 'boss_9', idx: 9, name: '🧛 Кровожад', cleanName: 'Кровожад', maxHp: 500000, reward: 50000, tapeMin: 200, tapeMax: 500, provMin: 1, provMax: 5 },
-            { id: 'boss_10', idx: 10, name: '👹 Мертвый Исполин', cleanName: 'Мертвый Исполин', maxHp: 1000000, reward: 100000, tapeMin: 500, tapeMax: 1000, provMin: 2, provMax: 5 },
-            { id: 'boss_11', idx: 11, name: '☣️ Владыка Мора', cleanName: 'Владыка Мора', maxHp: 2500000, reward: 250000, tapeMin: 1000, tapeMax: 2000, provMin: 3, provMax: 5 },
-            { id: 'boss_12', idx: 12, name: '🐙 Кровавый Левиафан', cleanName: 'Кровавый Левиафан', maxHp: 5000000, reward: 50000, tapeMin: 2000, tapeMax: 3000, provMin: 4, provMax: 6 },
-            { id: 'boss_13', idx: 13, name: '💀 Вестник Погибели', cleanName: 'Вестник Погибели', maxHp: 10000000, reward: 100000, tapeMin: 3000, tapeMax: 5000, provMin: 5, provMax: 8 },
-            { id: 'boss_14', idx: 14, name: '👑 Царь Праха', cleanName: 'Царь Праха', maxHp: 50000000, reward: 500000, tapeMin: 5000, tapeMax: 10000, provMin: 5, provMax: 10 },
-            { id: 'boss_15', idx: 15, name: '👁️ Первородный Ужас', cleanName: 'Первородный Ужас', maxHp: 100000000, reward: 1000000, tapeMin: 10000, tapeMax: 20000, provMin: 10, provMax: 10 }
+            { id: 'boss_1', idx: 1, name: '🧟‍♂️ Трупный Колосс', cleanName: 'Трупный Колосс', maxHp: 1000, reward: 100, tapeMin: 0, tapeMax: 0, provMin: 1, provMax: 5 },
+            { id: 'boss_2', idx: 2, name: '☣️ Некропат', cleanName: 'Некропат', maxHp: 5000, reward: 500, tapeMin: 0, tapeMax: 0, provMin: 5, provMax: 10 },
+            { id: 'boss_3', idx: 3, name: '🦴 Костегрыз', cleanName: 'Костегрыз', maxHp: 15000, reward: 5500, tapeMin: 0, tapeMax: 0, provMin: 10, provMax: 20 },
+            { id: 'boss_4', idx: 4, name: '🧬 Кадавр-Альфа', cleanName: 'Кадавр-Альфа', maxHp: 50000, reward: 10000, tapeMin: 5, tapeMax: 10, provMin: 15, provMax: 30 },
+            { id: 'boss_5', idx: 5, name: '🩸 Раздиратель', cleanName: 'Раздиратель', maxHp: 100000, reward: 25000, tapeMin: 10, tapeMax: 25, provMin: 30, provMax: 50 },
+            { id: 'boss_6', idx: 6, name: '👻 Пожиратель Душ', cleanName: 'Пожиратель Душ', maxHp: 500000, reward: 50000, tapeMin: 20, tapeMax: 50, provMin: 50, provMax: 100 },
+            { id: 'boss_7', idx: 7, name: '🪓 Архи-Палач', cleanName: 'Архи-Палач', maxHp: 1000000, reward: 50000, tapeMin: 100, tapeMax: 200, provMin: 100, provMax: 200 },
+            { id: 'boss_8', idx: 8, name: '🗿 Костяной Монолит', cleanName: 'Костяной Монолит', maxHp: 5000000, reward: 100000, tapeMin: 100, tapeMax: 200, provMin: 50, provMax: 150 },
+            { id: 'boss_9', idx: 9, name: '🧛 Кровожад', cleanName: 'Кровожад', maxHp: 10000000, reward: 200000, tapeMin: 200, tapeMax: 500, provMin: 200, provMax: 500 },
+            { id: 'boss_10', idx: 10, name: '👹 Мертвый Исполин', cleanName: 'Мертвый Исполин', maxHp: 50000000, reward: 500000, tapeMin: 500, tapeMax: 1000, provMin: 200, provMax: 250 },
+            { id: 'boss_11', idx: 11, name: '☣️ Владыка Мора', cleanName: 'Владыка Мора', maxHp: 100000000, reward: 500000, tapeMin: 1000, tapeMax: 2000, provMin: 500, provMax: 1000 },
+            { id: 'boss_12', idx: 12, name: '🐙 Кровавый Левиафан', cleanName: 'Кровавый Левиафан', maxHp: 500000000, reward: 1000000, tapeMin: 2000, tapeMax: 3000, provMin: 500, provMax: 1000 },
+            { id: 'boss_13', idx: 13, name: '💀 Вестник Погибели', cleanName: 'Вестник Погибели', maxHp: 1000000000, reward: 2500000, tapeMin: 3000, tapeMax: 5000, provMin: 1000, provMax: 2000 },
+            { id: 'boss_14', idx: 14, name: '👑 Царь Праха', cleanName: 'Царь Праха', maxHp: 5000000000, reward: 5000000, tapeMin: 5000, tapeMax: 10000, provMin: 5000, provMax: 10000 },
+            { id: 'boss_15', idx: 15, name: '👁️ Первородный Ужас', cleanName: 'Первородный Ужас', maxHp: 10000000000, reward: 10000000, tapeMin: 10000, tapeMax: 20000, provMin: 10000, provMax: 100000 }
         ];
 
         let bossKeys = savedData.bossKeys || {};
@@ -2605,7 +2605,7 @@
         // ЕЖЕДНЕВНЫЕ ЗАДАНИЯ
         function renderDailyQuests() {
             checkDailyReset();
-            const rewardPerQuest = charLevel * 10;
+            const rewardPerQuest = charLevel * 100;
             document.getElementById('questRewardRate').innerText = rewardPerQuest;
 
             const list = document.getElementById('dailyQuestsList');
@@ -2633,7 +2633,7 @@
             const q = activeDailyQuests[idx];
             if (!q || q.claimed || q.progress < q.target) return;
             q.claimed = true;
-            const reward = charLevel * 10;
+            const reward = charLevel * 100;
             sessionDiamonds += reward;
             playWinFanfare(true);
             updateUI();
