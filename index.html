@@ -1344,7 +1344,7 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        let zombieMaxHp = 12 + Math.floor(zombiesKilled / 10);
+        let zombieMaxHp = 12 + Math.floor(zombiesKilled / 5);
         let zombieHp = savedData.zombieHp !== undefined ? Math.min(zombieMaxHp, savedData.zombieHp) : zombieMaxHp;
 
         function getZombieLootDrop() {
@@ -2023,16 +2023,16 @@
 
                 skillPoints += 1;
 
-                const keysAmount = getRandomInt(1, 3);
+                const keysAmount = getRandomInt(0, 1);
                 const randomBoss = bossesCatalog[getRandomInt(1, bossesCatalog.length - 1)];
                 bossKeys[randomBoss.id] = (bossKeys[randomBoss.id] || 0) + keysAmount;
 
-                const minMatches = charLevel * 100;
-                const maxMatches = charLevel * 100;
+                const minMatches = charLevel * 10;
+                const maxMatches = charLevel * 50;
                 const wonMatches = getRandomInt(minMatches, maxMatches);
                 sessionDiamonds += wonMatches;
 
-				const wonTape = 50;
+				const wonTape = 100;
 				ductTape += wonTape;
 
                 lootGrid.innerHTML = `
@@ -2633,7 +2633,7 @@
             const q = activeDailyQuests[idx];
             if (!q || q.claimed || q.progress < q.target) return;
             q.claimed = true;
-            const reward = charLevel * 100;
+            const reward = charLevel * 50;
             sessionDiamonds += reward;
             playWinFanfare(true);
             updateUI();
@@ -2887,18 +2887,18 @@
                 skills.crit++;
                 skillPoints--;
                 totalSkillPointsSpent++;
-                critChance = skills.crit * 0.5;
+                critChance = skills.crit * 0.2;
             } else if (type === 'marathon') {
                 skills.marathon++;
                 skillPoints--;
                 totalSkillPointsSpent++;
-                regenSpeed = 1 + skills.marathon;
+                regenSpeed = 10 + skills.marathon;
             } else if (type === 'endurance') {
                 skills.endurance++;
                 skillPoints--;
                 totalSkillPointsSpent++;
-                maxEnergy = 100 + skills.endurance * 50;
-                energy += 50;
+                maxEnergy = 100 + skills.endurance * 100;
+                energy += 100;
             }
 
             playHitSound(false);
