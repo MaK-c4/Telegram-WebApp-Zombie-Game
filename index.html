@@ -571,6 +571,13 @@
             color: #000;
         }
 
+        /* Сетка Менялы на Базе */
+        .exchanger-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
         /* Модальные окна */
         #settingsModal, #caseModal, #contrabandModal, #statsModal, #withdrawModal {
             display: none;
@@ -917,8 +924,8 @@
                 <button class="shop-btn" id="soundToggleBtn" onclick="toggleSound()">🔊 Вкл</button>
             </div>
             <div class="settings-row">
-                <span>Сброс данных</span>
-                <button class="shop-btn" style="background: #ef4444; color: #fff;" onclick="resetGameData()">🗑️ Сбросить</button>
+                <span>Полный сброс прогресса</span>
+                <button class="shop-btn" style="background: #ef4444; color: #fff;" onclick="resetGameData()">🗑️ Сбросить в 0</button>
             </div>
             <button class="close-modal" onclick="closeSettings()">Закрыть</button>
         </div>
@@ -1176,8 +1183,8 @@
     <div class="screen" id="screen-achievements">
         <div style="width: 100%; margin-bottom: 4px; background: var(--card-bg); border: 3px solid #000; border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 0 #000;">
             <div>
-                <h4 style="font-size: 13px; font-weight: 900; color: #facc15;">🏆 Достижения выжившего</h4>
-                <p style="font-size: 10px; color: var(--text-sub);">Награда за каждое: <b style="color:#38bdf8;">+1 🥫 Провизия</b></p>
+                <h4 style="font-size: 13px; font-weight: 900; color: #facc15;">🏆 Трофеи выжившего</h4>
+                <p style="font-size: 10px; color: var(--text-sub);">Награда растет с каждым рангом: <b style="color:#38bdf8;">Провизия 🥫</b></p>
             </div>
             <div id="achProgressBadge" style="background: #44403c; padding: 4px 8px; border-radius: 8px; border: 2px solid #000; font-size: 11px; font-weight: 900;">0 / 0</div>
         </div>
@@ -1200,10 +1207,10 @@
         <div class="shop-container">
             <div style="background: var(--card-bg); border: 3px solid #000; border-radius: 14px; padding: 10px; text-align: center; box-shadow: 0 3px 0 #000;">
                 <h3 style="font-size: 14px; font-weight: 900; color: #fb923c;">Уровень выжившего: <span id="charLevel">1</span></h3>
-                <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">Очков навыков: <span id="skillPoints" style="color: #22c55e; font-weight: 900;">0</span></p>
+                <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">Очков навыков: <span id="skillPoints" style="color: #22c55e; font-weight: 900;">0</span> (Каждый 20-й зомби = +1 Ур. и +1 Очко)</p>
                 <div class="hp-bar-wrap" style="margin-top: 6px; height: 16px;">
                     <div class="hp-fill" id="levelProgressFill" style="background: linear-gradient(90deg, #38bdf8, #818cf8);"></div>
-                    <div class="hp-text" id="levelProgressText" style="font-size: 9px;">Зомби: 0 / 10</div>
+                    <div class="hp-text" id="levelProgressText" style="font-size: 9px;">Зомби до уровня: 0 / 20</div>
                 </div>
             </div>
 
@@ -1233,7 +1240,7 @@
         </div>
     </div>
 
-    <!-- Экран 8: База (Постройки + Автокликер + Мастерская оружия) -->
+    <!-- Экран 8: База (Постройки + Меняла + Автокликер + Мастерская оружия) -->
     <div class="screen" id="screen-shop">
         <div class="shop-container">
             <h4 style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🏗️ Улучшения Базы</h4>
@@ -1274,6 +1281,10 @@
                 <button class="shop-btn" id="buyAutoTapperBtn" onclick="buyUpgrade('autotapper')">500 🔥</button>
             </div>
 
+            <!-- НОВЫЙ РАЗДЕЛ: МЕНЯЛА НА БАЗЕ -->
+            <h4 style="margin-top: 6px; font-size: 11px; color: #facc15; text-transform: uppercase;">🤝 Меняла (Обмен спичек на Изоленту 🟦 и Провизию 🥫)</h4>
+            <div id="exchangerList" style="display: flex; flex-direction: column; gap: 6px;"></div>
+
             <h4 style="margin-top: 6px; font-size: 11px; color: var(--text-sub); text-transform: uppercase;">🛠️ Мастерская оружия (Прокачка урона за Изоленту 🟦)</h4>
             <div id="weaponUpgradesBaseList" style="display: flex; flex-direction: column; gap: 8px;"></div>
         </div>
@@ -1282,6 +1293,9 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
+
+        // Флаг для полного сброса, чтобы при перезагрузке страницы старый прогресс не перезаписывался обратно
+        let isResetting = false;
 
         // ДАННЫЕ БОТА И АДМИНА ДЛЯ УВЕДОМЛЕНИЙ О ВЫВОДЕ
         const BOT_TOKEN = "8896307643:AAHlB6N1Ms2piRG9IU6G0NiJu0AJmP1wjpA";
@@ -1300,7 +1314,7 @@
 
         // Автокликер: 10 уровней с точными ценами и скоростью 0.05 сек на 10 уровне
         const autoTapperCosts = [500, 2000, 5000, 10000, 15000, 20000, 25000, 35000, 45000, 50000];
-        const autoTapperIntervalsMs = [1000, 850, 700, 550, 420, 300, 200, 130, 80, 50]; // 10 ур = 50 мс (0.05 сек)
+        const autoTapperIntervalsMs = [1000, 850, 700, 550, 420, 300, 200, 130, 80, 50];
 
         let autoTapperLevel = savedData.autoTapperLevel || 0;
         let autoTapperEnabled = savedData.autoTapperEnabled || false;
@@ -1308,7 +1322,7 @@
 
         let zombiesKilled = savedData.zombiesKilled || 0;
         let charLevel = savedData.charLevel || 1;
-        let zombieKillsForCurrentLevel = savedData.zombieKillsForCurrentLevel || 0;
+        let zombieKillsForCurrentLevel = savedData.zombieKillsForCurrentLevel !== undefined ? (savedData.zombieKillsForCurrentLevel % 20) : 0;
         let skillPoints = savedData.skillPoints || 0;
 
         let totalDamageDealt = savedData.totalDamageDealt || 0;
@@ -1359,17 +1373,29 @@
             }
         }
 
-        // Получение интервала Автокликера (на 10 уровне = 50 мс = 0.05 сек)
         function getAutoTapperIntervalMs(lvl) {
             if (lvl <= 0) return 0;
             return autoTapperIntervalsMs[Math.min(10, lvl) - 1];
         }
 
-        // Получение стоимости следующего уровня Автокликера
         function getNextAutoTapperCost() {
             if (autoTapperLevel >= 10) return 0;
             return autoTapperCosts[autoTapperLevel];
         }
+
+        // ПРЕДЛОЖЕНИЯ МЕНЯЛЫ НА БАЗЕ
+        const exchangerCatalog = [
+            // Обмен на Изоленту
+            { id: 'ex_tape_1_fast', type: 'tape', cost: 10, reward: 1, title: '🟦 1 шт. Изоленты (Быстрый лот)', desc: 'Обмен: 10 🔥 спичек → 1 🟦 изолента' },
+            { id: 'ex_tape_1', type: 'tape', cost: 100, reward: 1, title: '🟦 1 шт. Изоленты', desc: 'Стандартный курс: 100 🔥 спичек → 1 🟦 изолента' },
+            { id: 'ex_tape_10', type: 'tape', cost: 1000, reward: 10, title: '🟦 10 шт. Изоленты', desc: 'Обмен: 1,000 🔥 спичек → 10 🟦 изоленты' },
+            { id: 'ex_tape_100', type: 'tape', cost: 10000, reward: 100, title: '🟦 100 шт. Изоленты', desc: 'Обмен: 10,000 🔥 спичек → 100 🟦 изоленты' },
+            { id: 'ex_tape_1000', type: 'tape', cost: 100000, reward: 1000, title: '🟦 1,000 шт. Изоленты', desc: 'Обмен: 100,000 🔥 спичек → 1,000 🟦 изоленты' },
+            { id: 'ex_tape_10000', type: 'tape', cost: 1000000, reward: 10000, title: '🟦 10,000 шт. Изоленты', desc: 'Оптовый обмен: 1,000,000 🔥 спичек → 10,000 🟦 изоленты' },
+            // Обмен на Провизию (10000 спичек = 1 банка, 50000 спичек = 5 банок)
+            { id: 'ex_prov_1', type: 'provision', cost: 10000, reward: 1, title: '🥫 1 банка Провизии', desc: 'Курс: 10,000 🔥 спичек → 1 🥫 банка провизии' },
+            { id: 'ex_prov_5', type: 'provision', cost: 50000, reward: 5, title: '🥫 5 банок Провизии', desc: 'Курс: 50,000 🔥 спичек → 5 🥫 банок провизии' }
+        ];
 
         const consumableCatalog = [
             { id: 'shiv', name: '🔪 Острая заточка', shortName: 'Острая заточка', baseDmg: 35, cost: 35, icon: '🔪', upgTape: 1, upgMatches: 10, upgBonus: 1 },
@@ -1599,9 +1625,10 @@
             }
         }
 
-        // ДОСТИЖЕНИЯ
+        // ================= ДОСТИЖЕНИЯ С ПРОГРЕССИВНОЙ НАГРАДОЙ ПРОВИЗИИ =================
         const achievementsCatalog = [];
 
+        // 1. Зомби: 100 -> 1, 500 -> 5, 1000 -> 10, 5000 -> 50, 10000 -> 100, 50000 -> 500, 100000 -> 1000, 500000 -> 5000
         const zMilestones = [100, 500, 1000, 5000, 10000, 50000, 100000, 500000];
         const zTitles = ['Первая зачистка', 'Охотник окраин', 'Истребитель стаи', 'Мясник карантина', 'Гроза мертвецов', 'Чистильщик пустоши', 'Легенда руин', 'Бог апокалипсиса'];
         zMilestones.forEach((m, i) => {
@@ -1609,22 +1636,30 @@
                 id: `ach_z_${m}`, cat: 'zombies',
                 title: `🧟 ${zTitles[i]}`,
                 desc: `Убить ${m.toLocaleString('ru-RU')} зомби`,
-                target: m, getVal: () => zombiesKilled
+                target: m,
+                reward: Math.max(1, Math.floor(m / 100)),
+                getVal: () => zombiesKilled
             });
         });
 
+        // 2. Урон: прогрессивная награда от 1 до 5000 провизии
         const dMilestones = [100, 500, 1000, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000, 5000000];
+        const dRewards    = [1,   5,   10,   25,   50,    100,   200,   400,    800,    1500,   2500,    3500,    5000];
         const dTitles = ['Разминка кулаков', 'Крепкий удар', 'Костолом', 'Тяжелая рука', 'Сокрушитель черепов', 'Стальной напор', 'Мясорубка', 'Разрушитель плоти', 'Ураганный огонь', 'Аннигилятор', 'Катастрофа', 'Апокалипсис во плоти', 'Абсолютное разрушение'];
         dMilestones.forEach((m, i) => {
             achievementsCatalog.push({
                 id: `ach_d_${m}`, cat: 'dmg',
                 title: `💥 ${dTitles[i]}`,
                 desc: `Нанести ${m.toLocaleString('ru-RU')} HP урона`,
-                target: m, getVal: () => totalDamageDealt
+                target: m,
+                reward: dRewards[i],
+                getVal: () => totalDamageDealt
             });
         });
 
+        // 3. Боссы: 10 -> 1 🥫, 50 -> 5 🥫, 100 -> 10 🥫
         const bMilestones = [10, 50, 100];
+        const bRewards    = [1,  5,  10];
         const bRanks = ['Охотник', 'Палач', 'Покоритель'];
         bossesCatalog.forEach(b => {
             bMilestones.forEach((m, i) => {
@@ -1632,11 +1667,14 @@
                     id: `ach_${b.id}_${m}`, cat: 'bosses',
                     title: `💀 ${bRanks[i]}: ${b.cleanName}`,
                     desc: `Убить босса «${b.cleanName}» ${m} раз`,
-                    target: m, getVal: () => (bossKillCounts[b.id] || 0)
+                    target: m,
+                    reward: bRewards[i],
+                    getVal: () => (bossKillCounts[b.id] || 0)
                 });
             });
         });
 
+        // 4. Боксы: 10 -> 1 🥫, 50 -> 5 🥫, 100 -> 10 🥫
         const boxNames = {
             basic: 'Обычный бокс',
             super: 'Супер бокс',
@@ -1653,11 +1691,14 @@
                     id: `ach_box_${k}_${m}`, cat: 'boxes',
                     title: `🎁 ${boxRanks[i]}: ${boxNames[k]}`,
                     desc: `Открыть «${boxNames[k]}» ${m} раз`,
-                    target: m, getVal: () => (boxOpenCounts[k] || 0)
+                    target: m,
+                    reward: bRewards[i],
+                    getVal: () => (boxOpenCounts[k] || 0)
                 });
             });
         });
 
+        // 5. Потрачено спичек: 1000 -> 1 🥫, 10000 -> 10 🥫, 50000 -> 50 🥫 ... 5000000 -> 5000 🥫
         const sMilestones = [1000, 10000, 50000, 100000, 500000, 1000000, 2500000, 5000000];
         const sTitles = ['Мелкий скупщик', 'Торговец с базы', 'Щедрый выживший', 'Оптовик пустоши', 'Военный спонсор', 'Оружейный барон', 'Властелин спичек', 'Император экономики'];
         sMilestones.forEach((m, i) => {
@@ -1665,11 +1706,15 @@
                 id: `ach_sp_${m}`, cat: 'economy',
                 title: `🔥 ${sTitles[i]}`,
                 desc: `Потратить ${m.toLocaleString('ru-RU')} спичек в игре (кроме вывода)`,
-                target: m, getVal: () => totalMatchesSpent
+                target: m,
+                reward: Math.max(1, Math.floor(m / 1000)),
+                getVal: () => totalMatchesSpent
             });
         });
 
+        // 6. Арсенал оружия: 25 -> 1, 50 -> 2, 100 -> 4, 250 -> 10, 500 -> 20, 1000 -> 40, 2500 -> 100, 5000 -> 200
         const wMilestones = [25, 50, 100, 250, 500, 1000, 2500, 5000];
+        const wRewards    = [1,  2,  4,   10,  20,  40,   100,  200];
         const wRanks = ['Запас', 'Ящик', 'Склад', 'Арсенал', 'Бункер', 'Бастион', 'Дивизия', 'Гегемония'];
         consumableCatalog.forEach(w => {
             wMilestones.forEach((m, i) => {
@@ -1677,19 +1722,25 @@
                     id: `ach_w_${w.id}_${m}`, cat: 'weapons',
                     title: `${w.icon} ${wRanks[i]}: ${w.shortName}`,
                     desc: `Накопить в инвентаре ${m.toLocaleString('ru-RU')} шт. «${w.shortName}»`,
-                    target: m, getVal: () => (consumables[w.id] || 0)
+                    target: m,
+                    reward: wRewards[i],
+                    getVal: () => (consumables[w.id] || 0)
                 });
             });
         });
 
+        // 7. Очки навыков: 10 -> 1, 25 -> 3, 50 -> 5, 100 -> 10, 250 -> 25, 500 -> 50
         const skMilestones = [10, 25, 50, 100, 250, 500];
+        const skRewards    = [1,  3,  5,  10,  25,  50];
         const skTitles = ['Новичок зоны', 'Следопыт', 'Ветеран выживания', 'Мастер пустоши', 'Сверхчеловек', 'Легенда эволюции'];
         skMilestones.forEach((m, i) => {
             achievementsCatalog.push({
                 id: `ach_sk_${m}`, cat: 'economy',
                 title: `📈 ${skTitles[i]}`,
                 desc: `Потратить ${m} очков навыков`,
-                target: m, getVal: () => totalSkillPointsSpent
+                target: m,
+                reward: skRewards[i],
+                getVal: () => totalSkillPointsSpent
             });
         });
 
@@ -1764,7 +1815,7 @@
             });
         }
 
-        // МОДАЛЬНОЕ ОКНО ВЫВОДА (BYN) И ОТПРАВКА УВЕДОМЛЕНИЙ В TELEGRAM БОТА И АДМИНУ
+        // МОДАЛЬНОЕ ОКНО ВЫВОДА (BYN)
         const withdrawTiers = [
             { matches: 500000, byn: 5 },
             { matches: 1000000, byn: 10 },
@@ -1835,7 +1886,6 @@
             renderWithdrawModal();
             playWinFanfare(true);
 
-            // Получаем данные пользователя из Telegram WebApp
             const user = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : null;
             const userId = user ? user.id : null;
             const userFirstName = user && user.first_name ? user.first_name : 'Игрок';
@@ -1843,13 +1893,11 @@
             const fullName = `${userFirstName}${userLastName}`.trim();
             const usernameTag = user && user.username ? `@${user.username}` : 'без юзернейма';
 
-            // 1. Отправляем уведомление самому игроку в бота
             if (userId) {
                 const userMsg = `✅ <b>Заявка на вывод создана!</b>\n\n💸 Вы вывели: <b>${bynAmount} BYN</b> (${matchesAmount.toLocaleString('ru-RU')} 🔥)\n⏳ Ожидайте, в ближайшее время с вами свяжется администратор для выплаты.`;
                 sendTelegramMessage(userId, userMsg);
             }
 
-            // 2. Отправляем уведомление Администратору (8941700166)
             const adminMsg = `🚨 <b>НОВАЯ ЗАЯВКА НА ВЫВОД!</b>\n\n👤 Игрок: <b>${fullName}</b> (${usernameTag})\n🆔 ID игрока: <code>${userId || 'Неизвестен (открыто вне TG)'}</code>\n💵 Сумма к выплате: <b>${bynAmount} BYN</b>\n🔥 Списано спичек: <b>${matchesAmount.toLocaleString('ru-RU')} 🔥</b>\n📈 Уровень игрока: ${charLevel}`;
             await sendTelegramMessage(ADMIN_ID, adminMsg);
 
@@ -2131,8 +2179,57 @@
             renderQuickWeaponsBars();
         }
 
+        // РЕНДЕР МЕНЯЛЫ НА БАЗЕ
+        function renderExchanger() {
+            const list = document.getElementById('exchangerList');
+            if (!list) return;
+            list.innerHTML = '';
+
+            exchangerCatalog.forEach(item => {
+                const canAfford = sessionDiamonds >= item.cost;
+                const btnColor = item.type === 'tape' ? '#60a5fa' : '#38bdf8';
+
+                const card = document.createElement('div');
+                card.className = 'shop-card';
+                card.innerHTML = `
+                    <div class="shop-info">
+                        <h4 style="color: ${btnColor};">${item.title}</h4>
+                        <p>${item.desc}</p>
+                    </div>
+                    <button class="shop-btn" style="background: ${canAfford ? btnColor : '#57534e'}; color: #000;" ${!canAfford ? 'disabled' : ''} onclick="buyExchangeItem('${item.id}')">
+                        ${item.cost.toLocaleString('ru-RU')} 🔥
+                    </button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function buyExchangeItem(itemId) {
+            const item = exchangerCatalog.find(x => x.id === itemId);
+            if (!item) return;
+            if (sessionDiamonds < item.cost) {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                return;
+            }
+
+            spendMatches(item.cost);
+            if (item.type === 'tape') {
+                ductTape += item.reward;
+            } else if (item.type === 'provision') {
+                provision += item.reward;
+            }
+
+            playWinFanfare(false);
+            updateUI();
+            renderExchanger();
+            renderBaseWeaponUpgrades();
+            saveProgress();
+        }
+
         // ПРОКАЧКА ОРУЖИЯ НА БАЗЕ ЗА ИЗОЛЕНТУ И СПИЧКИ
         function renderBaseWeaponUpgrades() {
+            renderExchanger();
+
             const list = document.getElementById('weaponUpgradesBaseList');
             if (!list) return;
             list.innerHTML = '';
@@ -2479,7 +2576,7 @@
             saveProgress();
         }
 
-        // ДОСТИЖЕНИЯ
+        // ДОСТИЖЕНИЯ (ТРОФЕИ)
         function setAchFilter(filter, btn) {
             currentAchFilter = filter;
             document.querySelectorAll('.ach-filter-btn').forEach(b => b.classList.remove('active'));
@@ -2511,20 +2608,21 @@
                 const curVal = Math.min(a.target, a.getVal());
                 const isDone = curVal >= a.target;
                 const isClaimed = !!claimedAchievements[a.id];
+                const rewardProv = a.reward || 1;
 
                 const card = document.createElement('div');
                 card.className = 'shop-card';
                 card.innerHTML = `
                     <div class="shop-info">
                         <h4>${a.title}</h4>
-                        <p>${a.desc}</p>
+                        <p>${a.desc} • Награда: <b style="color:#38bdf8;">+${rewardProv.toLocaleString('ru-RU')} 🥫</b></p>
                         <p style="color:${isDone ? '#22c55e' : '#facc15'}; margin-top: 2px;">
                             Выполнено: ${curVal.toLocaleString('ru-RU')} / ${a.target.toLocaleString('ru-RU')}
                         </p>
                     </div>
                     <button class="shop-btn" style="background: ${isClaimed ? '#44403c' : (isDone ? '#38bdf8' : '#57534e')};"
                         ${(!isDone || isClaimed) ? 'disabled' : ''} onclick="claimAchievement('${a.id}')">
-                        ${isClaimed ? 'Забрано ✓' : (isDone ? 'Забрать +1 🥫' : '1 🥫')}
+                        ${isClaimed ? 'Забрано ✓' : (isDone ? `Забрать +${rewardProv} 🥫` : `+${rewardProv} 🥫`)}
                     </button>
                 `;
                 list.appendChild(card);
@@ -2536,7 +2634,7 @@
             if (!a || claimedAchievements[achId] || a.getVal() < a.target) return;
 
             claimedAchievements[achId] = true;
-            provision += 1;
+            provision += (a.reward || 1);
             playWinFanfare(true);
             updateUI();
             renderAchievements();
@@ -2576,6 +2674,8 @@
 
         // Таймер каждую секунду
         setInterval(() => {
+            if (isResetting) return;
+
             if (activeBoss) {
                 let remainingMs = activeBoss.endTime - Date.now();
                 if (remainingMs <= 0) {
@@ -2668,7 +2768,7 @@
             if (autoTapperLevel > 0 && autoTapperEnabled) {
                 const intervalMs = getAutoTapperIntervalMs(autoTapperLevel);
                 autoTapperTimer = setInterval(() => {
-                    if (!autoTapperEnabled) return;
+                    if (!autoTapperEnabled || isResetting) return;
                     const onTapScreen = document.getElementById('screen-tap').classList.contains('active');
                     const onBossScreen = document.getElementById('screen-bosses').classList.contains('active');
 
@@ -2681,6 +2781,7 @@
             }
         }
 
+        // КАЖДЫЙ 20-Й УБИТЫЙ ЗОМБИ ПОВЫШАЕТ УРОВЕНЬ И ДАЕТ +1 ОЧКО НАВЫКА
         function handleNormalZombieKill(x, y) {
             let rewardMatches = getZombieLootDrop();
             sessionDiamonds += rewardMatches;
@@ -2688,11 +2789,11 @@
             zombieKillsForCurrentLevel++;
             addDailyQuestProgress('zombies', 1);
 
-            let reqKills = 10 * Math.pow(2, charLevel - 1);
+            const reqKills = 20;
             if (zombieKillsForCurrentLevel >= reqKills) {
                 zombieKillsForCurrentLevel -= reqKills;
                 charLevel++;
-                skillPoints += 2;
+                skillPoints += 1;
                 playWinFanfare(true);
             }
 
@@ -2773,27 +2874,6 @@
             }
 
             addDailyQuestProgress('upgrade_base', 1);
-            playWinFanfare(false);
-            updateUI();
-            saveProgress();
-        }
-
-        function addTestMatches() {
-            sessionDiamonds += 10000;
-            playWinFanfare(false);
-            updateUI();
-            saveProgress();
-        }
-
-        function addTestProvision() {
-            provision += 5;
-            playWinFanfare(false);
-            updateUI();
-            saveProgress();
-        }
-
-        function addTestTape() {
-            ductTape += 100;
             playWinFanfare(false);
             updateUI();
             renderBaseWeaponUpgrades();
@@ -2895,12 +2975,12 @@
                 tapperBtn.disabled = true;
             }
 
-            // Навыки
-            let reqKills = 10 * Math.pow(2, charLevel - 1);
+            // Навыки (каждые 20 зомби)
+            const reqKills = 20;
             document.getElementById('charLevel').innerText = charLevel;
             document.getElementById('skillPoints').innerText = skillPoints;
             document.getElementById('levelProgressFill').style.width = `${Math.min(100, (zombieKillsForCurrentLevel / reqKills) * 100)}%`;
-            document.getElementById('levelProgressText').innerText = `Зомби: ${zombieKillsForCurrentLevel} / ${reqKills}`;
+            document.getElementById('levelProgressText').innerText = `Зомби до уровня: ${zombieKillsForCurrentLevel} / ${reqKills}`;
 
             document.getElementById('skillCritText').innerText = `Уровень: ${skills.crit} (Шанс: ${(skills.crit * 0.5).toFixed(1)}%)`;
             document.getElementById('skillMarathonText').innerText = `Уровень: ${skills.marathon} (Пополнение: ${regenSpeed} ⚡/сек)`;
@@ -2909,6 +2989,10 @@
             if (activeBoss) {
                 document.getElementById('bossHpFill').style.width = `${Math.max(0, (activeBoss.hp / activeBoss.maxHp) * 100)}%`;
                 document.getElementById('bossHpText').innerText = `❤️ ${Math.max(0, activeBoss.hp).toLocaleString('ru-RU')} / ${activeBoss.maxHp.toLocaleString('ru-RU')} HP`;
+            }
+
+            if (document.getElementById('screen-shop').classList.contains('active')) {
+                renderExchanger();
             }
         }
 
@@ -2942,14 +3026,20 @@
             document.getElementById('soundToggleBtn').innerText = soundEnabled ? '🔊 Вкл' : '🔇 Выкл';
             saveProgress();
         }
+
+        // ЖЕСТКИЙ ПОЛНЫЙ СБРОС ПРОГРЕССА В НОЛЬ
         function resetGameData() {
-            if (confirm('Внимание! Весь прогресс, спички, провизия, изолента, достижения и база будут полностью удалены. Начать сначала?')) {
+            if (confirm('Внимание! Весь прогресс, спички, провизия, изолента, уровень, навыки, оружие, трофеи и база будут ПОЛНОСТЬЮ обнулены. Вы уверены?')) {
+                isResetting = true;
+                if (autoTapperTimer) clearInterval(autoTapperTimer);
                 localStorage.removeItem('diamond_save');
+                localStorage.clear();
                 location.reload();
             }
         }
 
         function saveProgress() {
+            if (isResetting) return;
             localStorage.setItem('diamond_save', JSON.stringify({
                 sessionDiamonds, provision, ductTape, contrabandOpened,
                 clickPower, energy, maxEnergy,
@@ -2967,9 +3057,11 @@
             }));
         }
 
-        window.addEventListener('beforeunload', () => saveProgress());
+        window.addEventListener('beforeunload', () => {
+            if (!isResetting) saveProgress();
+        });
         document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') saveProgress();
+            if (document.visibilityState === 'hidden' && !isResetting) saveProgress();
         });
 
         if (currentTheme === 'light') {
