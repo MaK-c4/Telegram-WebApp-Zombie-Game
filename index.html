@@ -1344,8 +1344,8 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        let zombieMaxHp = savedData.zombieMaxHp || 12;
-        let zombieHp = savedData.zombieHp !== undefined ? savedData.zombieHp : zombieMaxHp;
+        let zombieMaxHp = 12 + Math.floor(zombiesKilled / 10);
+        let zombieHp = savedData.zombieHp !== undefined ? Math.min(zombieMaxHp, savedData.zombieHp) : zombieMaxHp;
 
         function getZombieLootDrop() {
             return 1 + Math.floor(zombiesKilled / 5);
@@ -2862,7 +2862,7 @@
                 playWinFanfare(true);
             }
 
-            zombieMaxHp += 1;
+            zombieMaxHp = 12 + Math.floor(zombiesKilled / 10);
             zombieHp = zombieMaxHp;
 
             playHitSound(true);
